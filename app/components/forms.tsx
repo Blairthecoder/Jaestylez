@@ -85,25 +85,3 @@ export function SearchForm({ className, children }: { className?: string; childr
     </form>
   );
 }
-
-export function AddToCartForm({ className, children }: { className?: string; children: ReactNode }) {
-  const [added, setAdded] = useState<number | null>(null);
-  return (
-    <form
-      className={className}
-      onSubmit={(event) => {
-        event.preventDefault();
-        const qty = Number(new FormData(event.currentTarget).get('quantity')) || 1;
-        setAdded(qty);
-      }}
-    >
-      <input type="number" name="quantity" defaultValue={1} min={1} max={20} required aria-label="Quantity" />
-      {children}
-      {added !== null && (
-        <div className="form-status" role="status">
-          Added {added} to your cart.
-        </div>
-      )}
-    </form>
-  );
-}

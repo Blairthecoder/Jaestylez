@@ -1,6 +1,7 @@
 import { SiteHeader } from '@/app/components/site-header';
 import { SiteFooter } from '@/app/components/site-footer';
 import { PageEffects } from '@/app/components/page-effects';
+import { CartBar } from '@/app/components/cart-bar';
 
 export function SiteShell({
   header,
@@ -19,6 +20,7 @@ export function SiteShell({
         <SiteFooter className={footerClassName} />
       </div>
       <PageEffects />
+      <CartBar />
     </>
   );
 }

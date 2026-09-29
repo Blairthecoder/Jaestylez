@@ -190,3 +190,36 @@ html {
   accent-color: #d69838;
   margin: 6px 0;
 }
+
+/* Floating cart / checkout pill (Wix shop) */
+.qt-cart-bar {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  max-width: calc(100vw - 100px);
+  padding: 10px 14px 10px 20px;
+  border-radius: 6px;
+  color: #fff;
+  background: #0d0d0d;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+.qt-cart-bar .theme-btn {
+  padding: 10px 20px;
+}
+.qt-cart-bar small {
+  flex-basis: 100%;
+  color: #ffb3b3;
+}
+.product-item .image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.product-details-content select.form-control {
+  max-width: 320px;
+}
