@@ -223,3 +223,98 @@ html {
 .product-details-content select.form-control {
   max-width: 320px;
 }
+
+/* Wix Bookings service menu */
+.booking-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+.booking-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.booking-chips button {
+  padding: 8px 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  background: #fff;
+  color: #252525;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.booking-chips button:hover,
+.booking-chips button.active {
+  color: #fff;
+  background: #d69838;
+  border-color: #d69838;
+}
+.booking-search {
+  max-width: 420px;
+}
+.booking-group-title {
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d69838;
+}
+.booking-card {
+  display: flex;
+  gap: 18px;
+  height: 100%;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+.booking-card-image {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.booking-card-body {
+  flex: 1;
+  min-width: 0;
+}
+.booking-card h4 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.booking-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  padding: 0;
+  margin: 0 0 10px;
+  list-style: none;
+  font-size: 14px;
+}
+.booking-meta i {
+  color: #d69838;
+}
+.booking-card p {
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+.booking-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+.booking-actions .theme-btn {
+  padding: 10px 22px;
+}
+.booking-actions a:not(.theme-btn) {
+  text-decoration: underline;
+}
+@media (max-width: 575px) {
+  .booking-card {
+    flex-direction: column;
+  }
+}

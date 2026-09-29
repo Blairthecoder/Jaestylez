@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
+import { BookingServices } from '@/app/components/booking-services';
 import { NiceSelect } from '@/app/components/nice-select';
 import { NetlifyForm } from '@/app/components/forms';
 
@@ -25,6 +26,7 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <BookingServices />
       <section className="about-us-four py-130 rpt-100 rpb-90">
         <div className="container">
           <div className="row align-items-center justify-content-around">

@@ -4,6 +4,7 @@ import { createClient, OAuthStrategy, type Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import { currentCart } from '@wix/ecom';
 import { redirects } from '@wix/redirects';
+import { services } from '@wix/bookings';
 
 // Public Wix Headless OAuth client ID (visitor-level access, not a secret).
 // Override with NEXT_PUBLIC_WIX_CLIENT_ID if the store ever changes.
@@ -26,7 +27,7 @@ function loadTokens(): Tokens | undefined {
 
 function makeClient() {
   return createClient({
-    modules: { products, collections, currentCart, redirects },
+    modules: { products, collections, currentCart, redirects, services },
     auth: OAuthStrategy({ clientId: WIX_CLIENT_ID, tokens: loadTokens() }),
   });
 }

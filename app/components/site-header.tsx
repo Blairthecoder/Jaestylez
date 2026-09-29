@@ -140,7 +140,7 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
           </div>
 
           <div className="menu-button d-none d-lg-block">
-            <a href="/contact" className={`theme-btn${three ? ' style-four' : ''}`}>
+            <a href="/services#book" className={`theme-btn${three ? ' style-four' : ''}`}>
               appointment <i className="far fa-long-arrow-right"></i>
             </a>
           </div>
