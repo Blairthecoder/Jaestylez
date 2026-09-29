@@ -875,3 +875,30 @@ html {
     font-weight: 600;
   }
 }
+
+/* Service rows (template price-item): long names wrap before they reach the price */
+.price-item .image img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+}
+.price-item .content {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: 0;
+  padding-right: 18px;
+}
+.price-item .content h5 {
+  font-size: 21px;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.price-item .content > span {
+  display: block;
+  margin-bottom: 6px;
+}
+.price-item .price {
+  flex: 0 0 auto;
+  margin-left: auto;
+  white-space: nowrap;
+}

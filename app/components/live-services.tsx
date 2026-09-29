@@ -259,7 +259,7 @@ export function ServiceDetail() {
 
   const paragraphs = service.description.split(/\n+/).map((p) => p.trim()).filter(Boolean);
   const related = services.filter((s) => s.category === service.category);
-  const bigImage = service.image?.replace(/w_\d+,h_\d+/, 'w_900,h_700');
+  const bigImage = service.imageLarge;
 
   return (
     <section className="service-details-area py-130 rpt-90 rpb-100">

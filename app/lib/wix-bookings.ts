@@ -1,7 +1,8 @@
 'use client';
 
 import type { services } from '@wix/bookings';
-import { wix, wixImageUrl } from '@/app/lib/wix';
+import { isOwnUpload, wix, wixImageUrl } from '@/app/lib/wix';
+import { fallbackPhoto, servicePhoto, serviceThumb } from '@/app/content/service-photos';
 
 export type BookableService = {
   id: string;
@@ -16,10 +17,43 @@ export type BookableService = {
   duration: string;
   price: string;
   deposit: string;
-  image: string | null;
+  image: string;
+  imageLarge: string;
   detailsUrl: string;
   bookingUrl: string;
 };
+
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'the', 'to', 'vs', 'via', 'w/']);
+
+/** Headline Case for service and category names, tidying the stray spacing in the Wix data. */
+export function titleCase(input: string): string {
+  const cleaned = input
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+\)/g, ')')
+    .replace(/\s*\+\s*/g, ' + ')
+    .replace(/\bw\/(?=\S)/gi, 'w/ ')
+    .replace(/(\S) \/(?=\S)/g, '$1/ ')
+    .replace(/(\d)([a-z]{3,})/gi, '$1 $2');
+  const words = cleaned.split(' ');
+  const cap = (part: string) => part.replace(/[A-Za-z]/, (c) => c.toUpperCase());
+  return words
+    .map((word, i) => {
+      const bare = word.replace(/[^A-Za-z/]/g, '').toLowerCase();
+      const edge = i === 0 || i === words.length - 1;
+      // Keep CamelCase brand words such as MicroLocs as written.
+      if (/[a-z][A-Z]/.test(word)) return word;
+      if (SMALL_WORDS.has(bare) && !edge && !word.endsWith('/')) return word.toLowerCase();
+      return word
+        .toLowerCase()
+        .split(/([-/])/)
+        .map((part) => (part === '-' || part === '/' ? part : cap(part)))
+        .join('');
+    })
+    .join(' ')
+    .replace(/W\/(?= )/g, 'w/');
+}
 
 function money(value?: string | null, currency = 'USD'): string {
   if (value === undefined || value === null || value === '') return '';
@@ -83,6 +117,11 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
   return all
     .filter((s) => s._id && s.name && !s.hidden && s.onlineBooking?.enabled !== false && s.urls?.bookingPage)
     .map((s) => {
+      const name = titleCase(s.name!);
+      const category = titleCase(s.category?.name || 'Other Services');
+      const mainImage = s.media?.mainMedia?.image;
+      const own = isOwnUpload(mainImage);
+      const photo = fallbackPhoto(name, category, s._id as string);
       const { price, deposit } = formatPrice(s.payment ?? {});
       const constraints = s.schedule?.availabilityConstraints;
       const minutes = constraints?.durations?.[0]?.minutes ?? constraints?.sessionDurations?.[0];
@@ -90,15 +129,16 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
         id: s._id as string,
         slug: s.mainSlug?.name ?? s.urls!.bookingPage!.split('/').pop() ?? '',
         amount: priceAmount(s.payment ?? {}),
-        name: s.name!.trim(),
-        category: s.category?.name?.trim() || 'Other Services',
+        name,
+        category,
         categoryOrder: s.category?.sortOrder ?? Number.MAX_SAFE_INTEGER,
         description: (s.description ?? '').trim(),
         tagline: (s.tagLine ?? '').trim(),
         duration: formatDuration(minutes),
         price,
         deposit,
-        image: wixImageUrl(s.media?.mainMedia?.image, 160, 160),
+        image: own ? (wixImageUrl(mainImage, 200, 200) as string) : serviceThumb(photo),
+        imageLarge: own ? (wixImageUrl(mainImage, 900, 700) as string) : servicePhoto(photo),
         detailsUrl: s.urls?.servicePage ?? s.urls!.bookingPage!,
         bookingUrl: s.urls!.bookingPage!,
       };
