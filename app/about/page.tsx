@@ -3,7 +3,7 @@ import { SiteShell } from '@/app/site-shell';
 import { PageBanner } from '@/app/components/sections';
 import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
-import { photos, photoUrl } from '@/app/content/photos';
+import { photoMd, photoUrl, photos } from '@/app/content/photos';
 import { about } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
@@ -44,7 +44,7 @@ export default function Page() {
           <div className="row align-items-center justify-content-center">
             <div className="col-lg-6">
               <div className="about-image-two rmb-75 wow fadeInLeft delay-0-2s">
-                <img src={photoUrl(photos.jae)} alt={photos.jae.alt} /> <span className="big-letter">j</span>
+                <img src={photoMd(photos.jae)} alt={photos.jae.alt} /> <span className="big-letter">j</span>
               </div>
             </div>
             <div className="col-xl-5 col-lg-6 align-self-center">

@@ -112,6 +112,8 @@ export const photos: Record<string, Photo> = {
 };
 
 export const photoUrl = (p: Photo) => `/images/jae/${p.file}.jpg`;
+/** 720px-wide copy for cards, tiles and side images; use photoUrl for the hero and the zoom view. */
+export const photoMd = (p: Photo) => `/images/jae/md/${p.file}.jpg`;
 
 /** Photos for the gallery filter, in display order. */
 export const galleryPhotos = [

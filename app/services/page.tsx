@@ -10,7 +10,7 @@ import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
 import { bookingFaqs, guidance, notice, policy } from '@/app/content/booking';
 import { about } from '@/app/content/home';
-import { photos, photoUrl } from '@/app/content/photos';
+import { photoMd, photos } from '@/app/content/photos';
 import { site } from '@/app/site-data';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function Page() {
           <div className="row align-items-center justify-content-around">
             <div className="col-lg-6">
               <div className="about-left-image rmb-55 wow fadeInUp delay-0-2s">
-                <img src={photoUrl(photos.locsTop)} alt={photos.locsTop.alt} />
+                <img src={photoMd(photos.locsTop)} alt={photos.locsTop.alt} />
               </div>
             </div>
             <div className="col-xl-5 col-lg-6">
@@ -43,7 +43,7 @@ export default function Page() {
                 <p>{about.intro[0]}</p>
                 <p>{notice}</p>
                 <div className="our-author mt-20">
-                  <img src={photoUrl(photos.jae)} alt={photos.jae.alt} />
+                  <img src={photoMd(photos.jae)} alt={photos.jae.alt} />
                   <div className="content">
                     <h4>{site.owner}</h4>
                     <span>Loctician &amp; natural hair stylist</span>
@@ -83,7 +83,7 @@ export default function Page() {
             </div>
             <div className="col-lg-7">
               <div className="morder-toots-image wow fadeInRight delay-0-2s">
-                <img src={photoUrl(photos.feedIn)} alt={photos.feedIn.alt} />
+                <img src={photoMd(photos.feedIn)} alt={photos.feedIn.alt} />
               </div>
             </div>
           </div>

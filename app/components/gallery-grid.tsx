@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { galleryIds, wixMedia } from '@/app/gallery-data';
-import { galleryPhotos, photoUrl } from '@/app/content/photos';
+import { galleryPhotos, photoMd, photoUrl } from '@/app/content/photos';
 
 type Filter = 'all' | 'locs' | 'twists' | 'braids' | 'curls' | 'kids';
 
@@ -31,7 +31,7 @@ export function GalleryGrid() {
 
   const local = galleryPhotos
     .filter((p) => filter === 'all' || p.tags.includes(filter))
-    .map((p) => ({ key: p.file, full: photoUrl(p), thumb: photoUrl(p), alt: p.alt }));
+    .map((p) => ({ key: p.file, full: photoUrl(p), thumb: photoMd(p), alt: p.alt }));
   const wix =
     filter === 'all'
       ? galleryIds.map((id, i) => ({
@@ -63,7 +63,7 @@ export function GalleryGrid() {
         {items.map((item, i) => (
           <div key={item.key} className={MOSAIC[i % MOSAIC.length]}>
             <div className="gallery-item style-two">
-              <img src={item.thumb} alt={item.alt} loading="lazy" />{' '}
+              <img src={item.thumb} alt={item.alt} loading="lazy" decoding="async" />{' '}
               <div className="gallery-content">
                 <a href={item.full} className="icon" data-lightbox="image" aria-label="View larger"></a>
               </div>

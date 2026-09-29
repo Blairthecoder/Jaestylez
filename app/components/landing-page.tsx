@@ -4,7 +4,7 @@ import { Faq, NamedServices } from '@/app/components/landing-client';
 import { PageBanner } from '@/app/components/sections';
 import { Testimonials } from '@/app/components/reviews-ui';
 import { landingMeta } from '@/app/content/landing-meta';
-import { photoUrl } from '@/app/content/photos';
+import { photoMd } from '@/app/content/photos';
 import { allReviews, reviewsFor } from '@/app/content/reviews';
 import { site, styleLinks } from '@/app/site-data';
 import landing from '@/app/content/landing-pages.json';
@@ -263,7 +263,7 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                   </div>
                 </div>
                 <div className="image my-45 wow fadeInUp delay-0-2s">
-                  <img src={photoUrl(meta.photo)} alt={meta.photo.alt} />
+                  <img src={photoMd(meta.photo)} alt={meta.photo.alt} decoding="async" />
                 </div>
 
                 {glance.length > 0 && (

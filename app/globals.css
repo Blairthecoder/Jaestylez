@@ -1034,3 +1034,103 @@ html {
   font-size: 15px;
   line-height: 1.5;
 }
+
+/* ---- Accessibility and touch polish ---- */
+
+/* Gold text on white/cream is too pale to read comfortably; use a deeper gold for text (buttons keep the brand gold) */
+.price-item .price,
+.booking-link,
+.landing-eyebrow,
+.landing-card-sub,
+.related-list a,
+.list-style-one a {
+  color: #9a6408;
+}
+.jae-hero .landing-eyebrow,
+.bg-black .landing-eyebrow {
+  color: #e9b866;
+}
+
+/* Keyboard focus is always visible */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid #252525;
+  outline-offset: 2px;
+}
+.bg-black a:focus-visible,
+.bg-yellow a:focus-visible,
+.bg-yellow button:focus-visible,
+.widget-form a:focus-visible,
+.widget-form button:focus-visible {
+  outline-color: #fff;
+}
+
+/* Comfortable tap targets (44px) */
+.qt-cal-day,
+.qt-time,
+.booking-chips button,
+.qt-cal-head button,
+.booking-tabs .nav-link,
+.navbar-toggle {
+  min-height: 44px;
+}
+.qt-cal-head button {
+  min-width: 44px;
+}
+.footer-widget li a,
+.footer-widget .about-widget-content a {
+  display: inline-block;
+  padding: 4px 0;
+}
+
+/* Inputs at 16px so iPhones do not zoom in when a field is tapped */
+input.form-control,
+select.form-control,
+textarea.form-control,
+.footer-newsletter input {
+  font-size: 16px;
+}
+
+/* Long unbroken strings (emails, URLs) never push the page sideways */
+.container,
+.footer-widget,
+.contact-info-item .content {
+  overflow-wrap: anywhere;
+}
+
+/* Skip the entrance animations for people who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Small link targets: give icons and inline links at least 24px of hit area */
+.social-style-one a {
+  display: inline-block;
+  min-width: 28px;
+  padding: 4px 6px;
+  text-align: center;
+}
+.header-top .top-left a {
+  display: inline-block;
+  padding: 5px 0;
+}
+.footer-widget li a {
+  padding: 7px 0;
+}
+
+.main-header .top-left li a,
+.copyright-area a {
+  display: inline-block !important;
+  padding: 6px 0;
+}
+.slider-btns button {
+  min-width: 44px;
+  min-height: 44px;
+}

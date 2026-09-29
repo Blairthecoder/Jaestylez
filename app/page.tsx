@@ -7,7 +7,7 @@ import { LatestPosts } from '@/app/components/blog-client';
 import { Faq } from '@/app/components/landing-client';
 import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
-import { galleryPhotos, photos, photoUrl } from '@/app/content/photos';
+import { galleryPhotos, photoMd, photoUrl, photos } from '@/app/content/photos';
 import { about, faqs, hero } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
@@ -51,7 +51,7 @@ export default function Page() {
               <div className="col-xl-4">
                 <div
                   className="feature-image wow fadeInLeft delay-0-2s"
-                  style={{ backgroundImage: `url(${photoUrl(photos.locsTop)})` }}
+                  style={{ backgroundImage: `url(${photoMd(photos.locsTop)})` }}
                 ></div>
               </div>
               <div className="col-xl-8 align-self-center">
@@ -76,12 +76,12 @@ export default function Page() {
         <div className="row">
           <div className="col-xl-3 col-sm-6">
             <div className="about-left-image wow fadeInUp delay-0-2s">
-              <img src={photoUrl(photos.twists)} alt={photos.twists.alt} />
+              <img src={photoMd(photos.twists)} alt={photos.twists.alt} />
             </div>
           </div>
           <div className="col-xl-3 col-sm-6 order-xl-2">
             <div className="about-right-image wow fadeInUp delay-0-6s">
-              <img src={photoUrl(photos.locsPonytail)} alt={photos.locsPonytail.alt} />
+              <img src={photoMd(photos.locsPonytail)} alt={photos.locsPonytail.alt} />
             </div>
           </div>
           <div className="col-xl-6 align-self-center">
@@ -95,7 +95,7 @@ export default function Page() {
               </div>
               <p>{about.intro[0]}</p>
               <div className="our-author mt-20">
-                <img src={photoUrl(photos.jae)} alt={photos.jae.alt} />{' '}
+                <img src={photoMd(photos.jae)} alt={photos.jae.alt} />{' '}
                 <div className="content">
                   <h4>{site.owner}</h4>
                   <span>Loctician &amp; natural hair stylist</span>
@@ -185,7 +185,7 @@ export default function Page() {
             {galleryPhotos.slice(0, 4).map((photo, i) => (
               <div key={photo.file} className="col-xl-3 col-sm-6">
                 <div className={`gallery-item wow fadeInUp delay-0-${(i % 4) * 2 + 2}s`}>
-                  <img src={photoUrl(photo)} alt={photo.alt} loading="lazy" />{' '}
+                  <img src={photoMd(photo)} alt={photo.alt} loading="lazy" decoding="async" />{' '}
                   <div className="gallery-content">
                     <h3>{galleryLabel(photo.tags)}</h3>
                     <p>Jae Stylez · Stafford, TX</p>{' '}
@@ -208,12 +208,12 @@ export default function Page() {
           <div className="contact-form-wrap">
             <div
               className="image wow fadeInUp delay-0-2s"
-              style={{ backgroundImage: `url(${photoUrl(photos.boxBraids)})` }}
+              style={{ backgroundImage: `url(${photoMd(photos.boxBraids)})` }}
             ></div>
             <AppointmentForm className="wow fadeInUp delay-0-4s" backgroundImage="/assets/images/contact/contact-bg.png" />
             <div
               className="image wow fadeInUp delay-0-6s"
-              style={{ backgroundImage: `url(${photoUrl(photos.feedIn)})` }}
+              style={{ backgroundImage: `url(${photoMd(photos.feedIn)})` }}
             ></div>
           </div>
         </div>

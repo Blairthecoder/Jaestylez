@@ -122,4 +122,18 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Exported ${routes.length} pages and a 404 page to dist-netlify.`);
+const hidden = new Set(['/booking-confirmed']);
+const urls = routes.filter((r) => !hidden.has(r));
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((r) => `  <url><loc>${origin}${r === '/' ? '/' : r + '/'}</loc></url>`).join('\n')}
+</urlset>
+`;
+await writeFile(path.join(outputDir, 'sitemap.xml'), sitemap, 'utf8');
+await writeFile(
+  path.join(outputDir, 'robots.txt'),
+  `User-agent: *\nAllow: /\nDisallow: /booking-confirmed/\n\nSitemap: ${origin}/sitemap.xml\n`,
+  'utf8',
+);
+
+console.log(`Exported ${routes.length} pages, a 404 page, robots.txt and sitemap.xml to dist-netlify.`);
