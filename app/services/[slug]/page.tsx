@@ -1,32 +1,31 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArrowDownRight, ArrowLeft, Check, MapPin } from 'lucide-react';
-import { getService, services } from '../../service-data';
-import { MobileBookingBar, SiteFooter, SiteHeader } from '../../site-shell';
+import { ServicePage } from '@/app/components/service-page';
+import { serviceCopy } from '@/app/content/service-copy';
+import { getService, getServices } from '@/app/lib/wix-server';
 
-export function generateStaticParams() { return services.map(service => ({ slug: service.slug })); }
+type Params = { slug: string };
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const service = getService(params.slug);
+// One static page per bookable service, generated from the live Wix Bookings list at build time.
+export async function generateStaticParams() {
+  return (await getServices()).map((s) => ({ slug: s.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<Params> | Params }): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await getService(slug);
   if (!service) return {};
-  const title = `${service.title} in Houston | Rashad the Helper`;
+  const copy = serviceCopy(service);
   return {
-    title,
-    description: service.summary,
-    openGraph: { title, description: service.summary, url: `/services/${service.slug}`, images: [] },
-    twitter: { title, description: service.summary, images: [] },
+    title: `${service.name} in Stafford, TX`,
+    description: copy.description,
+    alternates: { canonical: `/services/${service.slug}/` },
   };
 }
 
-export default function ServiceDetail({ params }: { params: { slug: string } }) {
-  const service = getService(params.slug);
+export default async function Page({ params }: { params: Promise<Params> | Params }) {
+  const { slug } = await params;
+  const [service, all] = await Promise.all([getService(slug), getServices()]);
   if (!service) notFound();
-  return <main><SiteHeader />
-    <section className="detail-hero"><div><a className="back-link" href="/services"><ArrowLeft size={16} /> All services</a><p className="eyebrow">Service {service.number} · Houston, TX</p><h1>{service.title}</h1><p>{service.intro}</p><a className="button button-primary" href="/#booking">Request This Service <ArrowDownRight size={18} /></a></div><aside><span>Starting rate</span><strong><small>$</small>50</strong><p>per hour · truck & equipment available</p><hr /><p><MapPin size={15} /> Houston & nearby communities</p></aside></section>
-    <section className="detail-content section"><div><p className="eyebrow">What is included</p><h2>Useful Help, Clear Scope</h2></div><div className="check-panel">{service.included.map(item => <p key={item}><Check size={17} />{item}</p>)}</div></section>
-    <section className="prep-section"><div><p className="eyebrow">Before Rashad arrives</p><h2>A Little Prep Keeps Move Day Moving</h2></div><ol>{service.prepare.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></li>)}</ol></section>
-    <section className="best-for section"><div><p className="eyebrow">A good fit for</p><h2>{service.shortTitle}</h2></div><div>{service.bestFor.map(item => <span key={item}>{item}</span>)}</div></section>
-    <section className="simple-cta"><div><p className="eyebrow">Have the details?</p><h2>Let’s Talk About Your Move</h2></div><div><p>Include the date, ZIP codes, stairs, truck size, and anything unusually heavy.</p><a className="button button-primary" href="/#booking">Check Availability <ArrowDownRight size={18} /></a></div></section>
-    <SiteFooter /><MobileBookingBar />
-  </main>;
+  return <ServicePage service={service} all={all} />;
 }

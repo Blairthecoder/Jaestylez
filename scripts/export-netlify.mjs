@@ -10,14 +10,48 @@ const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://rashadthehelper.netl
 
 const routes = [
   '/',
+  '/about',
+  '/hair-styles',
   '/services',
-  '/service-areas',
-  '/services/truck-loading',
-  '/services/unloading',
-  '/services/heavy-lifting',
-  '/services/furniture-assembly',
-  '/services/rental-truck-driving',
+  '/pricing',
+  '/service-details',
+  '/two-strand-twists',
+  '/instant-locs',
+  '/loc-retwist-and-palm-roll',
+  '/starter-locs',
+  '/silk-press',
+  '/interlocking-loc-maintenance',
+  '/goddess-locs',
+  '/micro-locs',
+  '/monday-appointments',
+  '/shop',
+  '/product-details',
+  '/blog',
+  '/blog-details',
+  '/contact',
+  '/book',
+  '/booking-confirmed',
 ];
+
+// One static page per bookable service, straight from Wix Bookings.
+async function fetchServiceSlugs() {
+  const { createClient, OAuthStrategy } = await import('@wix/sdk');
+  const { services } = await import('@wix/bookings');
+  const clientId = process.env.NEXT_PUBLIC_WIX_CLIENT_ID || '91133d63-5037-41ae-b7fd-f830b7719346';
+  const client = createClient({ modules: { services }, auth: OAuthStrategy({ clientId }) });
+  let result = await client.services.queryServices().limit(100).find();
+  const all = [...result.items];
+  while (result.hasNext()) {
+    result = await result.next();
+    all.push(...result.items);
+  }
+  return all
+    .filter((s) => s._id && s.name && !s.hidden && s.onlineBooking?.enabled !== false && s.urls?.bookingPage)
+    .map((s) => s.mainSlug?.name ?? s.urls.bookingPage.split('/').pop());
+}
+
+const serviceSlugs = await fetchServiceSlugs();
+routes.push(...serviceSlugs.map((slug) => `/services/${slug}`));
 
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
@@ -31,6 +65,12 @@ const mimeTypes = new Map([
   ['.png', 'image/png'],
   ['.svg', 'image/svg+xml'],
   ['.woff2', 'font/woff2'],
+  ['.jpg', 'image/jpeg'],
+  ['.jpeg', 'image/jpeg'],
+  ['.webp', 'image/webp'],
+  ['.gif', 'image/gif'],
+  ['.woff', 'font/woff'],
+  ['.ttf', 'font/ttf'],
 ]);
 
 const env = {
@@ -102,4 +142,18 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Exported ${routes.length} pages and a 404 page to dist-netlify.`);
+const hidden = new Set(['/booking-confirmed', '/service-details']);
+const urls = routes.filter((r) => !hidden.has(r));
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((r) => `  <url><loc>${origin}${r === '/' ? '/' : r + '/'}</loc></url>`).join('\n')}
+</urlset>
+`;
+await writeFile(path.join(outputDir, 'sitemap.xml'), sitemap, 'utf8');
+await writeFile(
+  path.join(outputDir, 'robots.txt'),
+  `User-agent: *\nAllow: /\nDisallow: /booking-confirmed/\n\nSitemap: ${origin}/sitemap.xml\n`,
+  'utf8',
+);
+
+console.log(`Exported ${routes.length} pages, a 404 page, robots.txt and sitemap.xml to dist-netlify.`);
