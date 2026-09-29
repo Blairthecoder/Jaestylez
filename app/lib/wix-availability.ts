@@ -22,6 +22,10 @@ export type TimeSlot = {
 // booking form needs to accept the hand-off.
 const STAFF_RESOURCE_TYPE_ID = '1cd44cf8-756f-41c3-bd90-3e2ffcaf1155';
 
+// Jae is the only bookable stylist ("(Houston Area) Jae Stylez" in Wix), so every slot is booked with her even if
+// Wix omits the resource for a slot.
+export const STYLIST = { id: 'e04992e0-0bad-4727-98fb-2cbb7d8fd3fd', name: 'Jae Stylez' };
+
 /** Open, bookable slots between two local dates (inclusive), earliest first. */
 export async function fetchTimeSlots(serviceId: string, fromDate: string, toDate: string): Promise<TimeSlot[]> {
   const response = await wix().availabilityTimeSlots.listAvailabilityTimeSlots({
@@ -43,8 +47,8 @@ export async function fetchTimeSlots(serviceId: string, fromDate: string, toDate
       locationId: s.location?._id ?? undefined,
       locationName: s.location?.name ?? undefined,
       locationAddress: s.location?.formattedAddress ?? undefined,
-      resourceId: s.availableResources?.[0]?.resources?.[0]?._id ?? undefined,
-      resourceName: s.availableResources?.[0]?.resources?.[0]?.name ?? undefined,
+      resourceId: s.availableResources?.[0]?.resources?.[0]?._id ?? STYLIST.id,
+      resourceName: s.availableResources?.[0]?.resources?.[0]?.name ?? STYLIST.name,
     }));
 }
 

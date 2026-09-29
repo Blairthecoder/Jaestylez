@@ -7,6 +7,7 @@ import {
   fetchTimeSlots,
   formatTime,
   SALON_TIME_ZONE,
+  STYLIST,
   type TimeSlot,
 } from '@/app/lib/wix-availability';
 import { site } from '@/app/site-data';
@@ -305,6 +306,9 @@ export function BookingFlow() {
                     <li>
                       <span>When</span>{' '}
                       {slot ? `${longDate(slot.start.slice(0, 10))}, ${formatTime(slot.start)}` : 'Choose a day and time'}
+                    </li>
+                    <li>
+                      <span>Stylist</span> {STYLIST.name}
                     </li>
                     <li>
                       <span>Where</span> {slot?.locationAddress ?? site.address}
