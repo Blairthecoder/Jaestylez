@@ -633,3 +633,77 @@ html {
   margin-top: 5px;
   color: #d69838;
 }
+
+/* Reviews */
+.review-card {
+  height: 100%;
+  margin: 0;
+  padding: 26px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+.review-card-light {
+  color: #252525;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-top: 4px solid #d69838;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+.review-service {
+  display: block;
+  margin-top: 2px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  color: #8a8a8a;
+}
+.review-reply {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(128, 128, 128, 0.3);
+  font-size: 14px;
+  text-align: left;
+  opacity: 0.85;
+}
+.landing-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+.glance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.glance-table th,
+.glance-table td {
+  padding: 12px 16px;
+  border: 1px solid #e8e8e8;
+  vertical-align: top;
+  font-size: 15px;
+  text-align: left;
+}
+.glance-table th {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  background: #faf6ef;
+}
+.related-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.related-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+.related-list a {
+  font-family: 'Oswald', sans-serif;
+  font-size: 19px;
+  color: #d69838;
+}
+.related-list span {
+  display: block;
+  font-size: 15px;
+}

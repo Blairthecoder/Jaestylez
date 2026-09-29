@@ -10,7 +10,74 @@ import {
   type BlogPost,
   type RichNode,
 } from '@/app/lib/wix-blog';
+import { ReviewCards } from '@/app/components/reviews-ui';
+import { reviewsFor } from '@/app/content/reviews';
 import { site } from '@/app/site-data';
+
+const RELATED: { match: RegExp; links: { label: string; href: string }[]; topics: string[] }[] = [
+  {
+    match: /palm-roll|interlock/,
+    links: [
+      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
+      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
+    ],
+    topics: ['retwist', 'interlocking', 'maintenance'],
+  },
+  {
+    match: /retwist/,
+    links: [
+      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
+      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
+    ],
+    topics: ['retwist', 'maintenance'],
+  },
+  {
+    match: /starter-loc/,
+    links: [
+      { label: 'Starter Locs', href: '/starter-locs' },
+      { label: 'Instant Locs', href: '/instant-locs' },
+    ],
+    topics: ['starter', 'locs', 'first-visit'],
+  },
+  {
+    match: /silk-press/,
+    links: [
+      { label: 'Silk Press', href: '/silk-press' },
+      { label: 'Lavender Rose Hydration Mist', href: '/product-details?slug=lavender-rose-water' },
+    ],
+    topics: ['silk', 'styles'],
+  },
+  {
+    match: /protective|natural-hairstyles/,
+    links: [
+      { label: 'Two-Strand Twists', href: '/two-strand-twists' },
+      { label: 'Goddess Locs', href: '/goddess-locs' },
+      { label: 'Hair Styles Gallery', href: '/hair-styles' },
+    ],
+    topics: ['twists', 'goddess', 'styles'],
+  },
+  {
+    match: /humidity/,
+    links: [
+      { label: 'Silk Press', href: '/silk-press' },
+      { label: 'The Lox Box', href: '/shop?category=The%20Lox%20Box' },
+    ],
+    topics: ['silk', 'shop', 'healthy'],
+  },
+  {
+    match: /./,
+    links: [
+      { label: 'Book Online', href: '/services#book' },
+      { label: 'About Jae', href: '/about' },
+    ],
+    topics: ['about', 'natural', 'first-visit', 'booking'],
+  },
+];
+
+function relatedFor(post: BlogPost) {
+  const key = `${post.slug} ${post.title}`.toLowerCase();
+  return RELATED.find((r) => r.match.test(key)) ?? RELATED[RELATED.length - 1];
+}
 
 const postHref = (post: BlogPost) => `/blog-details?slug=${encodeURIComponent(post.slug)}`;
 
@@ -339,7 +406,15 @@ export function BlogPostView() {
                 <h2>{post.title}</h2>
                 <div className="blog-body">{renderNodes(nodes)}</div>
                 <div className="mt-40">
-                  <a className="theme-btn" href="/services#book">
+                  <h5 className="mb-10">Related services</h5>
+                  <ul className="list-style-one landing-list">
+                    {relatedFor(post).links.map((link) => (
+                      <li key={link.href}>
+                        <a href={link.href}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                  <a className="theme-btn mt-15" href="/services#book">
                     book an appointment <i className="far fa-long-arrow-right"></i>
                   </a>
                 </div>
@@ -351,6 +426,7 @@ export function BlogPostView() {
           </div>
         </div>
       </div>
+      {post && <ReviewCards reviews={reviewsFor(relatedFor(post).topics, 1)} title="A Client Review" />}
     </section>
   );
 }

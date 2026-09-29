@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { NetlifyForm } from '@/app/components/forms';
 import { PageBanner } from '@/app/components/sections';
+import { ReviewCards } from '@/app/components/reviews-ui';
+import { reviewsFor } from '@/app/content/reviews';
 import { contact } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
@@ -103,6 +105,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <ReviewCards reviews={reviewsFor(['contact', 'booking'], 2)} title="Before You Reach Out" />
 
       <div className="contact-page-map">
         <iframe

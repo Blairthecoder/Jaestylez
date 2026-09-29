@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { Faq, NamedServices } from '@/app/components/landing-client';
+import { ReviewCards } from '@/app/components/reviews-ui';
+import { landingMeta } from '@/app/content/landing-meta';
+import { photoUrl } from '@/app/content/photos';
+import { reviewsFor } from '@/app/content/reviews';
 import { site } from '@/app/site-data';
 import landing from '@/app/content/landing-pages.json';
 
@@ -144,8 +148,24 @@ function renderBlocks(blocks: Block[], key: string) {
   return out;
 }
 
+const LASTS = /^(How long it lasts|How long it holds|Wear time|Timeline to mature)\s*:\s*(.*)$/i;
+const BEST = /^Best for\s*:\s*(.*)$/i;
+
+// "At a glance" rows come straight from the page's own comparison cards (how long it lasts, who it is for).
+function buildGlance(blocks: Block[]) {
+  const rows: { title: string; lasts: string; best: string }[] = [];
+  for (const b of blocks) {
+    if (b.t !== 'card') continue;
+    const lasts = b.items.map((i) => i.match(LASTS)?.[2]).find(Boolean) ?? '';
+    const best = b.items.map((i) => i.match(BEST)?.[1]).find(Boolean) ?? '';
+    if (lasts || best) rows.push({ title: b.title, lasts, best });
+  }
+  return rows;
+}
+
 export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?: string }) {
   const page = pages[slug];
+  const meta = landingMeta[slug];
   const blocks = page.blocks;
   const eyebrow = blocks[0]?.t === 'eyebrow' ? (blocks[0] as { text: string }).text : '';
   const h1 = (blocks.find((b) => b.t === 'h1') as { text: string }).text;
@@ -157,9 +177,75 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
   const rest = blocks.slice(heroEnd < 0 ? blocks.length : heroEnd);
   const sections = splitSections(rest);
   const lastBlock = blocks[blocks.length - 1];
+  const glance = buildGlance(blocks);
+  const reviews = reviewsFor(meta.topics, 2, ['kevin-joseph']);
+  const faq = blocks.find((b) => b.t === 'faq') as Extract<Block, { t: 'faq' }> | undefined;
+  const serviceName = h1.replace(/ in Stafford, TX$/, '');
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: serviceName,
+        description: page.seoDescription,
+        provider: {
+          '@type': 'HairSalon',
+          name: site.name,
+          telephone: site.phone,
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: '630 Murphy Rd Ste 211',
+            addressLocality: 'Stafford',
+            addressRegion: 'TX',
+            postalCode: '77477',
+            addressCountry: 'US',
+          },
+        },
+        areaServed: ['Stafford', 'Sugar Land', 'Missouri City', 'Richmond', 'Houston'].map((name) => ({
+          '@type': 'City',
+          name,
+        })),
+      },
+      ...(faq
+        ? [
+            {
+              '@type': 'FAQPage',
+              mainEntity: faq.items.map((item) => ({
+                '@type': 'Question',
+                name: item.q,
+                acceptedAnswer: { '@type': 'Answer', text: item.a },
+              })),
+            },
+          ]
+        : []),
+    ],
+  };
+
+  const closing = sections.length > 1 ? sections[sections.length - 1] : null;
+  const main = closing ? sections.slice(0, -1) : sections;
+  const renderSection = (section: Section, i: number) => (
+    <section key={i} className={`landing-section py-80${i % 2 ? ' bg-lighter-two' : ''}`}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-xl-10">
+            {section.eyebrow && <span className="landing-eyebrow">{section.eyebrow}</span>}
+            {section.title &&
+              (section.level === 'h3' ? (
+                <h3 className="landing-heading mb-20">{section.title}</h3>
+              ) : (
+                <h2 className="landing-heading mb-20">{section.title}</h2>
+              ))}
+            {renderBlocks(section.blocks, `s${i}`)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 
   return (
     <SiteShell header="three" footerClassName="">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section
         className="page-banner text-white py-190 rpy-130"
         style={{ backgroundImage: 'url(/assets/images/banner/banner.jpg)' }}
@@ -175,7 +261,7 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                 <li className="breadcrumb-item">
                   <a href="/services">{crumb}</a>
                 </li>
-                <li className="breadcrumb-item active">{h1.replace(/ in Stafford, TX$/, '')}</li>
+                <li className="breadcrumb-item active">{serviceName}</li>
               </ol>
             </nav>
           </div>
@@ -184,8 +270,8 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
 
       <section className="landing-intro pt-100 rpt-70 pb-70">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-9 col-lg-10">
+          <div className="row align-items-center">
+            <div className="col-lg-7">
               {eyebrow && <span className="landing-eyebrow">{eyebrow}</span>}
               {heroParas[0] && <p className="landing-lead">{heroParas[0].text}</p>}
               {heroParas.slice(1).map((p) => (
@@ -199,6 +285,11 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                 ))}
               </div>
             </div>
+            <div className="col-lg-5">
+              <div className="landing-photo rmt-55">
+                <img src={photoUrl(meta.photo)} alt={meta.photo.alt} />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -208,33 +299,76 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
           <div className="container text-center">
             <p className="landing-quote-text">“{page.testimonial.quote}”</p>
             <div className="landing-quote-author">
-              <span className="stars" aria-label="5 out of 5 stars">
+              <span className="stars" role="img" aria-label="5 out of 5 stars">
                 ★★★★★
               </span>{' '}
-              {page.testimonial.author}
+              {page.testimonial.author} · Google review
             </div>
           </div>
         </section>
       )}
 
-      {sections.map((section, i) => (
-        <section key={i} className={`landing-section py-80${i % 2 ? ' bg-lighter-two' : ''}`}>
+      {glance.length > 0 && (
+        <section className="landing-glance bg-lighter-two py-80">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-xl-10">
-                {section.eyebrow && <span className="landing-eyebrow">{section.eyebrow}</span>}
-                {section.title &&
-                  (section.level === 'h3' ? (
-                    <h3 className="landing-heading mb-20">{section.title}</h3>
-                  ) : (
-                    <h2 className="landing-heading mb-20">{section.title}</h2>
-                  ))}
-                {renderBlocks(section.blocks, `s${i}`)}
+                <span className="landing-eyebrow">QUICK OVERVIEW</span>
+                <h2 className="landing-heading mb-20">{serviceName} at a Glance</h2>
+                <div className="table-responsive">
+                  <table className="glance-table">
+                    <thead>
+                      <tr>
+                        <th>Option</th>
+                        <th>How long it lasts</th>
+                        <th>Best for</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {glance.map((row) => (
+                        <tr key={row.title}>
+                          <th scope="row">{row.title}</th>
+                          <td>{row.lasts || '—'}</td>
+                          <td>{row.best || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-15">
+                  Location: {site.address}. A non-refundable deposit reserves your time and is applied to your service
+                  total.
+                </p>
               </div>
             </div>
           </div>
         </section>
-      ))}
+      )}
+
+      {main.map(renderSection)}
+
+      <ReviewCards reviews={reviews} title="Clients on Their Visits" />
+
+      <section className="landing-related bg-lighter-two py-80">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-10">
+              <span className="landing-eyebrow">KEEP READING</span>
+              <h2 className="landing-heading mb-20">Related Services and Guides</h2>
+              <ul className="related-list">
+                {meta.related.map((link) => (
+                  <li key={link.href + link.label}>
+                    <a href={link.href}>{link.label}</a>
+                    <span>{link.why}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {closing && renderSection(closing, main.length)}
 
       {lastBlock.t !== 'cta' && (
         <section className="landing-cta bg-yellow text-white py-60">

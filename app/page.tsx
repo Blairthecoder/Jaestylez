@@ -4,9 +4,12 @@ import { NamedServices } from '@/app/components/landing-client';
 import { CategoryCards } from '@/app/components/live-services';
 import { FeaturedProducts } from '@/app/components/home-client';
 import { LatestPosts } from '@/app/components/blog-client';
-import { AppPromo, FaqSection, ReviewsBand, ServiceAreaSection } from '@/app/components/sections';
+import { AppPromo, FaqSection, ServiceAreaSection } from '@/app/components/sections';
+import { ReviewsBand } from '@/app/components/reviews-ui';
+import { reviewsFor } from '@/app/content/reviews';
+import { galleryPhotos, photos, photoUrl } from '@/app/content/photos';
 import { hero, paths, popularServices } from '@/app/content/home';
-import { galleryIds, wixMedia } from '@/app/gallery-data';
+
 
 export const metadata: Metadata = {
   title: { absolute: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez' },
@@ -19,7 +22,7 @@ export default function Page() {
     <SiteShell header="one" footerClassName="pb-30">
       <section
         className="hero-section jae-hero py-250"
-        style={{ backgroundImage: `url(${wixMedia(hero.image, 1600, 900)})` }}
+        style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}
       >
         <div className="container">
           <div className="row align-items-center">
@@ -49,7 +52,7 @@ export default function Page() {
         <div className="hero-bg-shapes"></div>
       </section>
 
-      <ReviewsBand />
+      <ReviewsBand reviews={reviewsFor(['about', 'booking', 'locs', 'maintenance', 'first-visit', 'twists'], 6, ['kevin-joseph'])} />
 
       <section className="find-service py-100 rpy-70">
         <div className="container">
@@ -131,10 +134,10 @@ export default function Page() {
             </a>
           </div>
           <div className="row">
-            {galleryIds.slice(0, 8).map((id, i) => (
-              <div key={id} className="col-lg-3 col-6 mb-30">
-                <a className="gallery-tile" href={wixMedia(id, 1400)} data-lightbox="image">
-                  <img src={wixMedia(id, 480, 600)} alt={`Hair style by Jae Stylez, photo ${i + 1}`} loading="lazy" />
+            {galleryPhotos.slice(0, 8).map((photo) => (
+              <div key={photo.file} className="col-lg-3 col-6 mb-30">
+                <a className="gallery-tile" href={photoUrl(photo)} data-lightbox="image">
+                  <img src={photoUrl(photo)} alt={photo.alt} loading="lazy" />
                 </a>
               </div>
             ))}

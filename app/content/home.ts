@@ -9,21 +9,6 @@ export const hero = {
   appUrl: 'https://apps.wix.com/place-invites/join-lp/e6ab0e33-83b7-4299-8c21-d99a2395af06?ref=pre_banner_bottom',
 };
 
-export const reviews = [
-  {
-    name: 'Maisie Lawrence',
-    text: 'I absolutely love my hair! She was prompt and on time, very clean and professional, and so easy to talk to. She made the entire experience comfortable and enjoyable. I highly recommend her and will definitely be booking again!',
-  },
-  {
-    name: 'Max Waobikeze',
-    text: 'Jae always does it right. Been going to her for 4 years now. Five star service all around and extremely reliable. No matter what style you need she will get it done for you!',
-  },
-  {
-    name: 'Jessika Woodard',
-    text: "Jae was extremely professional, gentle, and efficient, making the entire process comfortable from start to finish. My hair feels light, looks flawless, and the results have held up wonderfully. If you need reliable, high-quality crochet loc maintenance, I couldn't recommend this place enough",
-  },
-];
-
 export const paths = {
   eyebrow: 'WHAT BROUGHT YOU HERE',
   title: 'Find the Right Service for Your Hair',

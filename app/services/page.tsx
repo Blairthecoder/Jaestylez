@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { BookingServices } from '@/app/components/booking-services';
 import { FaqSection, PageBanner, ServiceAreaSection } from '@/app/components/sections';
+import { ReviewCards } from '@/app/components/reviews-ui';
+import { reviewsFor } from '@/app/content/reviews';
 import { bookingFaqs, gettingHere, guidance, notice, policy } from '@/app/content/booking';
 
 export const metadata: Metadata = {
@@ -78,6 +80,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <ReviewCards reviews={reviewsFor(['booking', 'first-visit', 'maintenance'], 3)} title="Clients on Booking With Jae" />
 
       <FaqSection items={bookingFaqs} eyebrow="BOOKING FAQ" title="Straight Answers Before You Book" />
 

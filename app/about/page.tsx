@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { CategoryCards } from '@/app/components/live-services';
-import { PageBanner, ReviewsBand } from '@/app/components/sections';
+import { PageBanner } from '@/app/components/sections';
+import { ReviewCards } from '@/app/components/reviews-ui';
+import { reviewsFor } from '@/app/content/reviews';
+import { photos, photoUrl } from '@/app/content/photos';
 import { about } from '@/app/content/home';
-import { wixMedia } from '@/app/gallery-data';
 import { site } from '@/app/site-data';
 
 export const metadata: Metadata = {
@@ -22,7 +24,7 @@ export default function Page() {
           <div className="row align-items-center">
             <div className="col-lg-5">
               <div className="about-photo rmb-55">
-                <img src={wixMedia(about.photo, 720, 900)} alt={`${site.owner}, licensed loctician`} />
+                <img src={photoUrl(photos.jae)} alt={photos.jae.alt} />
               </div>
             </div>
             <div className="col-lg-7">
@@ -86,7 +88,7 @@ export default function Page() {
         </div>
       </section>
 
-      <ReviewsBand />
+      <ReviewCards reviews={reviewsFor(['about', 'natural', 'booking'], 3)} title="Clients on Working With Jae" />
     </SiteShell>
   );
 }

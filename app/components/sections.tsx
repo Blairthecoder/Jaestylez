@@ -1,5 +1,5 @@
 import { Faq } from '@/app/components/landing-client';
-import { app, faqs as homeFaqs, reviews, serviceArea } from '@/app/content/home';
+import { app, faqs as homeFaqs, serviceArea } from '@/app/content/home';
 import { site } from '@/app/site-data';
 import { wixMedia } from '@/app/gallery-data';
 
@@ -30,38 +30,6 @@ export function PageBanner({ title, crumbs }: { title: string; crumbs: { label: 
               )}
             </ol>
           </nav>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function ReviewsBand() {
-  return (
-    <section className="reviews-band bg-black text-white py-80 rpy-60">
-      <div className="container">
-        <div className="row">
-          {reviews.map((review) => (
-            <div key={review.name} className="col-lg-4 mb-30">
-              <figure className="review-card">
-                <img
-                  className="review-google"
-                  src={wixMedia('5532d7_9f5a6973fc00425c8ea68b81ae50aba4~mv2.png', 160, 60)}
-                  alt="Google reviews"
-                />
-                <div className="stars" aria-label="5 out of 5 stars">
-                  ★★★★★
-                </div>
-                <blockquote>{review.text}</blockquote>
-                <figcaption>{review.name}</figcaption>
-              </figure>
-            </div>
-          ))}
-        </div>
-        <div className="text-center">
-          <a className="theme-btn style-four" href={site.googleReviewsUrl} target="_blank" rel="noopener noreferrer">
-            read more google reviews <i className="far fa-long-arrow-right"></i>
-          </a>
         </div>
       </div>
     </section>
