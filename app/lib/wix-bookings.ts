@@ -117,6 +117,7 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
   return all
     .filter((s) => s._id && s.name && !s.hidden && s.onlineBooking?.enabled !== false && s.urls?.bookingPage)
     .map((s) => {
+      const slug = s.mainSlug?.name ?? s.urls!.bookingPage!.split('/').pop() ?? '';
       const name = titleCase(s.name!);
       const category = titleCase(s.category?.name || 'Other Services');
       const mainImage = s.media?.mainMedia?.image;
@@ -127,7 +128,7 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
       const minutes = constraints?.durations?.[0]?.minutes ?? constraints?.sessionDurations?.[0];
       return {
         id: s._id as string,
-        slug: s.mainSlug?.name ?? s.urls!.bookingPage!.split('/').pop() ?? '',
+        slug,
         amount: priceAmount(s.payment ?? {}),
         name,
         category,
@@ -140,7 +141,7 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
         image: own ? (wixImageUrl(mainImage, 200, 200) as string) : serviceThumb(photo),
         imageLarge: own ? (wixImageUrl(mainImage, 900, 700) as string) : servicePhoto(photo),
         detailsUrl: s.urls?.servicePage ?? s.urls!.bookingPage!,
-        bookingUrl: s.urls!.bookingPage!,
+        bookingUrl: `/book?service=${encodeURIComponent(slug)}`,
       };
     });
 }

@@ -4,7 +4,7 @@ import { createClient, OAuthStrategy, type Tokens } from '@wix/sdk';
 import { collections, products } from '@wix/stores';
 import { currentCart } from '@wix/ecom';
 import { redirects } from '@wix/redirects';
-import { services } from '@wix/bookings';
+import { availabilityTimeSlots, services } from '@wix/bookings';
 import { categories as blogCategories, posts as blogPosts } from '@wix/blog';
 
 // Public Wix Headless OAuth client ID (visitor-level access, not a secret).
@@ -28,7 +28,7 @@ function loadTokens(): Tokens | undefined {
 
 function makeClient() {
   return createClient({
-    modules: { products, collections, currentCart, redirects, services, blogPosts, blogCategories },
+    modules: { products, collections, currentCart, redirects, services, availabilityTimeSlots, blogPosts, blogCategories },
     auth: OAuthStrategy({ clientId: WIX_CLIENT_ID, tokens: loadTokens() }),
   });
 }

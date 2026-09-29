@@ -298,7 +298,7 @@ export function ServiceDetail() {
                     </li>
                   )}
                 </ul>
-                <a className="theme-btn" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
+                <a className="theme-btn" href={service.bookingUrl}>
                   book this service <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>
@@ -331,7 +331,7 @@ export function ServiceDetail() {
                   {service.price}
                   {service.duration ? ` · ${service.duration}` : ''}
                 </p>
-                <a className="theme-btn btn-border w-100" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
+                <a className="theme-btn btn-border w-100" href={service.bookingUrl}>
                   check availability <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>

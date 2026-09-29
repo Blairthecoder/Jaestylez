@@ -28,6 +28,10 @@ type Page = {
 
 const pages = landing as unknown as Record<string, Page>;
 
+// The source pages link "Book ..." buttons to a service page; send them to the in-site booking flow instead.
+const bookHref = (label: string, url: string) =>
+  /^book/i.test(label) && url.startsWith('/service-details?slug=') ? url.replace('/service-details?slug=', '/book?service=') : url;
+
 export function landingMetadata(slug: string): Metadata {
   const page = pages[slug];
   return { title: { absolute: page.seoTitle }, description: page.seoDescription };
@@ -138,7 +142,7 @@ function renderBlocks(blocks: Block[], key: string) {
         break;
       case 'cta':
         out.push(
-          <a key={k} className="theme-btn mt-15" href={block.url}>
+          <a key={k} className="theme-btn mt-15" href={bookHref(block.label, block.url)}>
             {block.label} <i className="far fa-long-arrow-right"></i>
           </a>,
         );
@@ -252,7 +256,7 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                   ))}
                   <div className="landing-ctas">
                     {heroCtas.map((cta, i) => (
-                      <a key={cta.label} className={`theme-btn${i > 0 ? ' style-four' : ''}`} href={cta.url}>
+                      <a key={cta.label} className={`theme-btn${i > 0 ? ' style-four' : ''}`} href={bookHref(cta.label, cta.url)}>
                         {cta.label} <i className="far fa-long-arrow-right"></i>
                       </a>
                     ))}
@@ -329,7 +333,7 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                   <p className="text-white">
                     {site.address}. {site.hoursSummary}
                   </p>
-                  <a className="theme-btn btn-border w-100 mb-10" href={heroCtas[0]?.url ?? '/services#book'}>
+                  <a className="theme-btn btn-border w-100 mb-10" href={heroCtas[0] ? bookHref(heroCtas[0].label, heroCtas[0].url) : '/services#book'}>
                     {heroCtas[0]?.label ?? 'book online'} <i className="far fa-long-arrow-right"></i>
                   </a>
                   <a className="theme-btn style-four w-100" href={site.phoneHref}>
@@ -373,7 +377,7 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
               </div>
             </div>
             <div className="col-xl-3 col-lg-4">
-              <a href={lastBlock.t === 'cta' ? lastBlock.url : '/services#book'} className="theme-btn btn-border my-10">
+              <a href={lastBlock.t === 'cta' ? bookHref(lastBlock.label, lastBlock.url) : '/services#book'} className="theme-btn btn-border my-10">
                 book online <i className="far fa-long-arrow-right"></i>
               </a>
             </div>

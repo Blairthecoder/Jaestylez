@@ -29,6 +29,8 @@ const routes = [
   '/blog',
   '/blog-details',
   '/contact',
+  '/book',
+  '/booking-confirmed',
 ];
 
 await rm(outputDir, { recursive: true, force: true });

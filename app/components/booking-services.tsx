@@ -114,7 +114,7 @@ export function BookingServices() {
                         <span>
                           {[service.duration, service.deposit && `${service.deposit} deposit`].filter(Boolean).join(' · ')}
                         </span>{' '}
-                        <a className="booking-link" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
+                        <a className="booking-link" href={service.bookingUrl}>
                           Book now →
                         </a>
                       </div>{' '}

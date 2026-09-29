@@ -902,3 +902,128 @@ html {
   margin-left: auto;
   white-space: nowrap;
 }
+
+/* In-site booking */
+.booking-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+}
+.booking-select {
+  height: 48px;
+}
+.qt-cal {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+}
+.qt-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+}
+.qt-cal-head button {
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  color: #252525;
+  background: #faf6ef;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.qt-cal-head button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.qt-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.qt-cal-dow {
+  padding-bottom: 4px;
+  font-size: 13px;
+  text-align: center;
+  color: #8a8a8a;
+}
+.qt-cal-day {
+  aspect-ratio: 1 / 1;
+  min-height: 40px;
+  font-size: 16px;
+  color: #b5b5b5;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+.qt-cal-day.is-open {
+  color: #252525;
+  background: rgba(214, 163, 84, 0.18);
+  border-color: #d6a354;
+  cursor: pointer;
+}
+.qt-cal-day.is-open:hover,
+.qt-cal-day.is-selected {
+  color: #fff;
+  background: #d6a354;
+}
+.qt-cal-note {
+  min-height: 22px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  text-align: center;
+}
+.qt-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.qt-time {
+  min-width: 110px;
+  padding: 11px 16px;
+  font-size: 16px;
+  color: #252525;
+  background: #fff;
+  border: 1px solid #d6a354;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.qt-time:hover,
+.qt-time.is-selected {
+  color: #fff;
+  background: #d6a354;
+}
+.qt-summary {
+  padding: 0;
+  margin: 0 0 20px;
+  list-style: none;
+  color: #fff;
+}
+.qt-summary li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 15px;
+}
+.qt-summary span {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.qt-summary-note,
+.qt-summary-error {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: #fff;
+}
+.widget-form button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
