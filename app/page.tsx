@@ -1,364 +1,1836 @@
-import {
-  ArrowDownRight,
-  ArrowRight,
-  ArrowUpRight,
-  CalendarDays,
-  Check,
-  Clock3,
-  MapPin,
-  MessageCircle,
-  PackageCheck,
-  Phone,
-  Route,
-  ShieldCheck,
-  Truck,
-  UserRoundCheck,
-  Wrench,
-} from 'lucide-react';
-import { InstagramIcon } from './brand-icons';
-import { BookingForm } from './booking-form';
-import { HeroForm } from './hero-form';
-import { serviceAreas, services } from './service-data';
-import { MobileBookingBar, SiteFooter, SiteHeader } from './site-shell';
-import { instagramReels, instagramUrl, tiktokUrl } from './social-data';
-import { TikTokFeed } from './tiktok-feed';
+import type { Metadata } from 'next';
+import { SiteShell } from '@/app/site-shell';
+import { Slider } from '@/app/components/slider';
+import { NiceSelect } from '@/app/components/nice-select';
+import { NetlifyForm } from '@/app/components/forms';
 
-const faqs = [
-  ['Do you bring a moving truck?', 'Yes. Rashad has a moving truck and can bring it for your move. Share the route, timing, and what you are moving so he can confirm the truck and job details with you.'],
-  ['What equipment do you bring?', 'Rashad brings a dolly, moving blankets, and a toolbox for basic furniture assembly and disassembly. Tell him about especially large or unusual items when you request a time.'],
-  ['Can you drive my U-Haul or rental truck?', 'Driving help may be available for local and long-distance moves. Include the pickup, destination, truck size, and expected route in your request so Rashad can confirm.'],
-  ['How much does it cost?', 'Moving labor starts at $50 per hour. Your request helps Rashad understand the job before he confirms availability and an estimated time.'],
-  ['Where do you work?', 'Rashad is based in Houston and considers jobs across Greater Houston, including Katy, Cypress, Sugar Land, Pearland, Spring, Humble, and The Woodlands. Send the starting ZIP code and destination so he can confirm travel and availability.'],
-  ['How far in advance should I book?', 'Send your request as soon as you have a date. Weekends and the end of the month fill up first in Houston, so a week or more of notice gives you the best chance at your preferred time. Last-minute requests are still worth sending, since schedules do open up.'],
-  ['Can you move a single item like a couch or washer?', 'Yes. Single-item jobs are common. Send the item, its rough weight, doorway widths, and how many stairs are involved so Rashad can confirm whether it is a one-person job before the date.'],
-  ['Do you help with apartment moves that need an elevator reservation?', 'Yes, and it helps to book the elevator or loading zone with your building first. Share your move-out window and where the truck can park so the time is spent moving instead of waiting.'],
-];
+export const metadata: Metadata = {
+  title: "Barbers & Hair Cutting Salon",
+};
 
-const serviceIcons = [Truck, PackageCheck, ShieldCheck, Wrench, Route];
-
-export default function Home() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'MovingCompany',
-        '@id': '#business',
-        name: 'Rashad the Helper',
-        description: 'Houston moving help with a moving truck, dolly, blankets, toolkit, loading, unloading, heavy lifting and furniture assembly.',
-        telephone: '+1-504-209-8175',
-        areaServed: serviceAreas.map((area) => ({ '@type': 'City', name: area })),
-        address: { '@type': 'PostalAddress', addressLocality: 'Houston', addressRegion: 'TX', addressCountry: 'US' },
-        priceRange: '$50 per hour',
-        sameAs: [instagramUrl, tiktokUrl],
-        makesOffer: services.map((service) => ({
-          '@type': 'Offer',
-          itemOffered: { '@type': 'Service', name: service.title, description: service.summary },
-          priceSpecification: { '@type': 'UnitPriceSpecification', price: '50', priceCurrency: 'USD', unitCode: 'HUR' },
-        })),
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: faqs.map(([question, answer]) => ({
-          '@type': 'Question',
-          name: question,
-          acceptedAnswer: { '@type': 'Answer', text: answer },
-        })),
-      },
-    ],
-  };
-
+export default function Page() {
   return (
-    <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <SiteHeader />
-
-      <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow">Owner-operated in Greater Houston</p>
-          <h1>Houston Moving Help, Handled by Rashad</h1>
-          <p className="hero-lede">Loading, unloading, heavy lifting, furniture assembly, and rental-truck driving — $50 an hour with the truck and equipment included in the plan.</p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="tel:+15042098175"><Phone size={17} /> Call or text: 504-209-8175</a>
-            <a className="hero-social" href={instagramUrl} target="_blank" rel="noreferrer">13K+ following the work <ArrowUpRight size={15} /></a>
-          </div>
-          <div className="hero-stats">
-            <div><strong>$50 / hour</strong><span>Straightforward labor rate</span></div>
-            <div><strong>Truck &amp; equipment</strong><span>Dolly, blankets, toolkit</span></div>
-            <div><strong>Greater Houston</strong><span>Katy to The Woodlands</span></div>
+    <SiteShell header="one" footerClassName="pb-30">
+      <section className="hero-section py-250" style={{ backgroundImage: "url(/assets/images/hero/hero-bg.jpg)" }}>
+        <div className="container">
+          <div className="row align-items-center justify-content-between">
+            <div className="col-xl-7 col-lg-8">
+              <div className="hero-content py-10 rpt-0 text-white rmb-70">
+                <h1 className="wow fadeInUp delay-0-2s">Barbers & Hair Cutting</h1>
+                <p className="wow fadeInUp delay-0-4s">
+                  Sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua suspendisse ultrices gravida
+                </p>
+                {' '}
+                <a href="/services" className="theme-btn wow fadeInUp delay-0-6s">
+                  explore our services
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="hero-video text-lg-right wow zoomIn delay-0-6s">
+                <a href="https://www.youtube.com/watch?v=9Y7ma241N8k" className="mfp-iframe video-play" data-lightbox="video">
+                  <i className="fas fa-play"></i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-        <HeroForm />
+        <div className="hero-bg-shapes"></div>
       </section>
-
-      <section className="reel-band" id="latest">
-        <div className="reel-head">
-          <div>
-            <p className="eyebrow">Straight from the job</p>
-            <h2>See the Work Before You Book</h2>
-          </div>
-          <div className="reel-head-side">
-            <p>Thousands of people follow Rashad&apos;s moves. Swipe through recent jobs, real trucks, and real furniture.</p>
-            <div className="reel-follow">
-              <a className="button button-primary" href={instagramUrl} target="_blank" rel="noreferrer"><InstagramIcon size={17} /> Follow on Instagram</a>
-              <a className="button button-ghost" href={tiktokUrl} target="_blank" rel="noreferrer">Watch on TikTok <ArrowUpRight size={16} /></a>
+      <section className="what-we-do-area pb-130 rpb-100">
+        <div className="container">
+          <div className="what-we-do-inner">
+            <div className="row">
+              <div className="col-xl-4">
+                <div className="feature-image wow fadeInLeft delay-0-2s" style={{ backgroundImage: "url(/assets/images/about/what-we-do.jpg)" }}></div>
+              </div>
+              <div className="col-xl-8 align-self-center">
+                <div className="what-we-do-content wow fadeInRight delay-0-2s">
+                  <div className="row">
+                    <div className="col-lg-8">
+                      <div className="section-title mb-35">
+                        <h2 className="title">What We Do</h2>
+                        <p>
+                          Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="feature-item">
+                        <div className="icon">
+                          <i className="flaticon-scissors"></i>
+                        </div>
+                        <div className="content">
+                          <h4>
+                            <a href="/service-details">Hair Cutting</a>
+                          </h4>
+                          <p>Quis autem vel eumu reres ender quiea voluptate</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="feature-item">
+                        <div className="icon">
+                          <i className="flaticon-straight-razor"></i>
+                        </div>
+                        <div className="content">
+                          <h4>
+                            <a href="/service-details">Shaving Style</a>
+                          </h4>
+                          <p>Quis autem vel eumu reres ender quiea voluptate</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="feature-item">
+                        <div className="icon">
+                          <i className="flaticon-beauty-treatment"></i>
+                        </div>
+                        <div className="content">
+                          <h4>
+                            <a href="/service-details">Spa & GYM</a>
+                          </h4>
+                          <p>Quis autem vel eumu reres ender quiea voluptate</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="feature-item">
+                        <div className="icon">
+                          <i className="flaticon-hot-stones"></i>
+                        </div>
+                        <div className="content">
+                          <h4>
+                            <a href="/service-details">Body Treatments</a>
+                          </h4>
+                          <p>Quis autem vel eumu reres ender quiea voluptate</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="reel-grid">
-          {instagramReels.slice(0, 4).map((code, index) => (
-            <div className="reel-card" key={code}>
-              <iframe
-                src={`https://www.instagram.com/reel/${code}/embed/`}
-                title={`Instagram post ${index + 1} from Rashad the Helper`}
-                loading="lazy"
-                scrolling="no"
-                allowFullScreen
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
+      </section>
+      <section className="about-us-area">
+        <div className="row">
+          <div className="col-xl-3 col-sm-6">
+            <div className="about-left-image wow fadeInUp delay-0-2s">
+              <img src="/assets/images/about/about-left.jpg" alt="About Left" />
             </div>
-          ))}
-        </div>
-        <div className="reel-footer">
-          <a className="button button-primary" href={instagramUrl} target="_blank" rel="noreferrer"><InstagramIcon size={18} /> See every post on Instagram</a>
+          </div>
+          <div className="col-xl-3 col-sm-6 order-xl-2">
+            <div className="about-right-image wow fadeInUp delay-0-6s">
+              <img src="/assets/images/about/about-right.jpg" alt="About Right" />
+            </div>
+          </div>
+          <div className="col-xl-6 align-self-center">
+            <div className="about-content rp-15 rpb-90 text-center wow fadeInUp delay-0-4s">
+              <div className="row justify-content-center">
+                <div className="col-lg-8">
+                  <div className="section-title mb-35">
+                    <h2 className="title">we’re Best barbers & hair cutting salon</h2>
+                  </div>
+                </div>
+              </div>
+              <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+              </p>
+              <div className="our-author mt-20">
+                <img src="/assets/images/about/author.jpg" alt="Authro" />
+                {' '}
+                <div className="content">
+                  <h4>Randall J. Goodman</h4>
+                  {' '}
+                  <img src="/assets/images/about/signature.png" alt="Signature" />
+                </div>
+              </div>
+              {' '}
+              <img className="about-bg-shape" src="/assets/images/about/about-bg-shape.png" alt="BG Shape" />
+            </div>
+          </div>
         </div>
       </section>
-
-      <section className="answers-section">
-        <div className="answers-grid">
-          <article>
-            <span className="answer-icon money"><CircleDollarSign size={26} /></span>
-            <div>
-              <h2>How Much Will My Move Cost?</h2>
-              <p>Moving labor starts at $50 per hour. A one-bedroom load-out usually runs two to three hours. You get the scope confirmed before the date, not a surprise number on move day.</p>
-              <a className="text-link" href="#details">See what jobs cost <ArrowRight size={17} /></a>
+      <section className="cta-area bgs-cover bg-yellow text-white py-40" style={{ backgroundImage: "url(/assets/images/background/cta-bg.png)" }}>
+        <div className="container">
+          <div className="row justify-content-center text-center align-items-center">
+            <div className="col-xl-6 col-lg-7">
+              <div className="section-title mt-5 wow fadeInLeft delay-0-2s">
+                <h2>Ready to get our service ?</h2>
+              </div>
             </div>
-          </article>
-          <article>
-            <span className="answer-icon truck"><Truck size={26} /></span>
-            <div>
-              <h2>What Does Rashad Bring?</h2>
-              <p>A moving truck, a dolly, moving blankets, and a toolbox for basic furniture. If you already have a truck or a container, he works with what you have instead.</p>
-              <a className="text-link" href="/services">Compare services <ArrowRight size={17} /></a>
-            </div>
-          </article>
-          <article>
-            <span className="answer-icon box"><PackageCheck size={26} /></span>
-            <div>
-              <h2>What Kinds of Moves?</h2>
-              <p>Apartments and homes, storage units and PODS, single heavy items like appliances and safes, furniture assembly, and rental-truck loading or driving.</p>
-              <a className="text-link" href="/services">See every service <ArrowRight size={17} /></a>
-            </div>
-          </article>
-          <article>
-            <span className="answer-icon calendar"><CalendarDays size={26} /></span>
-            <div>
-              <h2>How Do I Book a Date?</h2>
-              <p>Send your date, both ZIP codes, and what needs moving. Rashad reviews it himself and confirms availability directly — nothing is booked until he says so.</p>
-              <a className="text-link" href="#booking">Request a time <ArrowRight size={17} /></a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="section services-section" id="services">
-        <div className="section-heading split-heading">
-          <div><p className="eyebrow">How Rashad can help</p><h2>Choose the Help Your Move Needs</h2></div>
-          <p>From one heavy item to a full rental truck, start with the service that sounds closest. You can explain the whole job in your request.</p>
-        </div>
-        <div className="service-grid">
-          {services.map((service, index) => {
-            const Icon = serviceIcons[index];
-            return (
-              <a className="service-card" href={`/services/${service.slug}`} key={service.slug}>
-                <span className="service-card-top"><span className="service-icon"><Icon size={22} /></span><small>{service.number}</small></span>
-                <h3>{service.title}</h3>
-                <p>{service.summary}</p>
-                <ul className="service-card-tags">{service.bestFor.map((item) => <li key={item}>{item}</li>)}</ul>
-                <span className="service-card-link">See what is included <ArrowRight size={17} /></span>
+            <div className="col-xl-3 col-lg-4">
+              <a href="/contact" className="theme-btn btn-border my-10 wow fadeInRight delay-0-2s">
+                appointment now
+                {' '}
+                <i className="far fa-long-arrow-right"></i>
               </a>
-            );
-          })}
-        </div>
-        <p className="service-grid-note">Not sure which one fits? Describe the job in your own words when you <a href="#booking">request a time</a> and Rashad will tell you what it takes.</p>
-      </section>
-
-      <section className="confidence-section">
-        <div className="confidence-intro">
-          <p className="eyebrow">Plan with confidence</p>
-          <h2>Know What to Expect Before Move Day</h2>
-          <p>Clear responsibilities make the day easier. Rashad confirms the scope with you directly before the job.</p>
-          <a href="#booking" className="text-link">Ask about your move <ArrowRight size={18} /></a>
-        </div>
-        <div className="expectation-card included-card">
-          <span className="expectation-icon"><Check size={20} /></span>
-          <h3>Rashad Provides</h3>
-          <ul><li>A moving truck</li><li>Hands-on moving help</li><li>A dolly and moving blankets</li><li>A toolkit for simple furniture</li></ul>
-        </div>
-        <div className="expectation-card customer-card">
-          <span className="expectation-icon"><Truck size={20} /></span>
-          <h3>Have Ready</h3>
-          <ul><li>Sealed and labeled boxes</li><li>Clear walkways for carrying</li><li>Parking and access details</li><li>Notice of unusually heavy items</li></ul>
-        </div>
-      </section>
-
-      <section className="work-section" id="how-it-works">
-        <div className="work-copy">
-          <p className="eyebrow">Simple from the start</p>
-          <h2>Three Steps to a Smoother Move</h2>
-          <p className="body-copy">Share the useful details once. Rashad reviews the job and follows up directly.</p>
-          <a href="#booking" className="button button-light">Start your request <ArrowDownRight size={18} /></a>
-        </div>
-        <ol className="steps">
-          <li><span>1</span><div><h3>Tell Us About the Move</h3><p>Date, ZIP codes, stairs, truck size, and what needs lifting.</p></div></li>
-          <li><span>2</span><div><h3>Get a Direct Response</h3><p>Rashad reviews the details and confirms availability and scope.</p></div></li>
-          <li><span>3</span><div><h3>Get Moving</h3><p>Have your items ready. Rashad arrives with the moving truck and agreed equipment.</p></div></li>
-        </ol>
-      </section>
-
-      <section className="section explainer-section" id="details">
-        <div className="section-heading split-heading">
-          <div><p className="eyebrow">Houston moving help, explained</p><h2>What Hiring Rashad Actually Looks Like</h2></div>
-          <p>Most moving quotes hide the details until the truck shows up. Here is how the common jobs work, what they cost, and what changes the timeline.</p>
-        </div>
-        <div className="explainer-grid">
-          <article>
-            <h3>Apartment and High-Rise Moves</h3>
-            <p>Apartment moves in Houston live or die on access. Elevator reservations, loading-zone rules, and long carries from the dock add real time to the job, so Rashad asks for your building&apos;s move-out window and parking situation up front. Third-floor walk-ups in Midtown and elevator buildings downtown get planned differently, and the hourly rate stays the same either way.</p>
-          </article>
-          <article>
-            <h3>Storage Units, PODS, and Containers</h3>
-            <p>Loading a storage unit or portable container is about stacking discipline, not speed. Rashad loads heavy furniture low and tight, uses moving blankets between surfaces, and leaves an aisle if you will need to reach items later. Storage clean-outs work the same way in reverse, with the truck available when items are moving to a new address.</p>
-          </article>
-          <article>
-            <h3>Appliances and Heavy Single Items</h3>
-            <p>Not every job is a full move. Plenty of calls are one washer, one sleeper sofa, or a gun safe that needs to reach a second floor. Send the item, its rough weight, the doorway widths, and how many stairs are involved — that is enough for Rashad to confirm whether it is a one-person job or needs a second set of hands.</p>
-          </article>
-          <article>
-            <h3>Rental Trucks and Long-Distance Routes</h3>
-            <p>If you have already reserved a U-Haul, Penske, or Budget truck, Rashad can load it, unload it at the other end, or drive it when that is arranged ahead of time. Rental agreements have to permit an additional driver, so send the rental company, truck size, and full route with your request and he will confirm what is possible before you commit to the date.</p>
-          </article>
-        </div>
-        <div className="explainer-note">
-          <p><strong>What moving labor costs in Houston.</strong> Rashad&apos;s rate starts at $50 per hour for moving labor. A studio or one-bedroom load-out typically runs two to three hours, a two-bedroom apartment three to five, and a full house is quoted after he sees the details. Stairs, long carries, packing that is not finished, and heavy specialty items are the four things that most often stretch a job past the estimate — which is exactly why the scope gets confirmed before move day rather than after.</p>
-        </div>
-      </section>
-
-      <section className="area-section">
-        <div className="area-copy">
-          <p className="eyebrow"><MapPin size={15} /> Greater Houston</p>
-          <h2>Local Help for Moves Across the Houston Area</h2>
-          <p>Rashad is based in Houston and works jobs from Katy and Cypress out to Pearland, Sugar Land, Spring, Humble, and The Woodlands. Send your starting and destination ZIP codes and he will confirm travel and availability before you make plans around the date.</p>
-          <div className="area-list">{serviceAreas.map((area) => <span key={area}><MapPin size={15} />{area}</span>)}</div>
-          <a className="button button-dark" href="/service-areas">Check service areas <ArrowRight size={18} /></a>
-        </div>
-        <div className="area-map">
-          <iframe
-            src="https://www.google.com/maps?q=Houston,+Texas&output=embed"
-            title="Map of the Greater Houston service area"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </section>
-
-      <section className="why-section">
-        <div className="why-heading">
-          <p className="eyebrow">Why hire Rashad</p>
-          <h2>More Than an Extra Set of Hands</h2>
-          <p>The person who reviews your request is the person who shows up for your move. Here is what that gets you.</p>
-        </div>
-        <ol className="why-grid">
-          <li>
-            <span className="why-number">1</span>
-            <UserRoundCheck size={30} />
-            <h3>One Point of Contact</h3>
-            <p>No dispatch chain and no call-center handoff. You talk to Rashad about your job, before and on move day.</p>
-          </li>
-          <li>
-            <span className="why-number">2</span>
-            <MessageCircle size={30} />
-            <h3>Scope Confirmed First</h3>
-            <p>Availability, hours, and what the job involves get settled before your date, so nothing gets renegotiated at the curb.</p>
-          </li>
-          <li>
-            <span className="why-number">3</span>
-            <CircleDollarSign size={30} />
-            <h3>A Straight Hourly Rate</h3>
-            <p>$50 an hour for moving labor. No packages to decode, no per-item pricing, no fuel surcharge invented on arrival.</p>
-          </li>
-          <li>
-            <span className="why-number">4</span>
-            <Truck size={30} />
-            <h3>Truck and Gear Included</h3>
-            <p>Moving truck, dolly, moving blankets, and a toolbox come with the job when your move needs them.</p>
-          </li>
-          <li>
-            <span className="why-number">5</span>
-            <ShieldCheck size={30} />
-            <h3>Careful With Your Things</h3>
-            <p>Blankets between surfaces, heavy pieces loaded low and tight, and walkways kept clear while the work is happening.</p>
-          </li>
-          <li>
-            <span className="why-number">6</span>
-            <MapPin size={30} />
-            <h3>Houston Local</h3>
-            <p>He knows the apartment complexes, the loading-zone rules, and which hours turn a short crosstown run into a long one.</p>
-          </li>
-        </ol>
-        <div className="why-actions">
-          <a className="button button-primary" href="#booking">Request a time <ArrowDownRight size={18} /></a>
-          <a className="button button-ghost" href="tel:+15042098175"><Phone size={17} /> Call 504-209-8175</a>
-        </div>
-      </section>
-
-      <section className="social-section" id="tiktok">
-        <div className="social-heading">
-          <p className="eyebrow">Latest on TikTok</p>
-          <h2>Meet the Helper</h2>
-          <p>Moving days, truck runs, and practical tips straight from Rashad. His newest TikTok videos load here automatically.</p>
-          <a className="button button-dark" href={tiktokUrl} target="_blank" rel="noreferrer">Follow @rashadthehelper <ArrowUpRight size={18} /></a>
-        </div>
-        <TikTokFeed />
-      </section>
-
-      <section className="booking-section" id="booking">
-        <div className="booking-intro">
-          <p className="eyebrow">Request a time</p>
-          <h2>Tell Rashad About Your Move</h2>
-          <p>The more useful detail you share now, the easier it is to confirm the job and prepare for move day.</p>
-          <div className="move-plan" aria-label="What to include in your request">
-            <div className="move-plan-heading"><span>Your Move Plan</span><strong>Start With the Basics</strong></div>
-            <ul>
-              <li><CalendarDays size={20} /><div><strong>Your date</strong><span>Preferred day and time</span></div></li>
-              <li><MapPin size={20} /><div><strong>Your route</strong><span>Starting and destination ZIPs</span></div></li>
-              <li><Truck size={20} /><div><strong>Your setup</strong><span>Truck needs, stairs, and access</span></div></li>
-              <li><PackageCheck size={20} /><div><strong>Your items</strong><span>Furniture and anything extra heavy</span></div></li>
-            </ul>
-            <div className="move-plan-footer"><Clock3 size={18} /><p><strong>About 2 Minutes</strong><span>to prepare your request</span></p></div>
+            </div>
           </div>
-          <ul className="booking-notes"><li><Check size={16} /> No payment required to request</li><li><Check size={16} /> Your date is booked only after confirmation</li><li><Check size={16} /> Labor starts at $50 per hour</li></ul>
-        </div>
-        <BookingForm />
-      </section>
-
-      <section className="section faq-section" id="faq">
-        <div className="section-heading split-heading"><div><p className="eyebrow">Frequently asked questions</p><h2>Helpful Answers Before You Book</h2></div><p>If your situation is different, include the question with your move details and Rashad can confirm what is possible.</p></div>
-        <div className="faq-list">{faqs.map(([question, answer], index) => <details key={question}><summary><span>0{index + 1}</span>{question}<b>+</b></summary><p>{answer}</p></details>)}</div>
-      </section>
-
-      <section className="location-cta">
-        <div>
-          <p className="eyebrow"><MapPin size={15} /> Houston moving help</p>
-          <h2>Have a Move Coming Up?</h2>
-          <p>Send the date, route, access details, and what needs moving. Rashad will take it from there.</p>
-        </div>
-        <div className="location-cta-actions">
-          <a className="button button-primary" href="tel:+15042098175"><Phone size={17} /> Call 504-209-8175</a>
-          <a className="button button-outline" href="#booking">Request availability <ArrowDownRight size={18} /></a>
         </div>
       </section>
-      <SiteFooter />
-      <MobileBookingBar />
-    </main>
+      <section className="services-area rel z-1 pt-120 rpt-90 pb-100 rpb-70">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-center mb-55">
+                <h2 className="title">Service we provide</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-2s">
+                <div className="icon">
+                  <i className="flaticon-salon"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Hair Cutting Style</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-4s">
+                <div className="icon">
+                  <i className="flaticon-shampoo"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Hair Washing</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-6s">
+                <div className="icon">
+                  <i className="flaticon-hot-stone"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Body Treatments</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-2s">
+                <div className="icon">
+                  <i className="flaticon-treatment"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Beauty & Spa</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-4s">
+                <div className="icon">
+                  <i className="flaticon-shaving-razor"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Stylist Shaving</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="service-item wow fadeInUp delay-0-6s">
+                <div className="icon">
+                  <i className="flaticon-hair-dye"></i>
+                </div>
+                <div className="content">
+                  <h3>
+                    <a href="/service-details">Multi Hair Colors</a>
+                  </h3>
+                  <p>
+                    Sit amet consectetur adipisci elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  </p>
+                  {' '}
+                  <a href="/service-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="services-shapes">
+          <img className="shape-one" src="/assets/images/shapes/service-one.png" alt="Shape" />
+          {' '}
+          <img className="shape-two" src="/assets/images/shapes/service-two.png" alt="Shape" />
+        </div>
+      </section>
+      <section className="pricing-plan-area bgs-cover pt-120 rpt-90 pb-130 rpb-100" style={{ backgroundImage: "url(/assets/images/background/pricing-plan-bg.jpg)" }}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-white text-center mb-55">
+                <h2 className="title">awesome pricing plan</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="price-tab-wrap p-40 bg-white">
+            <ul className="nav nav-justified price-tab" role="tablist">
+              <li className="nav-item">
+                <a className="nav-link active" data-toggle="tab" href="#hair">
+                  <i className="flaticon-beauty-salon"></i>
+                  {' '}
+                  <span>hair solutions</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#beauty">
+                  <i className="flaticon-relax"></i>
+                  {' '}
+                  <span>beauty & spa</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#bodyy">
+                  <i className="flaticon-massage"></i>
+                  {' '}
+                  <span>body treatments</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#washing">
+                  <i className="flaticon-spa"></i>
+                  {' '}
+                  <span>Fash washing</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#meditations">
+                  <i className="flaticon-yoga"></i>
+                  {' '}
+                  <span>meditations</span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#shaving">
+                  <i className="flaticon-razor-blade"></i>
+                  {' '}
+                  <span>shaving</span>
+                </a>
+              </li>
+            </ul>
+            <div className="tab-content price-tab-content">
+              <div className="tab-pane fade show active" id="hair">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-2s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-4s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-2s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-4s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-2s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-4s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-2s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item wow fadeInUp delay-0-4s">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="beauty">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="bodyy">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="washing">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="meditations">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade" id="shaving">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image6.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Facial & Face Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$63</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image7.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Backbone Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$43</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image8.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Meditation & Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$74</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image1.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Cutting & Fitting</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$89</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image2.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Shaving & Facial</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$45</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image3.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Hair Color & Wash</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$35</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image4.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Body Massage</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$56</span>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="price-item">
+                      <div className="image">
+                        <img src="/assets/images/price/pp-image5.jpg" alt="Price" />
+                      </div>
+                      <div className="content">
+                        <h5>Beauty & Spa</h5>
+                        {' '}
+                        <span>Clean & simple 30-40 minutes</span>
+                      </div>
+                      {' '}
+                      <span className="price">$27</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="gallery-area rel z-1 pt-120 rpt-90 pb-100 rpb-70">
+        <div className="container">
+          <div className="row justify-content-between align-items-end mb-40">
+            <div className="col-xl-5 col-lg-6">
+              <div className="section-title mb-15 wow fadeInLeft delay-0-2s">
+                <h2 className="title">Latest photo gallery</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="section-header-btn text-lg-right mb-20 wow fadeInRight delay-0-2s">
+                <a href="/portfolio" className="theme-btn">
+                  explore more gallery
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xl-3 col-sm-6">
+              <div className="gallery-item wow fadeInUp delay-0-2s">
+                <img src="/assets/images/gellary/gallery1.jpg" alt="Gallery" />
+                {' '}
+                <div className="gallery-content">
+                  <h3>Hair Cutting</h3>
+                  <p>Barbers & Salon Services</p>
+                  {' '}
+                  <a href="/portfolio-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-3 col-sm-6">
+              <div className="gallery-item wow fadeInUp delay-0-4s">
+                <img src="/assets/images/gellary/gallery2.jpg" alt="Gallery" />
+                {' '}
+                <div className="gallery-content">
+                  <h3>Hair Cutting</h3>
+                  <p>Barbers & Salon Services</p>
+                  {' '}
+                  <a href="/portfolio-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-3 col-sm-6">
+              <div className="gallery-item wow fadeInUp delay-0-6s">
+                <img src="/assets/images/gellary/gallery3.jpg" alt="Gallery" />
+                {' '}
+                <div className="gallery-content">
+                  <h3>Hair Cutting</h3>
+                  <p>Barbers & Salon Services</p>
+                  {' '}
+                  <a href="/portfolio-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-3 col-sm-6">
+              <div className="gallery-item wow fadeInUp delay-0-8s">
+                <img src="/assets/images/gellary/gallery4.jpg" alt="Gallery" />
+                {' '}
+                <div className="gallery-content">
+                  <h3>Hair Cutting</h3>
+                  <p>Barbers & Salon Services</p>
+                  {' '}
+                  <a href="/portfolio-details" className="details-btn">
+                    <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="contact-area rel z-1">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8"></div>
+          </div>
+          <div className="contact-form-wrap">
+            <div className="image wow fadeInUp delay-0-2s" style={{ backgroundImage: "url(/assets/images/contact/left.jpg)" }}></div>
+            <NetlifyForm formName="appointment" className="bg-yellow bgs-cover wow fadeInUp delay-0-4s" style={{ backgroundImage: "url(/assets/images/contact/contact-bg.png)" }}>
+              <div className="row justify-content-center mb-35 text-white text-center">
+                <div className="col-lg-10">
+                  <div className="section-title text-white">
+                    <h2 className="title">Make appointment</h2>
+                  </div>
+                  <p>
+                    Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                  </p>
+                </div>
+              </div>
+              <div className="row small-gap">
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <input type="text" id="name" name="name" className="form-control" defaultValue="" placeholder="Your Full Name" required />
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <input type="email" id="email" name="email" className="form-control" defaultValue="" placeholder="Email Address" required />
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <input type="text" id="phone" name="phone" className="form-control" defaultValue="" placeholder="Phone Number" required />
+                  </div>
+                </div>
+                <div className="col-lg-6 mb-20">
+                  <div className="form-group">
+                    <NiceSelect name="select-category" id="select-category" options={[{"value":"Select Category","label":"Select Category"},{"value":"Beauty & Spa","label":"Beauty & Spa"},{"value":"Body Massage","label":"Body Massage"},{"value":"Shaving & Facial","label":"Shaving & Facial"},{"value":"Hair Color","label":"Hair Color"}]} />
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className="form-group">
+                    <label htmlFor="date-time">
+                      <i className="far fa-calendar-alt"></i>
+                    </label>
+                    {' '}
+                    <input type="datetime-local" id="date-time" name="date-time" className="form-control" defaultValue="" placeholder="Appointment Date & Time" />
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className="form-group">
+                    <textarea name="message" id="message" className="form-control" rows={4} placeholder="Write Message" required></textarea>
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className="form-group mb-0">
+                    <button type="submit" className="theme-btn btn-border w-100">
+                      appointment now
+                      <i className="far fa-long-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </NetlifyForm>
+            <div className="image wow fadeInUp delay-0-6s" style={{ backgroundImage: "url(/assets/images/contact/right.jpg)" }}></div>
+          </div>
+        </div>
+        <div className="contact-shapes">
+          <img className="shape-one" src="/assets/images/shapes/contact-one.png" alt="Shape" />
+          {' '}
+          <img className="shape-two" src="/assets/images/shapes/contact-two.png" alt="Shape" />
+        </div>
+      </section>
+      <section className="team-area rel z-1 pt-120 rpt-90 pb-95 rpb-65">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-center mb-50">
+                <h2 className="title">Meet our specialist</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid">
+          <div className="team-member-wrap">
+            <div className="team-member wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/team/member1.jpg" alt="Member" />
+                {' '}
+                <div className="social-style-two">
+                  <a href="#">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-rocketchat"></i>
+                  </a>
+                </div>
+              </div>
+              <div className="content">
+                <h3>Scott K. Henderson</h3>
+                {' '}
+                <span className="designation">Hair Specialist</span>
+              </div>
+            </div>
+            <div className="team-member wow fadeInUp delay-0-3s">
+              <div className="image">
+                <img src="/assets/images/team/member2.jpg" alt="Member" />
+                {' '}
+                <div className="social-style-two">
+                  <a href="#">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-rocketchat"></i>
+                  </a>
+                </div>
+              </div>
+              <div className="content">
+                <h3>Donald J. Cuellar</h3>
+                {' '}
+                <span className="designation">Hair Specialist</span>
+              </div>
+            </div>
+            <div className="team-member wow fadeInUp delay-0-4s">
+              <div className="image">
+                <img src="/assets/images/team/member3.jpg" alt="Member" />
+                {' '}
+                <div className="social-style-two">
+                  <a href="#">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-rocketchat"></i>
+                  </a>
+                </div>
+              </div>
+              <div className="content">
+                <h3>Nicholas E. Sapien</h3>
+                {' '}
+                <span className="designation">Hair Specialist</span>
+              </div>
+            </div>
+            <div className="team-member wow fadeInUp delay-0-5s">
+              <div className="image">
+                <img src="/assets/images/team/member4.jpg" alt="Member" />
+                {' '}
+                <div className="social-style-two">
+                  <a href="#">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-rocketchat"></i>
+                  </a>
+                </div>
+              </div>
+              <div className="content">
+                <h3>Richard L. Miller</h3>
+                {' '}
+                <span className="designation">Hair Specialist</span>
+              </div>
+            </div>
+            <div className="team-member wow fadeInUp delay-0-6s">
+              <div className="image">
+                <img src="/assets/images/team/member5.jpg" alt="Member" />
+                {' '}
+                <div className="social-style-two">
+                  <a href="#">
+                    <i className="fab fa-facebook-f"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-youtube"></i>
+                  </a>
+                  {' '}
+                  <a href="#">
+                    <i className="fab fa-rocketchat"></i>
+                  </a>
+                </div>
+              </div>
+              <div className="content">
+                <h3>Melvin L. Hoffman</h3>
+                {' '}
+                <span className="designation">Hair Specialist</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="cta-video-area rel z-2">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="cta-part bg-yellow text-center text-white p-40 rpy-55 wow fadeInLeft delay-0-2s" style={{ backgroundImage: "url(/assets/images/background/video-cta-bg.png)" }}>
+                <div className="section-title mb-15">
+                  <h2>
+                    Come &
+                    <br />
+                    {' '}
+                    get Freshness
+                  </h2>
+                  <p>
+                    Sit amet consectetur adipiscing do eiusmod tempor incididunt labore dolore magna aliqua suspen
+                  </p>
+                </div>
+                {' '}
+                <a href="/contact" className="theme-btn btn-border">
+                  contact with us
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="col-lg-8">
+              <div className="video-part rmt-30 wow fadeInRight delay-0-2s">
+                <img src="/assets/images/background/video-bg.jpg" alt="Video" />
+                {' '}
+                <a href="https://www.youtube.com/watch?v=9Y7ma241N8k" className="mfp-iframe video-play" data-lightbox="video">
+                  <i className="fas fa-play"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="testimonial-area rel z-1 pt-120 rpt-90 pb-125 rpb-95">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-center mb-50">
+                <h2 className="title">What our clients say</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+          </div>
+          <Slider className="testimonial-wrap" slidesToShow={2} responsive={[[1199,1]]} dots={true}>
+            <div className="testimonial-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/testimonials/testimonial1.jpg" alt="Author" />
+              </div>
+              <div className="description">
+                <p>
+                  Quis autem vel eum iure repreh enderit quin voluptate velit esse quam nihil molestiae consequa tur veillumqus dolore fugiat quo voluptas pariatuLorem psum
+                </p>
+                <h4>Donald A. Guthrie</h4>
+                {' '}
+                <span className="designation">Senior Manager</span>
+                {' '}
+                <div className="ratting">
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+            <div className="testimonial-item wow fadeInUp delay-0-4s">
+              <div className="image">
+                <img src="/assets/images/testimonials/testimonial2.jpg" alt="Author" />
+              </div>
+              <div className="description">
+                <p>
+                  Sed ut perspiciatis unde omnis natus error sit voluac cusantium doloremque laudantium totame rem aperiam eaque quae abillo inventore veritatis et quase
+                </p>
+                <h4>Justin D. Thompson</h4>
+                {' '}
+                <span className="designation">Senior Manager</span>
+                {' '}
+                <div className="ratting">
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+            <div className="testimonial-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/testimonials/testimonial1.jpg" alt="Author" />
+              </div>
+              <div className="description">
+                <p>
+                  Quis autem vel eum iure repreh enderit quin voluptate velit esse quam nihil molestiae consequa tur veillumqus dolore fugiat quo voluptas pariatuLorem psum
+                </p>
+                <h4>Donald A. Guthrie</h4>
+                {' '}
+                <span className="designation">Senior Manager</span>
+                {' '}
+                <div className="ratting">
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+            <div className="testimonial-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/testimonials/testimonial2.jpg" alt="Author" />
+              </div>
+              <div className="description">
+                <p>
+                  Sed ut perspiciatis unde omnis natus error sit voluac cusantium doloremque laudantium totame rem aperiam eaque quae abillo inventore veritatis et quase
+                </p>
+                <h4>Justin D. Thompson</h4>
+                {' '}
+                <span className="designation">Senior Manager</span>
+                {' '}
+                <div className="ratting">
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star"></i>
+                  {' '}
+                  <i className="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+            </div>
+          </Slider>
+        </div>
+        <div className="testimonial-bg bg-lighter">
+          <img className="bg" src="/assets/images/shapes/testi-bg.png" alt="BG" />
+          {' '}
+          <img className="shape" src="/assets/images/shapes/testi-right.png" alt="Shape" />
+        </div>
+      </section>
+      <section className="news-area rel z-2 pt-120 rpt-90 pb-100 rpb-70">
+        <div className="container">
+          <div className="row justify-content-between align-items-end mb-10">
+            <div className="col-xl-5 col-lg-6">
+              <div className="section-title mb-15">
+                <h2 className="title">Latest Blog & News</h2>
+                <p>
+                  Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="slider-btns text-lg-right mb-20">
+                <button className="news-prev">
+                  <i className="far fa-long-arrow-left"></i>
+                </button>
+                {' '}
+                <button className="news-next">
+                  <i className="far fa-long-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <Slider className="news-slider-wrap" slidesToShow={3} responsive={[[1199,2],[768,1]]} arrows={true}>
+            <div className="news-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/blog/news1.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Started With Node An Introduction To APIs, HTTP And ES6+ JavaScript</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="news-item wow fadeInUp delay-0-4s">
+              <div className="image">
+                <img src="/assets/images/blog/news2.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Video Playback On The Web Video See Delivery Best Practices Part 2</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="news-item wow fadeInUp delay-0-6s">
+              <div className="image">
+                <img src="/assets/images/blog/news3.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Started With Node An Introduction To APIs, HTTP And ES6+ JavaScript</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="news-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/blog/news1.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Started With Node An Introduction To APIs, HTTP And ES6+ JavaScript</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="news-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/blog/news2.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Video Playback On The Web Video See Delivery Best Practices Part 2</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="news-item wow fadeInUp delay-0-2s">
+              <div className="image">
+                <img src="/assets/images/blog/news3.jpg" alt="News" />
+              </div>
+              <div className="content">
+                <ul className="blog-meta">
+                  <li>
+                    <i className="far fa-user-circle"></i>
+                    {' '}
+                    <a href="#">Michael M.</a>
+                  </li>
+                  <li>
+                    <i className="far fa-comments"></i>
+                    {' '}
+                    <a href="#">Comm (05)</a>
+                  </li>
+                </ul>
+                <h5>
+                  <a href="/blog-details">Started With Node An Introduction To APIs, HTTP And ES6+ JavaScript</a>
+                </h5>
+                <p>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantim doloremque laudantium totam
+                </p>
+                {' '}
+                <a href="/blog-details" className="read-more">
+                  Read more
+                  {' '}
+                  <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </Slider>
+        </div>
+      </section>
+      <section className="client-logo-area rel z-1 pb-130 rpb-100">
+        <div className="container">
+          <div className="client-logo-inner">
+            <div className="row justify-content-center">
+              <div className="col-xl-5 col-lg-6 col-md-10">
+                <div className="section-title text-center mb-50">
+                  <h2 className="title">premium sponsors</h2>
+                  <p>
+                    Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt labore dolore magna aliqua suspendisse
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Slider className="client-logo-active" slidesToShow={6} responsive={[[1200,4],[992,3],[480,2]]}>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo1.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-3s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo2.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-4s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo3.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-5s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo4.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-6s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo5.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-7s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo6.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-8s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo1.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo2.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo3.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo4.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo5.png" alt="Client Logo" />
+                </a>
+              </div>
+              <div className="client-logo-item wow fadeInUp delay-0-2s">
+                <a href="#">
+                  <img src="/assets/images/client-logos/logo6.png" alt="Client Logo" />
+                </a>
+              </div>
+            </Slider>
+          </div>
+        </div>
+        {' '}
+        <img className="client-logo-bg" src="/assets/images/background/client-logo-bg.png" alt="Background" />
+      </section>
+    </SiteShell>
   );
 }

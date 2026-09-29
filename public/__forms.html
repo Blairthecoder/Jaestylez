@@ -1,20 +1,41 @@
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><title>Rashad the Helper forms</title></head>
+  <head><meta charset="utf-8"><title>Qutter forms</title></head>
   <body>
-    <form name="move-request" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="hidden" name="form-name" value="move-request">
-      <input name="subject">
+    <!-- Static form definitions so Netlify detects the forms the React pages submit. -->
+    <form name="appointment" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="appointment">
+      <input name="bot-field">
+      <input name="name">
+      <input name="email">
+      <input name="phone">
+      <input name="select-category">
+      <input name="date-time">
+      <textarea name="message"></textarea>
+    </form>
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact">
       <input name="bot-field">
       <input name="name">
       <input name="phone">
       <input name="email">
-      <input name="service">
-      <input name="date">
-      <input name="startZip">
-      <input name="endZip">
-      <input name="truck">
-      <textarea name="details"></textarea>
+      <input name="subject">
+      <textarea name="message"></textarea>
+    </form>
+    <form name="comment" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="comment">
+      <input name="bot-field">
+      <input name="name">
+      <input name="phone">
+      <input name="email">
+      <input name="subject">
+      <input name="website">
+      <textarea name="message"></textarea>
+    </form>
+    <form name="newsletter" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="newsletter">
+      <input name="bot-field">
+      <input name="email">
     </form>
   </body>
 </html>

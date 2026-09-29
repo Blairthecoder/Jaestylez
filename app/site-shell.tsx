@@ -1,73 +1,24 @@
-import { ArrowUpRight, MapPin, Menu, Phone } from 'lucide-react';
-import { InstagramIcon, TikTokIcon } from './brand-icons';
-import { instagramUrl, tiktokUrl } from './social-data';
+import { SiteHeader } from '@/app/components/site-header';
+import { SiteFooter } from '@/app/components/site-footer';
+import { PageEffects } from '@/app/components/page-effects';
 
-export function SiteHeader() {
+export function SiteShell({
+  header,
+  footerClassName = '',
+  children,
+}: {
+  header: 'one' | 'three';
+  footerClassName?: string;
+  children: React.ReactNode;
+}) {
   return (
     <>
-      <div className="utility-bar">
-        <div><span><MapPin size={13} /> Serving Greater Houston, TX</span><span>Moving truck &amp; equipment available</span></div>
-        <div className="utility-contact">
-          <a className="utility-phone" href="tel:+15042098175"><Phone size={13} /> Call or Text 504-209-8175</a>
-          <span className="utility-social">
-            <a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Rashad the Helper on Instagram"><InstagramIcon size={15} /></a>
-            <a href={tiktokUrl} target="_blank" rel="noreferrer" aria-label="Rashad the Helper on TikTok"><TikTokIcon size={15} /></a>
-          </span>
-        </div>
+      <div className="page-wrapper">
+        <SiteHeader variant={header} />
+        {children}
+        <SiteFooter className={footerClassName} />
       </div>
-      <header className="site-header">
-        <a className="brand" href="/" aria-label="Rashad the Helper, home">
-          <span className="brand-text"><strong>Rashad the Helper</strong><small>Houston moving help</small></span>
-        </a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="/">Home</a>
-          <a href="/services">Services</a>
-          <a href="/service-areas">Areas We Serve</a>
-          <a href="/#how-it-works">How It Works</a>
-          <a href="/#latest">Latest</a>
-          <a href="/#faq">FAQ</a>
-        </nav>
-        <a className="header-cta" href="/#booking">Request a Time</a>
-        <details className="mobile-menu">
-          <summary aria-label="Open navigation"><Menu size={22} /><span>Menu</span></summary>
-          <nav aria-label="Mobile navigation">
-            <a href="/services">Services</a>
-            <a href="/service-areas">Areas We Serve</a>
-            <a href="/#how-it-works">How It Works</a>
-            <a href="/#latest">Latest Posts</a>
-            <a href="/#faq">FAQ</a>
-            <a href="tel:+15042098175">Call 504-209-8175</a>
-            <a href="/#booking">Request a Time <ArrowUpRight size={17} /></a>
-          </nav>
-        </details>
-      </header>
+      <PageEffects />
     </>
-  );
-}
-
-export function SiteFooter() {
-  return (
-    <footer className="site-footer">
-      <div className="footer-lead">
-        <a className="brand footer-brand" href="/">
-          <span className="brand-text"><strong>Rashad the Helper</strong><small>Houston moving help</small></span>
-        </a>
-        <p>Moving help with a truck, dolly, blankets, and toolkit for homes and apartments across Greater Houston.</p>
-        <a className="footer-cta" href="/#booking">Request a Time <ArrowUpRight size={17} /></a>
-        <a className="footer-phone" href="tel:+15042098175"><Phone size={15} /> 504-209-8175</a>
-      </div>
-      <div className="footer-column"><h2>Services</h2><a href="/services/truck-loading">Moving Truck &amp; Loading</a><a href="/services/unloading">Unloading</a><a href="/services/heavy-lifting">Heavy Lifting</a><a href="/services/furniture-assembly">Furniture Assembly</a><a href="/services/rental-truck-driving">Truck Driving</a></div>
-      <div className="footer-column"><h2>Explore</h2><a href="/service-areas">Areas We Serve</a><a href="/#how-it-works">How It Works</a><a href="/#latest">Latest Posts</a><a href="/#faq">Common Questions</a><a href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a><a href={tiktokUrl} target="_blank" rel="noreferrer">TikTok ↗</a></div>
-      <div className="footer-bottom"><span>Houston, Texas</span><span>© {new Date().getFullYear()} Rashad the Helper</span><span>Truck &amp; moving equipment available</span></div>
-    </footer>
-  );
-}
-
-export function MobileBookingBar() {
-  return (
-    <aside className="mobile-booking-bar" aria-label="Quick booking">
-      <a className="mobile-call" href="tel:+15042098175"><Phone size={16} /> Call Rashad</a>
-      <a className="mobile-book" href="/#booking">Request a Time</a>
-    </aside>
   );
 }

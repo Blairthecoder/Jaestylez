@@ -10,13 +10,18 @@ const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://rashadthehelper.netl
 
 const routes = [
   '/',
+  '/about',
   '/services',
-  '/service-areas',
-  '/services/truck-loading',
-  '/services/unloading',
-  '/services/heavy-lifting',
-  '/services/furniture-assembly',
-  '/services/rental-truck-driving',
+  '/service-details',
+  '/portfolio',
+  '/portfolio-details',
+  '/pricing',
+  '/offers',
+  '/shop',
+  '/product-details',
+  '/blog',
+  '/blog-details',
+  '/contact',
 ];
 
 await rm(outputDir, { recursive: true, force: true });
@@ -31,6 +36,12 @@ const mimeTypes = new Map([
   ['.png', 'image/png'],
   ['.svg', 'image/svg+xml'],
   ['.woff2', 'font/woff2'],
+  ['.jpg', 'image/jpeg'],
+  ['.jpeg', 'image/jpeg'],
+  ['.webp', 'image/webp'],
+  ['.gif', 'image/gif'],
+  ['.woff', 'font/woff'],
+  ['.ttf', 'font/ttf'],
 ]);
 
 const env = {
