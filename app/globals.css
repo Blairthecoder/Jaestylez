@@ -778,9 +778,21 @@ html {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
   }
+  /* The home header is absolutely positioned over the hero. Reserve its full
+     mobile height so the logo and menu never sit on top of the headline. */
   .jae-hero {
-    padding-top: 90px !important;
-    padding-bottom: 80px !important;
+    padding-top: 172px !important;
+    padding-bottom: 72px !important;
+  }
+  .jae-hero h1 {
+    margin-bottom: 18px;
+    font-size: clamp(36px, 10.5vw, 46px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .jae-hero .hero-content p {
+    margin-bottom: 28px;
+    line-height: 1.65;
   }
 }
 
