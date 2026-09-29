@@ -18,6 +18,10 @@ export type TimeSlot = {
   resourceName?: string;
 };
 
+// Wix's built-in "staff member" resource type. Asking for it puts the stylist on each slot, which the Wix
+// booking form needs to accept the hand-off.
+const STAFF_RESOURCE_TYPE_ID = '1cd44cf8-756f-41c3-bd90-3e2ffcaf1155';
+
 /** Open, bookable slots between two local dates (inclusive), earliest first. */
 export async function fetchTimeSlots(serviceId: string, fromDate: string, toDate: string): Promise<TimeSlot[]> {
   const response = await wix().availabilityTimeSlots.listAvailabilityTimeSlots({
@@ -27,6 +31,7 @@ export async function fetchTimeSlots(serviceId: string, fromDate: string, toDate
     timeZone: SALON_TIME_ZONE,
     bookable: true,
     timeSlotsPerDay: 60,
+    includeResourceTypeIds: [STAFF_RESOURCE_TYPE_ID],
   });
   return (response.timeSlots ?? [])
     .filter((s) => s.bookable !== false && s.localStartDate && s.localEndDate && s.scheduleId)
