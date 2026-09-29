@@ -113,6 +113,38 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="about-press pb-100 rpb-70">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-8 col-lg-10">
+              <div className="section-title text-center mb-40">
+                <h2 className="title">As featured in Voyage Houston</h2>
+                <p>Jae Stylez was profiled in Voyage Houston Magazine&apos;s Hidden Gems series on local businesses.</p>
+                <span className="sub-title">press</span>
+              </div>
+              <ul className="list-style-one my-20">
+                <li>Ten years in the hair industry, trained at Ogle School of Hair, Skin &amp; Nails.</li>
+                <li>Specializes in natural hair, from locs to intricate braid styles, with a focus on hair health.</li>
+                <li>
+                  Also behind Marilyn Jae Cosmetics, named for her late grandmother, and The Lox Box hair care line:
+                  Lavender Rose Water hydration spray, Stimulating Scalp Oil, Crown Control gel and Hair Whip.
+                </li>
+              </ul>
+              <div className="text-center mt-30">
+                <a
+                  className="theme-btn"
+                  href="https://voyagehouston.com/interview/hidden-gems-meet-jasmin-lafond-of-jaestylez/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  read the interview <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="cta-video-area pt-130 rpt-100 rel z-2">
         <div className="container">
           <div className="row">

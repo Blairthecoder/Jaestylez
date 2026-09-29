@@ -105,8 +105,8 @@ export const photos: Record<string, Photo> = {
     tags: [],
   },
   jae: {
-    file: 'jae-rashawn-portrait',
-    alt: 'Jae Rashawn, licensed loctician and natural hair stylist',
+    file: 'jae-owner-portrait',
+    alt: 'Jae, owner and loctician at Jae Stylez, smiling with long locs',
     tags: [],
   },
 };

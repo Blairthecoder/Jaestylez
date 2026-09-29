@@ -235,7 +235,7 @@ export function ServiceDetail() {
   const service = slug === undefined ? undefined : (services.find((s) => s.slug === slug) ?? (slug ? undefined : services[0]));
 
   useEffect(() => {
-    if (service) document.title = `${service.name} | Qutter`;
+    if (service) document.title = `${service.name} | Jae Stylez`;
   }, [service]);
 
   if (!service) {

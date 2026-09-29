@@ -3,7 +3,7 @@ export function PageBanner({ title, crumbs }: { title: string; crumbs: { label: 
   return (
     <section
       className="page-banner text-white py-190 rpy-130"
-      style={{ backgroundImage: 'url(/assets/images/banner/banner.jpg)' }}
+      style={{ backgroundImage: 'url(/images/jae/banner.jpg)' }}
     >
       <div className="container">
         <div className="banner-inner">

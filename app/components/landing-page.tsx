@@ -278,8 +278,8 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                           {glance.map((row) => (
                             <tr key={row.title}>
                               <th scope="row">{row.title}</th>
-                              <td>{row.lasts || '—'}</td>
-                              <td>{row.best || '—'}</td>
+                              <td data-label="How long it lasts">{row.lasts || '—'}</td>
+                              <td data-label="Best for">{row.best || '—'}</td>
                             </tr>
                           ))}
                         </tbody>

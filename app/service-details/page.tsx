@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <SiteShell header="three" footerClassName="mt-80">
-      <section className="page-banner text-white py-190 rpy-130" style={{ backgroundImage: "url(/assets/images/banner/banner.jpg)" }}>
+      <section className="page-banner text-white py-190 rpy-130" style={{ backgroundImage: "url(/images/jae/banner.jpg)" }}>
         <div className="container">
           <div className="banner-inner">
             <h1 className="page-title wow fadeInRight delay-0-2s">Details</h1>
