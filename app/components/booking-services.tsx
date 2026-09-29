@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { fetchBookableServices, type BookableService } from '@/app/lib/wix-bookings';
+import { loadServices, serviceHref, type BookableService } from '@/app/lib/wix-bookings';
 
 function excerpt(text: string, max = 150): string {
   const clean = text.replace(/\s+/g, ' ').trim();
@@ -17,10 +17,12 @@ export function BookingServices() {
 
   useEffect(() => {
     let cancelled = false;
-    fetchBookableServices()
+    loadServices()
       .then((items) => {
         if (cancelled) return;
         setServices(items);
+        const wanted = new URLSearchParams(window.location.search).get('category');
+        if (wanted && items.some((s) => s.category === wanted)) setCategory(wanted);
         setStatus('ready');
       })
       .catch(() => !cancelled && setStatus('error'));
@@ -123,9 +125,7 @@ export function BookingServices() {
                         <a className="theme-btn" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
                           book now <i className="far fa-long-arrow-right"></i>
                         </a>
-                        <a href={service.detailsUrl} target="_blank" rel="noopener noreferrer">
-                          details
-                        </a>
+                        <a href={serviceHref(service)}>details</a>
                       </div>
                     </div>
                   </article>
