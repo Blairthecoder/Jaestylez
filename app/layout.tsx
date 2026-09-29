@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { site } from '@/app/site-data';
+import { localBusinessSchema } from '@/app/lib/schema';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rashadthehelper.netlify.app';
 
@@ -25,29 +25,6 @@ const styles = [
   '/assets/css/style.css',
 ];
 
-const localBusiness = {
-  '@context': 'https://schema.org',
-  '@type': 'HairSalon',
-  name: site.name,
-  description: site.blurb,
-  telephone: site.phone,
-  email: site.email,
-  image: `${siteUrl}/images/jae/results-collage.jpg`,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '630 Murphy Rd Ste 211',
-    addressLocality: 'Stafford',
-    addressRegion: 'TX',
-    postalCode: '77477',
-    addressCountry: 'US',
-  },
-  areaServed: ['Stafford', 'Sugar Land', 'Missouri City', 'Richmond', 'Houston'].map((name) => ({
-    '@type': 'City',
-    name,
-  })),
-  sameAs: site.social.map((s) => s.href),
-};
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
@@ -65,7 +42,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema(siteUrl)) }} />
         {children}
       </body>
     </html>

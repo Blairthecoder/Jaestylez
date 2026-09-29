@@ -111,27 +111,28 @@ export const faqs = [
   },
   {
     q: 'What are your hours?',
-    a: 'Tuesday through Thursday 9 AM to 7 PM. Friday 9 AM to 5 PM. Saturday 8 AM to 4 PM. Sunday closed. Monday by appointment.',
+    a: 'Monday 8 AM to 4 PM, Tuesday 9 AM to 7 PM, Wednesday and Thursday 8 AM to 7 PM, Friday 8:30 AM to 5:30 PM, and Saturday 9 AM to 4 PM. Sunday closed. All services are by appointment.',
   },
 ];
 
 export const about = {
   eyebrow: 'ABOUT THE STYLIST · STAFFORD, TX',
-  title: 'Meet Jae Rashawn, Licensed Loctician in Stafford, TX',
+  title: 'Meet Jasmin Lafond, Licensed Loctician in Stafford, TX',
   tagline: 'Natural hair care built on one belief: healthy hair is the foundation of every great look.',
   intro: [
-    "I'm Jae Rashawn, a licensed natural hair stylist and loctician based in Stafford, TX, serving the greater Houston area. I specialize in locs, retwists, twists, silk presses, protective styles, and healthy hair maintenance, all built on one principle: your hair should still be there in five years.",
+    "I'm Jasmin Lafond, known to clients as Jae: a licensed natural hair stylist and loctician based in Stafford, TX, serving the greater Houston area. I specialize in locs, retwists, twists, silk presses, protective styles, and healthy hair maintenance, all built on one principle: your hair should still be there in five years.",
     "From your very first consultation, my goal is to understand your hair, your lifestyle, and your goals. Then create a style that's low-maintenance, long-lasting, and unmistakably you. Whether you're starting your loc journey or maintaining a crown you've grown for years, you're in caring, capable hands.",
   ],
   photo: '9eed3b_795940e2478b4c5a87d973d71fa0461e~mv2.jpeg',
   storyEyebrow: 'THE JOURNEY',
   storyTitle: 'My Story',
   story: [
-    'Jae Rashawn is the founder of Jae Stylez and Marilyn Cosmetics, proudly serving clients throughout Southwest Houston and the surrounding areas.',
-    "Jae discovered her passion for hairstyling at just nine years old. Growing up, she braided anything with hair, including dolls, family members, and even her neighbor's dog. That early creativity eventually developed into a lifelong passion for natural hair care, protective styling, and helping women feel confident.",
-    'After high school, Jae attended Prairie View A&M University, where she studied Nutrition while completing 1,500 hours of professional cosmetology training. In 2016, she graduated from Prairie View A&M University and began her journey as a beauty entrepreneur and professional Houston hairstylist.',
-    "Today, Jae continues to perfect her craft while working toward her goal of becoming one of the top natural hair stylists in the industry. She specializes in creating healthy, beautiful, and long-lasting hairstyles designed to complement each client's natural beauty.",
-    'Jae takes pride in remaining a student of her craft and looks forward to sharing her God-given gifts with new and returning clients for many years to come.',
+    'Jasmin Lafond, known as Jae, is the founder of Jae Stylez, Marilyn Jae Cosmetics and The Lox Box hair care line, serving clients throughout Southwest Houston and the surrounding areas.',
+    "Her love of hair started young. As a girl she braided anything she could get her hands on, from her dolls' hair to the grass in the yard. By middle school she was experimenting with her own look and practicing on anyone who would sit still, and by high school her passion had become a business.",
+    'After a short time at Prairie View A&M University, she realized her calling was cosmetology and left to train at Ogle School of Hair, Skin & Nails. She has spent ten years in the industry since.',
+    'The early years were not easy. She dipped into her savings to cover her salon chair when clients were slow, handed out about 50 business cards a day, and took a job at a beauty supply store to learn the products while her clientele grew. That retail income carried her until her book filled up.',
+    'Today Jae focuses on natural hair, from locs to intricate braid styles, with hair health as the priority. Marilyn Jae Cosmetics is named for her late grandmother, and The Lox Box was born from a need for better ingredients: Lavender Rose Water hydration spray, Stimulating Scalp Oil, water-based Crown Control gel and Hair Whip for deep moisture.',
+    'She wants clients to ask questions and learn what works for their own hair, because a true specialist offers knowledge and care along with the style.',
   ],
   specialtiesEyebrow: 'EXPERTISE',
   specialtiesTitle: 'What Jae Specializes In',

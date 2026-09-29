@@ -4,7 +4,8 @@
 export const site = {
   name: 'Jae Stylez',
   tagline: 'Loctician & Natural Hair Stylist',
-  owner: 'Jae Rashawn',
+  owner: 'Jasmin Lafond',
+  ownerNickname: 'Jae',
   phone: '(346) 377-7185',
   phoneHref: 'tel:+13463777185',
   email: 'booking@iamjaestylez.com',
@@ -14,12 +15,12 @@ export const site = {
   blurb: 'Healthy-hair-first styling from a licensed loctician serving Greater Houston.',
   hoursSummary: 'Tue - Thu until 7 pm · Closed Sunday',
   hours: [
-    { day: 'Monday', time: 'Appointments by request' },
+    { day: 'Monday', time: '8:00 am – 4:00 pm' },
     { day: 'Tuesday', time: '9:00 am – 7:00 pm' },
-    { day: 'Wednesday', time: '9:00 am – 7:00 pm' },
-    { day: 'Thursday', time: '9:00 am – 7:00 pm' },
-    { day: 'Friday', time: '9:00 am – 5:00 pm' },
-    { day: 'Saturday', time: '8:00 am – 4:00 pm' },
+    { day: 'Wednesday', time: '8:00 am – 7:00 pm' },
+    { day: 'Thursday', time: '8:00 am – 7:00 pm' },
+    { day: 'Friday', time: '8:30 am – 5:30 pm' },
+    { day: 'Saturday', time: '9:00 am – 4:00 pm' },
     { day: 'Sunday', time: 'Closed' },
   ],
   social: [
@@ -28,6 +29,8 @@ export const site = {
     { icon: 'fab fa-tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@jaestylez' },
   ],
   googleReviewsUrl: 'https://share.google/tyXGOFilenpVDbY6m',
+  googleBusinessUrl: 'https://share.google/SqWrCi9CJWcv7iZEE',
+  googleKgmid: '/g/11nr5b9br9',
 };
 
 export type NavItem = { label: string; href?: string; children?: NavItem[] };

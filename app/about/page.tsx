@@ -8,9 +8,9 @@ import { about } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Meet Jae Rashawn | Licensed Loctician in Stafford, TX' },
+  title: { absolute: 'Meet Jasmin Lafond | Licensed Loctician in Stafford, TX' },
   description:
-    'Meet Jae Rashawn, licensed natural hair stylist and loctician in Stafford, TX. 10+ years serving Sugar Land, Missouri City, and Greater Houston.',
+    'Meet Jasmin Lafond (Jae), licensed natural hair stylist and loctician in Stafford, TX. Ten years in the industry, serving Sugar Land, Missouri City, and Greater Houston.',
 };
 
 const specialties = [
@@ -53,7 +53,7 @@ export default function Page() {
                   <img className="about-logo" src={site.logo} alt={site.name} />
                 </div>
                 <div className="section-title mb-25">
-                  <h2 className="title">Meet Jae Rashawn, licensed loctician</h2>
+                  <h2 className="title">Meet Jasmin Lafond, licensed loctician</h2>
                 </div>
                 <p>
                   <strong>{about.tagline}</strong>

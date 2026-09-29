@@ -89,7 +89,7 @@ export default function Page() {
               <div className="row justify-content-center">
                 <div className="col-lg-8">
                   <div className="section-title mb-35">
-                    <h2 className="title">Meet Jae Rashawn, licensed loctician</h2>
+                    <h2 className="title">Meet Jasmin Lafond, licensed loctician</h2>
                   </div>
                 </div>
               </div>
