@@ -1,4 +1,4 @@
-import { footerNews, footerServices, site } from '@/app/site-data';
+import { footerServices, site } from '@/app/site-data';
 import { NetlifyForm } from '@/app/components/forms';
 
 export function SiteFooter({ className = '' }: { className?: string }) {
@@ -26,10 +26,10 @@ export function SiteFooter({ className = '' }: { className?: string }) {
             <div className="footer-widget about-widget wow fadeInUp delay-0-2s">
               <h5 className="footer-title">about us</h5>
               <div className="about-widget-content">
-                <p>{site.aboutBlurb}</p>
+                <p>{site.blurb}</p>
                 <div className="social-style-two pt-5">
                   {site.social.map((s) => (
-                    <a key={s.label} href={s.href} aria-label={s.label}>
+                    <a key={s.label} href={s.href} aria-label={s.label} target="_blank" rel="noopener noreferrer">
                       <i className={s.icon}></i>
                     </a>
                   ))}
@@ -50,22 +50,12 @@ export function SiteFooter({ className = '' }: { className?: string }) {
             </div>
           </div>
           <div className="col-xl-4 col-md-6">
-            <div className="footer-widget news-widget wow fadeInUp delay-0-6s">
-              <h5 className="footer-title">recent news</h5>
-              <ul>
-                {footerNews.map((post) => (
-                  <li key={post.title}>
-                    <div className="image">
-                      <img src={post.image} alt="" />
-                    </div>
-                    <div className="content">
-                      <h6>
-                        <a href="/blog-details">{post.title}</a>
-                      </h6>
-                      <span className="date">
-                        <i className="far fa-calendar-alt"></i> {post.date}
-                      </span>
-                    </div>
+            <div className="footer-widget wow fadeInUp delay-0-6s">
+              <h5 className="footer-title">hours</h5>
+              <ul className="footer-hours">
+                {site.hours.map((h) => (
+                  <li key={h.day}>
+                    <span>{h.day}</span> <span>{h.time}</span>
                   </li>
                 ))}
               </ul>
@@ -77,15 +67,15 @@ export function SiteFooter({ className = '' }: { className?: string }) {
               <ul>
                 <li>
                   <i className="far fa-map-marker-alt"></i>
-                  <span>{site.address}</span>
+                  <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer">{site.address}</a>
                 </li>
                 <li>
                   <i className="far fa-phone"></i>
-                  <a href={site.phoneFooterHref}>{site.phoneFooter}</a>
+                  <a href={site.phoneHref}>{site.phone}</a>
                 </li>
                 <li>
                   <i className="far fa-clock"></i>
-                  <span>{site.hoursShort}</span>
+                  <span>{site.hoursSummary}</span>
                 </li>
                 <li>
                   <i className="far fa-envelope"></i>

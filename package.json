@@ -16,6 +16,7 @@
   "dependencies": {
     "@base-ui/react": "1.7.0",
     "@shadcn/react": "0.3.0",
+    "@wix/blog": "^1.0.665",
     "@wix/bookings": "^1.0.1699",
     "@wix/ecom": "^1.0.2524",
     "@wix/redirects": "^1.0.129",

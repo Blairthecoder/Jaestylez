@@ -6,11 +6,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rashadthehelper.net
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Qutter | Barbers & Hair Cutting Salon',
-    template: '%s | Qutter',
+    default: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez',
+    template: '%s | Jae Stylez',
   },
   description:
-    'Barbers, hair cutting, shaving, styling and spa services. Book an appointment online.',
+    'Jae Stylez is a licensed loctician and natural hair stylist in Stafford, TX. Retwists, starter locs, twists, silk press. Serving Sugar Land and Houston.',
   icons: { icon: '/favicon.png' },
 };
 

@@ -76,7 +76,7 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
                 <i className="far fa-phone"></i> <b>Call Us : </b> <a href={site.phoneHref}>{site.phone}</a>
               </li>
               <li>
-                <i className="far fa-clock"></i> <b>Opening Hour : </b> {site.hoursLong}
+                <i className="far fa-clock"></i> <b>Hours : </b> {site.hoursSummary}
               </li>
             </ul>
           </div>
@@ -103,7 +103,7 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
           <div className="logo-outer">
             <div className="logo">
               <a href="/">
-                <img src="/assets/images/logos/logo.png" alt={site.name} title={site.name} />
+                <img src={site.logo} alt={site.name} title={site.name} />
               </a>
             </div>
           </div>
@@ -113,7 +113,7 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
               <div className="navbar-header">
                 <div className="mobile-logo my-15">
                   <a href="/">
-                    <img src="/assets/images/logos/logo.png" alt={site.name} title={site.name} />
+                    <img src={site.logo} alt={site.name} title={site.name} />
                   </a>
                 </div>
                 <button

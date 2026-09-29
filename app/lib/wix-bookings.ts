@@ -1,7 +1,7 @@
 'use client';
 
 import type { services } from '@wix/bookings';
-import { wix } from '@/app/lib/wix';
+import { wix, wixImageUrl } from '@/app/lib/wix';
 
 export type BookableService = {
   id: string;
@@ -36,14 +36,6 @@ function formatDuration(minutes?: number | null): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return [h ? `${h} hr` : '', m ? `${m} min` : ''].filter(Boolean).join(' ');
-}
-
-// Wix stores images as wix:image://v1/<file id>/<name>#...; the public URL is built from the file id.
-function wixImageUrl(uri: string | null | undefined, width: number, height: number): string | null {
-  const match = uri?.match(/^wix:image:\/\/v1\/([^/#]+)/);
-  return match
-    ? `https://static.wixstatic.com/media/${match[1]}/v1/fill/w_${width},h_${height},al_c,q_80/file.jpg`
-    : null;
 }
 
 function priceAmount(payment: NonNullable<services.Service['payment']>): number | null {

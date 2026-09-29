@@ -69,6 +69,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
         const max = Math.max(10, Math.ceil(Math.max(0, ...prices)));
         setProducts(items);
         setCollections(cols);
+        const wanted = new URLSearchParams(window.location.search).get('category');
+        const match = cols.find((c) => c.name === wanted);
+        if (match?._id) setCollectionId(match._id);
         setBounds([0, max]);
         setRange([0, max]);
         setStatus('ready');

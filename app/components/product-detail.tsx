@@ -38,7 +38,7 @@ export function ProductDetail() {
         if (!found) return setStatus('missing');
         setProduct(found);
         setRelated(items.filter((p) => p._id !== found._id).slice(0, 4));
-        document.title = `${found.name} | Qutter`;
+        document.title = `${found.name} | Jae Stylez`;
         setStatus('ready');
       })
       .catch(() => !cancelled && setStatus('error'));

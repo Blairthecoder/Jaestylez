@@ -332,3 +332,304 @@ html {
 .price-item .content h5 a {
   color: inherit;
 }
+
+/* Header logo sits on a light badge so the black silhouette stays visible on the dark header */
+.logo img,
+.mobile-logo img {
+  height: 68px;
+  width: auto;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #f4e8d6;
+}
+.footer-hours {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.footer-hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 15px;
+}
+
+/* Hair style landing pages */
+.landing-title {
+  font-size: clamp(34px, 5vw, 64px);
+}
+.landing-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d69838;
+}
+.landing-lead {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  line-height: 1.35;
+  color: #252525;
+}
+.landing-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 22px;
+}
+.landing-quote-text {
+  max-width: 820px;
+  margin: 0 auto 14px;
+  font-size: 22px;
+  line-height: 1.5;
+}
+.landing-quote-author .stars {
+  color: #f6b90f;
+  letter-spacing: 2px;
+}
+.landing-heading {
+  font-size: clamp(26px, 3.2vw, 38px);
+}
+.landing-section p,
+.landing-intro p {
+  font-size: 17px;
+}
+.landing-list li,
+.landing-card li {
+  margin-bottom: 8px;
+}
+.landing-card {
+  height: 100%;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-top: 4px solid #d69838;
+  border-radius: 5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+.landing-card h4 {
+  margin-bottom: 4px;
+}
+.landing-card-sub {
+  margin-bottom: 14px;
+  color: #d69838;
+  font-weight: 500;
+}
+.landing-card ul {
+  padding-left: 18px;
+  margin: 0;
+  font-size: 15px;
+}
+.landing-price-card {
+  height: 100%;
+  padding: 26px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+.landing-price-card .booking-meta,
+.landing-price-card .booking-actions {
+  justify-content: center;
+}
+.landing-price {
+  margin: 8px 0 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  color: #d69838;
+}
+.landing-steps {
+  padding: 0;
+  margin: 20px 0;
+  list-style: none;
+  counter-reset: step;
+}
+.landing-steps li {
+  position: relative;
+  padding: 0 0 22px 64px;
+}
+.landing-steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #d69838;
+  font-family: 'Oswald', sans-serif;
+}
+.landing-steps strong {
+  display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+}
+
+/* Blog post bodies */
+.blog-body img,
+.blog-html img {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+.blog-body h2,
+.blog-body h3,
+.blog-html h2,
+.blog-html h3 {
+  margin: 34px 0 14px;
+}
+.blog-body p,
+.blog-body li,
+.blog-html p,
+.blog-html li {
+  font-size: 17px;
+  line-height: 1.75;
+}
+.blog-body table,
+.blog-html table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+.blog-body td,
+.blog-body th,
+.blog-html td,
+.blog-html th {
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  vertical-align: top;
+}
+
+/* Hair styles gallery */
+.gallery-tile {
+  display: block;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #0d0d0d;
+}
+.gallery-tile img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+.gallery-tile:hover img {
+  transform: scale(1.04);
+}
+
+/* Home page */
+.jae-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+.jae-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.5));
+}
+.jae-hero .container {
+  position: relative;
+  z-index: 2;
+}
+.jae-hero .hero-bg-shapes {
+  z-index: 1;
+}
+.jae-hero h1 {
+  font-size: clamp(38px, 6vw, 72px);
+}
+.hero-tagline {
+  font-size: 22px;
+}
+.review-card {
+  height: 100%;
+  margin: 0;
+  padding: 26px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+.review-google {
+  height: 40px;
+  width: auto;
+  margin-bottom: 8px;
+}
+.review-card .stars {
+  color: #f6b90f;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.review-card blockquote {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.review-card figcaption {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  color: #d69838;
+}
+.path-card ul {
+  padding-left: 18px;
+}
+.path-card a {
+  text-decoration: underline;
+}
+.featured-product .product-item .image img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.app-promo {
+  background: #f4e8d6;
+}
+.app-qr {
+  width: 120px;
+  height: 120px;
+}
+.hours-card .hours-dark li {
+  border-bottom-color: #e8e8e8;
+}
+.hours-card {
+  border-top-color: #d69838;
+}
+
+/* About + contact */
+.about-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+.contact-info-card {
+  padding: 32px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-top: 4px solid #d69838;
+  border-radius: 5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+.contact-info-list {
+  padding: 0;
+  margin: 16px 0 0;
+  list-style: none;
+}
+.contact-info-list li {
+  display: flex;
+  gap: 14px;
+  padding: 8px 0;
+}
+.contact-info-list i {
+  margin-top: 5px;
+  color: #d69838;
+}

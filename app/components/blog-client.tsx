@@ -1,0 +1,392 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+import {
+  formatDate,
+  loadCategories,
+  loadPostBySlug,
+  loadPosts,
+  type BlogCategory,
+  type BlogPost,
+  type RichNode,
+} from '@/app/lib/wix-blog';
+import { site } from '@/app/site-data';
+
+const postHref = (post: BlogPost) => `/blog-details?slug=${encodeURIComponent(post.slug)}`;
+
+type Blog = { status: 'loading' | 'ready' | 'error'; posts: BlogPost[]; categories: BlogCategory[] };
+
+function useBlog(): Blog {
+  const [state, setState] = useState<Blog>({ status: 'loading', posts: [], categories: [] });
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([loadPosts(), loadCategories().catch(() => [])])
+      .then(([posts, categories]) => !cancelled && setState({ status: 'ready', posts, categories }))
+      .catch(() => !cancelled && setState({ status: 'error', posts: [], categories: [] }));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return state;
+}
+
+function Meta({ post }: { post: BlogPost }) {
+  return (
+    <ul className="blog-meta">
+      <li>
+        <i className="far fa-user-circle"></i> {site.owner}
+      </li>
+      {post.date && (
+        <li>
+          <i className="far fa-calendar-alt"></i> {formatDate(post.date)}
+        </li>
+      )}
+      {post.minutes > 0 && (
+        <li>
+          <i className="far fa-clock"></i> {post.minutes} min read
+        </li>
+      )}
+    </ul>
+  );
+}
+
+function Sidebar({
+  blog,
+  onSearch,
+  activeCategory,
+  onCategory,
+}: {
+  blog: Blog;
+  onSearch?: (q: string) => void;
+  activeCategory?: string | null;
+  onCategory?: (id: string | null) => void;
+}) {
+  return (
+    <div className="blog-sidebar rmt-75">
+      {onSearch && (
+        <div className="widget widget-search">
+          <form onSubmit={(event) => event.preventDefault()} role="search">
+            <input
+              type="search"
+              placeholder="Search posts"
+              aria-label="Search posts"
+              onChange={(event) => onSearch(event.target.value)}
+            />
+            <button type="submit" aria-label="Search">
+              <i className="far fa-search"></i>
+            </button>
+          </form>
+        </div>
+      )}
+      {blog.categories.length > 0 && (
+        <div className="widget widget-menu">
+          <h5 className="widget-title">Categories</h5>
+          <ul>
+            <li>
+              <a
+                href={onCategory ? '#' : '/blog'}
+                className={onCategory && !activeCategory ? 'active' : undefined}
+                onClick={(event) => {
+                  if (!onCategory) return;
+                  event.preventDefault();
+                  onCategory(null);
+                }}
+              >
+                All Posts <i className="far fa-long-arrow-right"></i>
+              </a>
+            </li>
+            {blog.categories.map((category) => (
+              <li key={category.id}>
+                <a
+                  href={onCategory ? '#' : `/blog?category=${category.id}`}
+                  className={activeCategory === category.id ? 'active' : undefined}
+                  onClick={(event) => {
+                    if (!onCategory) return;
+                    event.preventDefault();
+                    onCategory(category.id);
+                  }}
+                >
+                  {category.label} <i className="far fa-long-arrow-right"></i>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="widget widget-news">
+        <h5 className="widget-title">Recent Posts</h5>
+        <ul>
+          {blog.posts.slice(0, 4).map((post) => (
+            <li key={post.id}>
+              {post.thumb && (
+                <div className="image">
+                  <img src={post.thumb} alt="" />
+                </div>
+              )}
+              <div className="content">
+                <h6>
+                  <a href={postHref(post)}>{post.title}</a>
+                </h6>
+                <span className="date">
+                  <i className="far fa-calendar-alt"></i> {formatDate(post.date)}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="widget widget-form">
+        <h3 className="widget-title">Book a Visit</h3>
+        <p className="text-white">See live availability and reserve your appointment online.</p>
+        <a className="theme-btn btn-border w-100" href="/services#book">
+          book online <i className="far fa-long-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function Status({ blog, count }: { blog: Blog; count: number }) {
+  if (blog.status === 'ready' && count > 0) return null;
+  return (
+    <p role="status" className="text-center">
+      {blog.status === 'loading' && 'Loading posts…'}
+      {blog.status === 'error' && 'Posts could not be loaded right now. Please try again shortly.'}
+      {blog.status === 'ready' && count === 0 && 'No posts match that search.'}
+    </p>
+  );
+}
+
+export function BlogIndex() {
+  const blog = useBlog();
+  const [category, setCategory] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
+
+  useEffect(() => setCategory(new URLSearchParams(window.location.search).get('category')), []);
+
+  const posts = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return blog.posts.filter(
+      (p) =>
+        (!category || p.categoryIds.includes(category)) &&
+        (!q || `${p.title} ${p.excerpt}`.toLowerCase().includes(q)),
+    );
+  }, [blog.posts, category, query]);
+
+  return (
+    <section className="blog-standard-area py-130 rpy-100">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8">
+            <Status blog={blog} count={posts.length} />
+            {posts.map((post) => (
+              <div className="blog-standard-item" key={post.id}>
+                {post.image && (
+                  <div className="image">
+                    <a href={postHref(post)}>
+                      <img src={post.image} alt={post.title} loading="lazy" />
+                    </a>
+                  </div>
+                )}
+                <div className="content">
+                  <Meta post={post} />
+                  <h3>
+                    <a href={postHref(post)}>{post.title}</a>
+                  </h3>
+                  <p>{post.excerpt}</p>{' '}
+                  <a href={postHref(post)} className="theme-btn">
+                    Read more <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="col-lg-4 col-md-7 col-sm-9">
+            <Sidebar blog={blog} onSearch={setQuery} activeCategory={category} onCategory={setCategory} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Post bodies come from the Wix editor; some are a single custom HTML block. Drop anything executable and
+// the block's own <style> so the site's typography applies instead.
+function cleanHtml(html: string): string {
+  return html
+    .replace(/<(script|style|iframe|object|embed)[\s\S]*?<\/\1>/gi, '')
+    .replace(/\son\w+="[^"]*"/gi, '')
+    .replace(/\son\w+='[^']*'/gi, '')
+    .replace(/javascript:/gi, '');
+}
+
+function renderText(node: RichNode, key: number): React.ReactNode {
+  let out: React.ReactNode = node.textData?.text ?? '';
+  for (const d of node.textData?.decorations ?? []) {
+    if (d.type === 'BOLD') out = <strong>{out}</strong>;
+    else if (d.type === 'ITALIC') out = <em>{out}</em>;
+    else if (d.type === 'UNDERLINE') out = <u>{out}</u>;
+    else if (d.type === 'LINK' && d.linkData?.link?.url) {
+      out = (
+        <a href={d.linkData.link.url} target="_blank" rel="noopener noreferrer">
+          {out}
+        </a>
+      );
+    }
+  }
+  return <span key={key}>{out}</span>;
+}
+
+function renderNodes(nodes: RichNode[] | undefined): React.ReactNode[] {
+  return (nodes ?? []).map((node, i) => {
+    const kids = () => renderNodes(node.nodes);
+    switch (node.type) {
+      case 'TEXT':
+        return renderText(node, i);
+      case 'PARAGRAPH':
+        return node.nodes?.length ? <p key={i}>{kids()}</p> : null;
+      case 'HEADING': {
+        const level = Math.min(6, Math.max(2, node.headingData?.level ?? 2));
+        const Tag = `h${level}` as 'h2';
+        return <Tag key={i}>{kids()}</Tag>;
+      }
+      case 'BULLETED_LIST':
+        return <ul key={i}>{kids()}</ul>;
+      case 'ORDERED_LIST':
+        return <ol key={i}>{kids()}</ol>;
+      case 'LIST_ITEM':
+        return <li key={i}>{kids()}</li>;
+      case 'BLOCKQUOTE':
+        return <blockquote key={i}>{kids()}</blockquote>;
+      case 'DIVIDER':
+        return <hr key={i} />;
+      case 'IMAGE': {
+        const id = node.imageData?.image?.src?.id;
+        return id ? (
+          <img key={i} src={`https://static.wixstatic.com/media/${id}`} alt={node.imageData?.altText ?? ''} loading="lazy" />
+        ) : null;
+      }
+      case 'TABLE':
+        return (
+          <div key={i} className="table-responsive">
+            <table className="table">
+              <tbody>{kids()}</tbody>
+            </table>
+          </div>
+        );
+      case 'TABLE_ROW':
+        return <tr key={i}>{kids()}</tr>;
+      case 'TABLE_CELL':
+        return <td key={i}>{kids()}</td>;
+      case 'HTML': {
+        const html = node.htmlData?.html;
+        return html ? <div key={i} className="blog-html" dangerouslySetInnerHTML={{ __html: cleanHtml(html) }} /> : null;
+      }
+      default:
+        return kids().length ? <div key={i}>{kids()}</div> : null;
+    }
+  });
+}
+
+export function BlogPostView() {
+  const blog = useBlog();
+  const [state, setState] = useState<{ status: 'loading' | 'ready' | 'missing' | 'error'; post?: BlogPost; nodes?: RichNode[] }>({
+    status: 'loading',
+  });
+
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get('slug');
+    if (!slug) return setState({ status: 'missing' });
+    let cancelled = false;
+    loadPostBySlug(slug)
+      .then((result) => {
+        if (cancelled) return;
+        if (!result) return setState({ status: 'missing' });
+        document.title = `${result.post.title} | Jae Stylez`;
+        setState({ status: 'ready', post: result.post, nodes: result.nodes });
+      })
+      .catch(() => !cancelled && setState({ status: 'error' }));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const { post, nodes } = state;
+
+  return (
+    <section className="blog-details-area py-130 rpy-100">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8">
+            {state.status !== 'ready' || !post ? (
+              <p role="status">
+                {state.status === 'loading' && 'Loading post…'}
+                {state.status === 'error' && 'This post could not be loaded right now. Please try again shortly.'}
+                {state.status === 'missing' && (
+                  <>
+                    We could not find that post. <a href="/blog">Back to the blog</a>
+                  </>
+                )}
+              </p>
+            ) : (
+              <div className="blog-details-content">
+                {post.image && (
+                  <div className="image mb-30">
+                    <img src={post.image} alt={post.title} />
+                  </div>
+                )}
+                <Meta post={post} />
+                <h2>{post.title}</h2>
+                <div className="blog-body">{renderNodes(nodes)}</div>
+                <div className="mt-40">
+                  <a className="theme-btn" href="/services#book">
+                    book an appointment <i className="far fa-long-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="col-lg-4 col-md-7 col-sm-9">
+            <Sidebar blog={blog} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Three newest posts for the home page. */
+export function LatestPosts() {
+  const blog = useBlog();
+  const latest = blog.posts.slice(0, 3);
+  return (
+    <div className="row">
+      <div className="col-12">
+        <Status blog={blog} count={latest.length} />
+      </div>
+      {latest.map((post) => (
+        <div className="col-lg-4 col-md-6" key={post.id}>
+          <div className="news-item">
+            {post.image && (
+              <div className="image">
+                <a href={postHref(post)}>
+                  <img src={post.image} alt={post.title} loading="lazy" />
+                </a>
+              </div>
+            )}
+            <div className="content">
+              <Meta post={post} />
+              <h5>
+                <a href={postHref(post)}>{post.title}</a>
+              </h5>
+              <p>{post.excerpt.length > 120 ? `${post.excerpt.slice(0, 117)}…` : post.excerpt}</p>{' '}
+              <a href={postHref(post)} className="read-more">
+                Read more <i className="far fa-long-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

@@ -5,6 +5,7 @@ import { collections, products } from '@wix/stores';
 import { currentCart } from '@wix/ecom';
 import { redirects } from '@wix/redirects';
 import { services } from '@wix/bookings';
+import { categories as blogCategories, posts as blogPosts } from '@wix/blog';
 
 // Public Wix Headless OAuth client ID (visitor-level access, not a secret).
 // Override with NEXT_PUBLIC_WIX_CLIENT_ID if the store ever changes.
@@ -27,7 +28,7 @@ function loadTokens(): Tokens | undefined {
 
 function makeClient() {
   return createClient({
-    modules: { products, collections, currentCart, redirects, services },
+    modules: { products, collections, currentCart, redirects, services, blogPosts, blogCategories },
     auth: OAuthStrategy({ clientId: WIX_CLIENT_ID, tokens: loadTokens() }),
   });
 }
@@ -129,4 +130,12 @@ export function productImage(product: WixProduct, width = 600, height = 600): st
 
 export function priceOf(product: WixProduct): number {
   return product.price?.discountedPrice ?? product.price?.price ?? 0;
+}
+
+// Wix stores images as wix:image://v1/<file id>/<name>#...; the public URL is built from the file id.
+export function wixImageUrl(uri: string | null | undefined, width: number, height: number): string | null {
+  const match = uri?.match(/^wix:image:\/\/v1\/([^/#]+)/);
+  return match
+    ? `https://static.wixstatic.com/media/${match[1]}/v1/fill/w_${width},h_${height},al_c,q_80/file.jpg`
+    : null;
 }
