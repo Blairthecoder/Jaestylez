@@ -1171,3 +1171,33 @@ textarea.form-control,
   background: transparent;
   filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
 }
+
+/* Phones: trim the template's nested padding so text gets the full width and sections sit closer together */
+@media (max-width: 575px) {
+  .container { padding-left: 16px; padding-right: 16px; }
+  .py-130, .service-details-area, .pt-130 { padding-top: 56px !important; }
+  .py-130, .service-details-area, .pb-130 { padding-bottom: 56px !important; }
+  .pt-120, .pt-125 { padding-top: 56px !important; }
+  .pb-120, .pb-125 { padding-bottom: 56px !important; }
+  .rpt-90, .rpt-95, .rpt-100 { padding-top: 56px !important; }
+  .rpb-90, .rpb-95, .rpb-100 { padding-bottom: 56px !important; }
+  .mt-80 { margin-top: 40px !important; }
+  .service-details-content .content { padding-left: 14px !important; padding-right: 0 !important; }
+  .service-details-content .content h2 { font-size: 26px; line-height: 1.25; margin-bottom: 16px; }
+  .service-details-content .content h2:before { left: -14px; width: 3px; }
+  .service-details-content .content:not(:last-child) { margin-bottom: 28px; }
+  .service-h1 { font-size: 28px; line-height: 1.2; }
+  .service-facts { gap: 8px 24px; }
+  .service-facts li { font-size: 19px; }
+  .what-we-do-inner { margin-top: -60px; }
+  .what-we-do-content { padding: 32px 14px 16px !important; }
+  .what-we-do-content .row { margin-left: 0; margin-right: 0; }
+  .what-we-do-content [class*='col-'] { padding-left: 0; padding-right: 0; }
+  .feature-item { padding: 18px 16px 6px !important; margin-bottom: 16px; }
+  .feature-item .icon { margin: 0 0 10px; font-size: 48px; width: auto; }
+  .feature-item h4 { font-size: 20px; }
+  .section-title h2, .section-title-two h2 { font-size: 30px; line-height: 1.2; }
+  .theme-btn { padding: 14px 22px; }
+  .footer-widget { margin-bottom: 28px; }
+  .main-footer .footer-top { padding-top: 56px; padding-bottom: 20px; }
+}
