@@ -2,7 +2,6 @@
 
 import type { services } from '@wix/bookings';
 import { isOwnUpload, wix, wixImageUrl } from '@/app/lib/wix';
-import { fallbackPhoto, servicePhoto, serviceThumb } from '@/app/content/service-photos';
 
 export type BookableService = {
   id: string;
@@ -17,7 +16,9 @@ export type BookableService = {
   duration: string;
   price: string;
   deposit: string;
-  image: string;
+  /** Short plain-text blurb for lists (empty when the listing has none). */
+  summary: string;
+  /** Large photo, only when the owner uploaded one for this service. */
   imageLarge: string;
   detailsUrl: string;
   bookingUrl: string;
@@ -53,6 +54,23 @@ export function titleCase(input: string): string {
     })
     .join(' ')
     .replace(/W\/(?= )/g, 'w/');
+}
+
+// Lines that only repeat booking policy (deposit and payment notes) make poor list blurbs.
+const BOILERPLATE = /deposit|zelle|cash app|hair (is )?not included|arrive with|prep/i;
+
+/** First useful sentence(s) of the description (or tagline), capped for use under a service name. */
+function summarize(description?: string | null, tagline?: string | null, max = 140): string {
+  const lines = [description, tagline]
+    .flatMap((text) => (text ?? '').split(/\n+/))
+    .map((line) => line.trim())
+    .filter((line) => line && !BOILERPLATE.test(line));
+  const text = (lines[0] ?? '').replace(/\s+/g, ' ');
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (stop > 60) return cut.slice(0, stop + 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\s]+$/, '')}…`;
 }
 
 function money(value?: string | null, currency = 'USD'): string {
@@ -122,7 +140,6 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
       const category = titleCase(s.category?.name || 'Other Services');
       const mainImage = s.media?.mainMedia?.image;
       const own = isOwnUpload(mainImage);
-      const photo = fallbackPhoto(name, category, s._id as string);
       const { price, deposit } = formatPrice(s.payment ?? {});
       const constraints = s.schedule?.availabilityConstraints;
       const minutes = constraints?.durations?.[0]?.minutes ?? constraints?.sessionDurations?.[0];
@@ -138,8 +155,8 @@ export async function fetchBookableServices(): Promise<BookableService[]> {
         duration: formatDuration(minutes),
         price,
         deposit,
-        image: own ? (wixImageUrl(mainImage, 200, 200) as string) : serviceThumb(photo),
-        imageLarge: own ? (wixImageUrl(mainImage, 900, 700) as string) : servicePhoto(photo),
+        summary: summarize(s.description, s.tagLine),
+        imageLarge: own ? (wixImageUrl(mainImage, 900, 700) as string) : '',
         detailsUrl: s.urls?.servicePage ?? s.urls!.bookingPage!,
         bookingUrl: `/book?service=${encodeURIComponent(slug)}`,
       };

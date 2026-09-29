@@ -159,11 +159,6 @@ export function PricingTabs() {
                 {current.services.slice(0, 12).map((service) => (
                   <div key={service.id} className="col-lg-6">
                     <div className="price-item">
-                      {service.image && (
-                        <div className="image">
-                          <img src={service.image} alt="" loading="lazy" />
-                        </div>
-                      )}
                       <div className="content">
                         <h5>
                           <a href={serviceHref(service)}>{service.name}</a>

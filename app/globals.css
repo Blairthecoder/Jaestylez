@@ -1027,3 +1027,10 @@ html {
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+/* Service rows without photos: short description under the time and deposit */
+.price-item .service-blurb {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.5;
+}

@@ -102,18 +102,14 @@ export function BookingServices() {
                 {items.map((service) => (
                   <div key={service.id} className="col-lg-6">
                     <div className="price-item">
-                      {service.image && (
-                        <div className="image">
-                          <img src={service.image} alt="" loading="lazy" />
-                        </div>
-                      )}
                       <div className="content">
                         <h5>
                           <a href={serviceHref(service)}>{service.name}</a>
                         </h5>{' '}
                         <span>
                           {[service.duration, service.deposit && `${service.deposit} deposit`].filter(Boolean).join(' · ')}
-                        </span>{' '}
+                        </span>
+                        {service.summary && <p className="service-blurb">{service.summary}</p>}
                         <a className="booking-link" href={service.bookingUrl}>
                           Book now →
                         </a>
