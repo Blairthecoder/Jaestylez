@@ -778,9 +778,21 @@ html {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
   }
+  /* The home header is absolutely positioned over the hero. Reserve its full
+     mobile height so the logo and menu never sit on top of the headline. */
   .jae-hero {
-    padding-top: 90px !important;
-    padding-bottom: 80px !important;
+    padding-top: 172px !important;
+    padding-bottom: 72px !important;
+  }
+  .jae-hero h1 {
+    margin-bottom: 18px !important;
+    font-size: clamp(36px, 10.5vw, 46px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.01em;
+  }
+  .jae-hero .hero-content p {
+    margin-bottom: 28px !important;
+    line-height: 1.65 !important;
   }
 }
 
@@ -1193,9 +1205,142 @@ textarea.form-control,
   .what-we-do-content { padding: 32px 14px 16px !important; }
   .what-we-do-content .row { margin-left: 0; margin-right: 0; }
   .what-we-do-content [class*='col-'] { padding-left: 0; padding-right: 0; }
-  .feature-item { padding: 18px 16px 6px !important; margin-bottom: 16px; }
-  .feature-item .icon { margin: 0 0 10px; font-size: 48px; width: auto; }
-  .feature-item h4 { font-size: 20px; }
+  .what-we-do-content .feature-item {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 0;
+    padding: 18px 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .what-we-do-content .feature-item .icon {
+    flex: 0 0 42px;
+    width: 42px !important;
+    margin: 0 !important;
+    font-size: 42px !important;
+    line-height: 1;
+  }
+  .what-we-do-content .feature-item .content { min-width: 0; }
+  .what-we-do-content .feature-item h4 {
+    margin-bottom: 6px;
+    font-size: 19px !important;
+    line-height: 1.3;
+  }
+  .what-we-do-content .feature-item p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Six featured categories: use a tidy full-width list instead of cramped
+     two-column tiles that clip multi-line labels. */
+  .price-tab-wrap {
+    padding: 20px 14px 24px !important;
+  }
+  .price-tab:not(.booking-tabs) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    margin: 0 0 22px !important;
+  }
+  .price-tab:not(.booking-tabs) .nav-item {
+    flex: none !important;
+    width: 100%;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+  .price-tab:not(.booking-tabs) .nav-link {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto !important;
+    min-height: 52px !important;
+    padding: 13px 15px !important;
+    text-align: left;
+    border-radius: 5px;
+  }
+  .price-tab:not(.booking-tabs) .nav-link i { display: none !important; }
+  .price-tab:not(.booking-tabs) .nav-link span {
+    position: static !important;
+    display: block;
+    width: auto;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    overflow-wrap: normal;
+    transform: none !important;
+  }
+
+  /* The full booking menu has many categories. Keep them in one polished,
+     swipeable row instead of an uneven wall of wrapped buttons. */
+  .price-tab.booking-tabs {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding: 2px 0 10px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .price-tab.booking-tabs .nav-item {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+  }
+  .price-tab.booking-tabs .nav-link {
+    min-height: 48px !important;
+    padding: 11px 15px !important;
+    white-space: nowrap;
+  }
+  .price-tab.booking-tabs .nav-link span {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Service pricing reads as compact cards on phones: name and details first,
+     price underneath, with no desktop gutters squeezing the copy. */
+  .price-tab-content { padding: 0 !important; }
+  .price-item {
+    display: block !important;
+    min-height: 0;
+    margin-top: 14px !important;
+    padding: 16px !important;
+  }
+  .price-item .content {
+    order: initial !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .price-item .content h5 {
+    margin-bottom: 6px;
+    font-size: 19px !important;
+    line-height: 1.3;
+  }
+  .price-item .content > span {
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .price-item .service-blurb {
+    margin: 9px 0 2px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .price-item .booking-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 2px;
+  }
+  .price-item .price {
+    display: block;
+    margin: 8px 0 0 !important;
+    font-size: 24px !important;
+    line-height: 1.2;
+  }
   .section-title h2, .section-title-two h2 { font-size: 30px; line-height: 1.2; }
   .theme-btn { padding: 14px 22px; }
   .footer-widget { margin-bottom: 28px; }
