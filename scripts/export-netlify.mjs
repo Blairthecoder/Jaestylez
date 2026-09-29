@@ -13,6 +13,7 @@ const routes = [
   '/about',
   '/hair-styles',
   '/services',
+  '/pricing',
   '/service-details',
   '/two-strand-twists',
   '/instant-locs',

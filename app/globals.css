@@ -707,3 +707,54 @@ html {
   display: block;
   font-size: 15px;
 }
+
+/* Service menu inside the template's pricing tabs */
+.booking-tabs {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.booking-tabs .nav-item {
+  flex: 0 1 auto;
+}
+.booking-search-row .form-control {
+  max-width: 420px;
+  margin: 0 auto;
+}
+.booking-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: #d69838;
+}
+.review-reply-line {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+.about-logo {
+  max-height: 90px;
+  width: auto;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #0d0d0d;
+}
+
+/* Nine menu items: keep each on one line and trim the spacing on smaller desktops */
+@media only screen and (min-width: 992px) {
+  .main-menu .navbar-collapse > ul > li > a {
+    white-space: nowrap;
+  }
+  .main-menu .navbar-collapse > ul > li {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .main-menu .navbar-collapse > ul > li > a {
+    font-size: 13px;
+  }
+  .main-header .menu-button {
+    display: none !important;
+  }
+}

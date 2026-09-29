@@ -49,7 +49,7 @@ export const nav: NavItem[] = [
   { label: 'Hair Styles', href: '/hair-styles' },
   {
     label: 'Services',
-    children: [{ label: 'All Services', href: '/services' }, ...styleLinks],
+    children: [{ label: 'All Services', href: '/services' }, { label: 'Pricing', href: '/pricing' }, ...styleLinks],
   },
   { label: 'Book Online', href: '/services#book' },
   { label: 'Monday Appointments', href: '/monday-appointments' },

@@ -6,6 +6,16 @@ import { galleryPhotos, photoUrl } from '@/app/content/photos';
 
 type Filter = 'all' | 'locs' | 'twists' | 'braids' | 'curls' | 'kids';
 
+// The template's gallery mosaic: wide and narrow tiles repeat so every row adds up to a full width.
+const MOSAIC = [
+  'col-xl-6 col-md-8',
+  'col-xl-3 col-md-4 col-sm-6',
+  'col-xl-3 col-sm-6',
+  'col-xl-3 col-sm-6',
+  'col-xl-6 col-md-8',
+  'col-xl-3 col-md-4 col-sm-6',
+];
+
 const FILTERS: { key: Filter; label: string }[] = [
   { key: 'all', label: 'All Styles' },
   { key: 'locs', label: 'Locs' },
@@ -35,7 +45,7 @@ export function GalleryGrid() {
 
   return (
     <>
-      <div className="booking-chips mb-40" role="tablist" aria-label="Filter by style">
+      <div className="booking-chips container mb-40" role="tablist" aria-label="Filter by style">
         {FILTERS.map((f) => (
           <button
             key={f.key}
@@ -50,11 +60,14 @@ export function GalleryGrid() {
         ))}
       </div>
       <div className="row">
-        {items.map((item) => (
-          <div key={item.key} className="col-lg-4 col-md-6 mb-30">
-            <a className="gallery-tile" href={item.full} data-lightbox="image">
-              <img src={item.thumb} alt={item.alt} loading="lazy" />
-            </a>
+        {items.map((item, i) => (
+          <div key={item.key} className={MOSAIC[i % MOSAIC.length]}>
+            <div className="gallery-item style-two">
+              <img src={item.thumb} alt={item.alt} loading="lazy" />{' '}
+              <div className="gallery-content">
+                <a href={item.full} className="icon" data-lightbox="image" aria-label="View larger"></a>
+              </div>
+            </div>
           </div>
         ))}
       </div>

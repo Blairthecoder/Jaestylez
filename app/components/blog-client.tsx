@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { Slider } from '@/app/components/slider';
 import {
   formatDate,
   loadCategories,
@@ -431,18 +432,50 @@ export function BlogPostView() {
   );
 }
 
-/** Three newest posts for the home page. */
+/** Latest posts in the template's news slider (its arrow buttons sit in the section header). */
 export function LatestPosts() {
+  const blog = useBlog();
+  const latest = blog.posts.slice(0, 9);
+  if (latest.length === 0) return <Status blog={blog} count={0} />;
+  return (
+    <Slider className="news-slider-wrap" slidesToShow={3} responsive={[[1199, 2], [768, 1]]} arrows>
+      {latest.map((post) => (
+        <div className="news-item" key={post.id}>
+          {post.image && (
+            <div className="image">
+              <a href={postHref(post)}>
+                <img src={post.image} alt={post.title} loading="lazy" />
+              </a>
+            </div>
+          )}
+          <div className="content">
+            <Meta post={post} />
+            <h5>
+              <a href={postHref(post)}>{post.title}</a>
+            </h5>
+            <p>{post.excerpt.length > 110 ? `${post.excerpt.slice(0, 107)}…` : post.excerpt}</p>{' '}
+            <a href={postHref(post)} className="read-more">
+              Read more <i className="far fa-long-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      ))}
+    </Slider>
+  );
+}
+
+/** Three newest posts in the template's second news layout (used on the Services page). */
+export function LatestPostsGrid() {
   const blog = useBlog();
   const latest = blog.posts.slice(0, 3);
   return (
-    <div className="row">
+    <div className="row justify-content-center">
       <div className="col-12">
         <Status blog={blog} count={latest.length} />
       </div>
       {latest.map((post) => (
-        <div className="col-lg-4 col-md-6" key={post.id}>
-          <div className="news-item">
+        <div className="col-xl-4 col-md-6" key={post.id}>
+          <div className="news-item style-two">
             {post.image && (
               <div className="image">
                 <a href={postHref(post)}>
@@ -455,7 +488,6 @@ export function LatestPosts() {
               <h5>
                 <a href={postHref(post)}>{post.title}</a>
               </h5>
-              <p>{post.excerpt.length > 120 ? `${post.excerpt.slice(0, 117)}…` : post.excerpt}</p>{' '}
               <a href={postHref(post)} className="read-more">
                 Read more <i className="far fa-long-arrow-right"></i>
               </a>

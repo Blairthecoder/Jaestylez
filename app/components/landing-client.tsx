@@ -24,35 +24,42 @@ export function NamedServices({ names }: { names: string[] }) {
   return (
     <div className="row justify-content-center">
       {found.map((service) => (
-        <div key={service.id} className="col-lg-4 col-md-6 mb-30">
-          <article className="landing-price-card">
-            <h4>{service.name}</h4>
-            <ul className="booking-meta">
-              {service.duration && (
-                <li>
-                  <i className="far fa-clock"></i> {service.duration}
-                </li>
-              )}
-              {service.deposit && <li>{service.deposit} deposit</li>}
-            </ul>
-            <div className="landing-price">{service.price}</div>
-            <div className="booking-actions">
-              <a className="theme-btn" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
-                book now <i className="far fa-long-arrow-right"></i>
+        <div key={service.id} className="col-12">
+          <div className="price-item">
+            {service.image && (
+              <div className="image">
+                <img src={service.image} alt="" loading="lazy" />
+              </div>
+            )}
+            <div className="content">
+              <h5>
+                <a href={serviceHref(service)}>{service.name}</a>
+              </h5>{' '}
+              <span>
+                {[service.duration, service.deposit && `${service.deposit} deposit`].filter(Boolean).join(' · ')}
+              </span>{' '}
+              <a className="booking-link" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
+                Book now →
               </a>
-              <a href={serviceHref(service)}>details</a>
-            </div>
-          </article>
+            </div>{' '}
+            <span className="price">{service.price}</span>
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-export function Faq({ items }: { items: { q: string; a: string }[] }) {
+export function Faq({
+  items,
+  className = 'mt-35',
+}: {
+  items: { q: string; a?: string; list?: string[] }[];
+  className?: string;
+}) {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="faqs mt-35">
+    <div className={`faqs ${className}`}>
       {items.map((item, i) => (
         <div className="card" key={item.q}>
           <h5
@@ -72,7 +79,14 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
           </h5>
           <div className={`collapse${open === i ? ' show' : ''}`}>
             <div className="card-body">
-              <p>{item.a}</p>
+              {item.a && <p>{item.a}</p>}
+              {item.list && (
+                <ul className="list-style-one">
+                  {item.list.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

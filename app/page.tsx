@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
-import { NamedServices } from '@/app/components/landing-client';
-import { CategoryCards } from '@/app/components/live-services';
-import { FeaturedProducts } from '@/app/components/home-client';
+import { AppointmentForm } from '@/app/components/appointment-form';
+import { CategoryCards, FeatureCategories, PricingTabs } from '@/app/components/live-services';
+import { ProductShowcase } from '@/app/components/home-client';
 import { LatestPosts } from '@/app/components/blog-client';
-import { AppPromo, FaqSection, ServiceAreaSection } from '@/app/components/sections';
-import { ReviewsBand } from '@/app/components/reviews-ui';
+import { Faq } from '@/app/components/landing-client';
+import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
 import { galleryPhotos, photos, photoUrl } from '@/app/content/photos';
-import { hero, paths, popularServices } from '@/app/content/home';
-
+import { about, faqs, hero } from '@/app/content/home';
+import { site } from '@/app/site-data';
 
 export const metadata: Metadata = {
   title: { absolute: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez' },
@@ -17,34 +17,26 @@ export const metadata: Metadata = {
     'Jae Stylez is a licensed loctician and natural hair stylist in Stafford, TX. Retwists, starter locs, twists, silk press. Serving Sugar Land and Houston.',
 };
 
+const galleryLabel = (tags: string[]) => {
+  const t = tags[0];
+  return t === 'locs' ? 'Locs' : t === 'twists' ? 'Twists' : t === 'braids' ? 'Braids' : t === 'curls' ? 'Curls' : 'Hair Styles';
+};
+
 export default function Page() {
   return (
     <SiteShell header="one" footerClassName="pb-30">
-      <section
-        className="hero-section jae-hero py-250"
-        style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}
-      >
+      <section className="hero-section jae-hero py-250" style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}>
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row align-items-center justify-content-between">
             <div className="col-xl-8 col-lg-9">
-              <div className="hero-content py-10 rpt-0 text-white">
-                <span className="landing-eyebrow">{hero.eyebrow}</span>
+              <div className="hero-content py-10 rpt-0 text-white rmb-70">
                 <h1 className="wow fadeInUp delay-0-2s">{hero.title}</h1>
-                <p className="hero-tagline wow fadeInUp delay-0-4s">{hero.tagline}</p>
-                <p className="wow fadeInUp delay-0-4s">{hero.body}</p>
-                <div className="landing-ctas">
-                  <a href="/services#book" className="theme-btn wow fadeInUp delay-0-6s">
-                    book online <i className="far fa-long-arrow-right"></i>
-                  </a>
-                  <a
-                    href={hero.appUrl}
-                    className="theme-btn style-four wow fadeInUp delay-0-6s"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    download app <i className="far fa-long-arrow-right"></i>
-                  </a>
-                </div>
+                <p className="wow fadeInUp delay-0-4s">
+                  {hero.tagline} Serving Stafford, Sugar Land, Missouri City, Richmond, and Greater Houston.
+                </p>{' '}
+                <a href="/services#book" className="theme-btn wow fadeInUp delay-0-6s">
+                  book online <i className="far fa-long-arrow-right"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -52,54 +44,85 @@ export default function Page() {
         <div className="hero-bg-shapes"></div>
       </section>
 
-      <ReviewsBand reviews={reviewsFor(['about', 'booking', 'locs', 'maintenance', 'first-visit', 'twists'], 6, ['kevin-joseph'])} />
-
-      <section className="find-service py-100 rpy-70">
+      <section className="what-we-do-area pb-130 rpb-100">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-7 col-lg-9">
-              <div className="section-title text-center mb-50">
-                <span className="landing-eyebrow">{paths.eyebrow}</span>
-                <h2 className="title">{paths.title}</h2>
-                <p>{paths.intro}</p>
+          <div className="what-we-do-inner">
+            <div className="row">
+              <div className="col-xl-4">
+                <div
+                  className="feature-image wow fadeInLeft delay-0-2s"
+                  style={{ backgroundImage: `url(${photoUrl(photos.locsTop)})` }}
+                ></div>
               </div>
-            </div>
-          </div>
-          <div className="row">
-            {paths.items.map((item) => (
-              <div key={item.title} className="col-lg-4 col-md-6 mb-30">
-                <div className="landing-card path-card">
-                  <h4>{item.title}</h4>
-                  <p>{item.text}</p>
-                  <ul>
-                    {item.links.map((link) => (
-                      <li key={link.href}>
-                        <a href={link.href}>{link.label}</a>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="col-xl-8 align-self-center">
+                <div className="what-we-do-content wow fadeInRight delay-0-2s">
+                  <div className="row">
+                    <div className="col-lg-8">
+                      <div className="section-title mb-35">
+                        <h2 className="title">What We Do</h2>
+                        <p>Loc services, natural hair styles, protective styles and more. Pick a category to see the menu.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <FeatureCategories />
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="popular-services bg-lighter-two py-100 rpy-70">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-7 col-lg-9">
-              <div className="section-title text-center mb-50">
-                <h2 className="title">Popular Services</h2>
-                <p>Live prices and times straight from the booking calendar. Book in a few taps.</p>
-              </div>
+      <section className="about-us-area">
+        <div className="row">
+          <div className="col-xl-3 col-sm-6">
+            <div className="about-left-image wow fadeInUp delay-0-2s">
+              <img src={photoUrl(photos.twists)} alt={photos.twists.alt} />
             </div>
           </div>
-          <NamedServices names={popularServices} />
-          <div className="text-center mt-20">
-            <a className="theme-btn" href="/services#book">
-              see every service <i className="far fa-long-arrow-right"></i>
-            </a>
+          <div className="col-xl-3 col-sm-6 order-xl-2">
+            <div className="about-right-image wow fadeInUp delay-0-6s">
+              <img src={photoUrl(photos.locsPonytail)} alt={photos.locsPonytail.alt} />
+            </div>
+          </div>
+          <div className="col-xl-6 align-self-center">
+            <div className="about-content rp-15 rpb-90 text-center wow fadeInUp delay-0-4s">
+              <div className="row justify-content-center">
+                <div className="col-lg-8">
+                  <div className="section-title mb-35">
+                    <h2 className="title">Meet Jae Rashawn, licensed loctician</h2>
+                  </div>
+                </div>
+              </div>
+              <p>{about.intro[0]}</p>
+              <div className="our-author mt-20">
+                <img src={photoUrl(photos.jae)} alt={photos.jae.alt} />{' '}
+                <div className="content">
+                  <h4>{site.owner}</h4>
+                  <span>Loctician &amp; natural hair stylist</span>
+                </div>
+              </div>{' '}
+              <img className="about-bg-shape" src="/assets/images/about/about-bg-shape.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="cta-area bgs-cover bg-yellow text-white py-40"
+        style={{ backgroundImage: 'url(/assets/images/background/cta-bg.png)' }}
+      >
+        <div className="container">
+          <div className="row justify-content-center text-center align-items-center">
+            <div className="col-xl-6 col-lg-7">
+              <div className="section-title mt-5 wow fadeInLeft delay-0-2s">
+                <h2>Ready to book your service?</h2>
+              </div>
+            </div>
+            <div className="col-xl-3 col-lg-4">
+              <a href="/services#book" className="theme-btn btn-border my-10 wow fadeInRight delay-0-2s">
+                book online <i className="far fa-long-arrow-right"></i>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -107,10 +130,10 @@ export default function Page() {
       <section className="services-area rel z-1 pt-120 rpt-90 pb-100 rpb-70">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-xl-6 col-lg-8 col-md-10">
+            <div className="col-xl-5 col-lg-6 col-md-8">
               <div className="section-title text-center mb-55">
-                <h2 className="title">Browse by Category</h2>
-                <p>Loc maintenance, natural hair styles, protective styles and more. Pick a category to see the full menu.</p>
+                <h2 className="title">Services we provide</h2>
+                <p>Every service starts with your hair health and ends with a plan you can actually keep up with.</p>
               </div>
             </div>
           </div>
@@ -122,53 +145,174 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="gallery-strip py-100 rpy-70">
+      <section
+        className="pricing-plan-area bgs-cover pt-120 rpt-90 pb-130 rpb-100"
+        style={{ backgroundImage: 'url(/assets/images/background/pricing-plan-bg.jpg)' }}
+      >
         <div className="container">
-          <div className="d-flex flex-wrap justify-content-between align-items-end mb-40">
-            <div className="section-title mb-0">
-              <h2 className="title">Latest Photo Gallery</h2>
-              <p>Locs, twists, silk presses and protective styles from the chair.</p>
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-white text-center mb-55">
+                <h2 className="title">Service pricing</h2>
+                <p>Live prices and times from the booking calendar. A non-refundable deposit reserves your time.</p>
+              </div>
             </div>
-            <a className="theme-btn mt-15" href="/hair-styles">
-              view all styles <i className="far fa-long-arrow-right"></i>
-            </a>
           </div>
-          <div className="row">
-            {galleryPhotos.slice(0, 8).map((photo) => (
-              <div key={photo.file} className="col-lg-3 col-6 mb-30">
-                <a className="gallery-tile" href={photoUrl(photo)} data-lightbox="image">
-                  <img src={photoUrl(photo)} alt={photo.alt} loading="lazy" />
+          <PricingTabs />
+        </div>
+      </section>
+
+      <section className="gallery-area rel z-1 pt-120 rpt-90 pb-100 rpb-70">
+        <div className="container">
+          <div className="row justify-content-between align-items-end mb-40">
+            <div className="col-xl-5 col-lg-6">
+              <div className="section-title mb-15 wow fadeInLeft delay-0-2s">
+                <h2 className="title">Latest photo gallery</h2>
+                <p>Locs, twists, braids and curls from the chair.</p>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="section-header-btn text-lg-right mb-20 wow fadeInRight delay-0-2s">
+                <a href="/hair-styles" className="theme-btn">
+                  explore more gallery <i className="far fa-long-arrow-right"></i>
                 </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid">
+          <div className="row">
+            {galleryPhotos.slice(0, 4).map((photo, i) => (
+              <div key={photo.file} className="col-xl-3 col-sm-6">
+                <div className={`gallery-item wow fadeInUp delay-0-${(i % 4) * 2 + 2}s`}>
+                  <img src={photoUrl(photo)} alt={photo.alt} loading="lazy" />{' '}
+                  <div className="gallery-content">
+                    <h3>{galleryLabel(photo.tags)}</h3>
+                    <p>Jae Stylez · Stafford, TX</p>{' '}
+                    <a href="/hair-styles" className="details-btn" aria-label="See more styles">
+                      <i className="far fa-long-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="featured-products bg-lighter-two py-100 rpy-70">
+      <section className="contact-area rel z-1">
         <div className="container">
-          <div className="d-flex flex-wrap justify-content-between align-items-end mb-40">
-            <div className="section-title mb-0">
-              <h2 className="title">Shop Our Featured Products</h2>
-              <p>The Lox Box: loc and natural hair care made in Houston.</p>
-            </div>
-            <a className="theme-btn mt-15" href="/shop">
-              shop all <i className="far fa-long-arrow-right"></i>
-            </a>
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8"></div>
           </div>
-          <FeaturedProducts />
+          <div className="contact-form-wrap">
+            <div
+              className="image wow fadeInUp delay-0-2s"
+              style={{ backgroundImage: `url(${photoUrl(photos.boxBraids)})` }}
+            ></div>
+            <AppointmentForm className="wow fadeInUp delay-0-4s" backgroundImage="/assets/images/contact/contact-bg.png" />
+            <div
+              className="image wow fadeInUp delay-0-6s"
+              style={{ backgroundImage: `url(${photoUrl(photos.feedIn)})` }}
+            ></div>
+          </div>
+        </div>
+        <div className="contact-shapes">
+          <img className="shape-one" src="/assets/images/shapes/contact-one.png" alt="" />{' '}
+          <img className="shape-two" src="/assets/images/shapes/contact-two.png" alt="" />
         </div>
       </section>
 
-      <AppPromo />
-      <ServiceAreaSection />
-      <FaqSection />
+      <section className="team-area rel z-1 pt-120 rpt-90 pb-95 rpb-65">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-5 col-lg-6 col-md-8">
+              <div className="section-title text-center mb-50">
+                <h2 className="title">Shop our featured products</h2>
+                <p>The Lox Box: loc and natural hair care made in Houston.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-fluid">
+          <ProductShowcase />
+        </div>
+      </section>
+
+      <section className="cta-video-area rel z-2">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4">
+              <div
+                className="cta-part bg-yellow text-center text-white p-40 rpy-55 wow fadeInLeft delay-0-2s"
+                style={{ backgroundImage: 'url(/assets/images/background/video-cta-bg.png)' }}
+              >
+                <div className="section-title mb-15">
+                  <h2>
+                    Come &amp;
+                    <br /> get fresh
+                  </h2>
+                  <p>Walk-ins are not taken. See live availability and reserve your time online.</p>
+                </div>{' '}
+                <a href="/services#book" className="theme-btn btn-border">
+                  book now <i className="far fa-long-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div className="col-lg-8">
+              <div className="video-part rmt-30 wow fadeInRight delay-0-2s">
+                <img src={photoUrl(photos.collage)} alt={photos.collage.alt} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Testimonials
+        reviews={reviewsFor(['about', 'booking', 'locs', 'maintenance', 'first-visit', 'twists'], 7)}
+        title="What our clients say"
+        text="Google reviews from clients across Stafford, Sugar Land, Missouri City and Houston."
+      />
+
+      <section className="faq-area bg-lighter-two pt-120 rpt-90 pb-120 rpb-90">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-6 col-lg-8 col-md-10">
+              <div className="section-title text-center mb-50">
+                <h2 className="title">Straight answers</h2>
+                <p>
+                  Still stuck? Call <a href={site.phoneHref}>{site.phone}</a> or <a href="/contact">send a message</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-xl-9">
+              <Faq items={faqs} />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="news-area rel z-2 pt-120 rpt-90 pb-100 rpb-70">
         <div className="container">
-          <div className="section-title text-center mb-50">
-            <h2 className="title">Latest Blog &amp; News</h2>
-            <p>Loc care, protective styles and natural hair advice from Jae.</p>
+          <div className="row justify-content-between align-items-end mb-10">
+            <div className="col-xl-5 col-lg-6">
+              <div className="section-title mb-15">
+                <h2 className="title">Latest Blog &amp; News</h2>
+                <p>Loc care, protective styles and natural hair advice from Jae.</p>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <div className="slider-btns text-lg-right mb-20">
+                <button className="news-prev" aria-label="Previous posts">
+                  <i className="far fa-long-arrow-left"></i>
+                </button>{' '}
+                <button className="news-next" aria-label="Next posts">
+                  <i className="far fa-long-arrow-right"></i>
+                </button>
+              </div>
+            </div>
           </div>
           <LatestPosts />
         </div>

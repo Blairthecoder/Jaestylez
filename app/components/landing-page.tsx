@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { Faq, NamedServices } from '@/app/components/landing-client';
-import { ReviewCards } from '@/app/components/reviews-ui';
+import { PageBanner } from '@/app/components/sections';
+import { Testimonials } from '@/app/components/reviews-ui';
 import { landingMeta } from '@/app/content/landing-meta';
 import { photoUrl } from '@/app/content/photos';
-import { reviewsFor } from '@/app/content/reviews';
-import { site } from '@/app/site-data';
+import { allReviews, reviewsFor } from '@/app/content/reviews';
+import { site, styleLinks } from '@/app/site-data';
 import landing from '@/app/content/landing-pages.json';
 
 type Block =
@@ -178,9 +179,15 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
   const sections = splitSections(rest);
   const lastBlock = blocks[blocks.length - 1];
   const glance = buildGlance(blocks);
-  const reviews = reviewsFor(meta.topics, 2, ['kevin-joseph']);
   const faq = blocks.find((b) => b.t === 'faq') as Extract<Block, { t: 'faq' }> | undefined;
   const serviceName = h1.replace(/ in Stafford, TX$/, '');
+  // The page's own featured review (shown on the original page) leads the review slider, then the best topic matches.
+  const featured = page.testimonial
+    ? allReviews.find((r) => page.testimonial!.quote.startsWith(r.text.slice(0, 30)))
+    : undefined;
+  const reviews = [featured, ...reviewsFor(meta.topics, 3, featured ? [featured.id] : [])].filter(
+    (r): r is NonNullable<typeof r> => !!r,
+  );
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -224,164 +231,155 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
 
   const closing = sections.length > 1 ? sections[sections.length - 1] : null;
   const main = closing ? sections.slice(0, -1) : sections;
-  const renderSection = (section: Section, i: number) => (
-    <section key={i} className={`landing-section py-80${i % 2 ? ' bg-lighter-two' : ''}`}>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-xl-10">
-            {section.eyebrow && <span className="landing-eyebrow">{section.eyebrow}</span>}
-            {section.title &&
-              (section.level === 'h3' ? (
-                <h3 className="landing-heading mb-20">{section.title}</h3>
-              ) : (
-                <h2 className="landing-heading mb-20">{section.title}</h2>
-              ))}
-            {renderBlocks(section.blocks, `s${i}`)}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  const menu = [...styleLinks, { label: 'Monday Appointments', href: '/monday-appointments' }];
 
   return (
-    <SiteShell header="three" footerClassName="">
+    <SiteShell header="three" footerClassName="mt-80">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageBanner title={serviceName} crumbs={[{ label: crumb, href: '/services' }, { label: serviceName }]} />
+
+      <section className="service-details-area py-130 rpt-90 rpb-100">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8">
+              <div className="service-details-content rmb-75">
+                <div className="content wow fadeInUp delay-0-2s">
+                  {eyebrow && <span className="landing-eyebrow">{eyebrow}</span>}
+                  <h2>{h1}</h2>
+                  {heroParas[0] && <p className="landing-lead">{heroParas[0].text}</p>}
+                  {heroParas.slice(1).map((p) => (
+                    <p key={p.text}>{p.text}</p>
+                  ))}
+                  <div className="landing-ctas">
+                    {heroCtas.map((cta, i) => (
+                      <a key={cta.label} className={`theme-btn${i > 0 ? ' style-four' : ''}`} href={cta.url}>
+                        {cta.label} <i className="far fa-long-arrow-right"></i>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="image my-45 wow fadeInUp delay-0-2s">
+                  <img src={photoUrl(meta.photo)} alt={meta.photo.alt} />
+                </div>
+
+                {glance.length > 0 && (
+                  <div className="content mb-45">
+                    <h2>{serviceName} at a glance</h2>
+                    <div className="table-responsive">
+                      <table className="glance-table">
+                        <thead>
+                          <tr>
+                            <th>Option</th>
+                            <th>How long it lasts</th>
+                            <th>Best for</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {glance.map((row) => (
+                            <tr key={row.title}>
+                              <th scope="row">{row.title}</th>
+                              <td>{row.lasts || '—'}</td>
+                              <td>{row.best || '—'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="mt-15">
+                      Location: {site.address}. A non-refundable deposit reserves your time and is applied to your
+                      service total.
+                    </p>
+                  </div>
+                )}
+
+                {main.map((section, i) => (
+                  <div key={i} className="content mb-45">
+                    {section.eyebrow && <span className="landing-eyebrow">{section.eyebrow}</span>}
+                    {section.title && (section.level === 'h3' ? <h3>{section.title}</h3> : <h2>{section.title}</h2>)}
+                    {renderBlocks(section.blocks, `s${i}`)}
+                  </div>
+                ))}
+
+                {closing && (
+                  <div className="content">
+                    {closing.title && <h2>{closing.title}</h2>}
+                    {closing.blocks.filter((b) => b.t === 'p').map((b, i) => (
+                      <p key={i}>{(b as { text: string }).text}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="col-lg-4 col-md-7 col-sm-9">
+              <div className="service-sidebar">
+                <div className="widget widget-menu wow fadeInUp delay-0-2s">
+                  <ul>
+                    {menu.map((item) => (
+                      <li key={item.href}>
+                        <a className={item.href === `/${slug}` ? 'active' : undefined} href={item.href}>
+                          {item.label} <i className="far fa-long-arrow-right"></i>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="widget widget-form wow fadeInUp delay-0-2s">
+                  <h3 className="widget-title">Appointment</h3>
+                  <p className="text-white">
+                    {site.address}. {site.hoursSummary}
+                  </p>
+                  <a className="theme-btn btn-border w-100 mb-10" href={heroCtas[0]?.url ?? '/services#book'}>
+                    {heroCtas[0]?.label ?? 'book online'} <i className="far fa-long-arrow-right"></i>
+                  </a>
+                  <a className="theme-btn style-four w-100" href={site.phoneHref}>
+                    call {site.phone} <i className="far fa-phone"></i>
+                  </a>
+                </div>
+                <div className="widget widget-menu wow fadeInUp delay-0-2s">
+                  <h3 className="widget-title">Related</h3>
+                  <ul>
+                    {meta.related.map((link) => (
+                      <li key={link.href + link.label}>
+                        <a href={link.href} title={link.why}>
+                          {link.label} <i className="far fa-long-arrow-right"></i>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Testimonials
+        reviews={reviews}
+        title="What our clients say"
+        text="Google reviews chosen for this service."
+        className="pt-120 rpt-90 pb-125 rpb-95"
+      />
+
       <section
-        className="page-banner text-white py-190 rpy-130"
-        style={{ backgroundImage: 'url(/assets/images/banner/banner.jpg)' }}
+        className="cta-area bgs-cover bg-yellow text-white py-40"
+        style={{ backgroundImage: 'url(/assets/images/background/cta-bg.png)' }}
       >
         <div className="container">
-          <div className="banner-inner">
-            <h1 className="page-title landing-title wow fadeInRight delay-0-2s">{h1}</h1>
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb justify-content-center wow fadeInLeft delay-0-2s">
-                <li className="breadcrumb-item">
-                  <a href="/">Home</a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="/services">{crumb}</a>
-                </li>
-                <li className="breadcrumb-item active">{serviceName}</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </section>
-
-      <section className="landing-intro pt-100 rpt-70 pb-70">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-7">
-              {eyebrow && <span className="landing-eyebrow">{eyebrow}</span>}
-              {heroParas[0] && <p className="landing-lead">{heroParas[0].text}</p>}
-              {heroParas.slice(1).map((p) => (
-                <p key={p.text}>{p.text}</p>
-              ))}
-              <div className="landing-ctas">
-                {heroCtas.map((cta, i) => (
-                  <a key={cta.label} className={`theme-btn${i > 0 ? ' style-four' : ''}`} href={cta.url}>
-                    {cta.label} <i className="far fa-long-arrow-right"></i>
-                  </a>
-                ))}
+          <div className="row justify-content-center text-center align-items-center">
+            <div className="col-xl-6 col-lg-7">
+              <div className="section-title mt-5">
+                <h2>Ready to book {serviceName.toLowerCase()}?</h2>
               </div>
             </div>
-            <div className="col-lg-5">
-              <div className="landing-photo rmt-55">
-                <img src={photoUrl(meta.photo)} alt={meta.photo.alt} />
-              </div>
+            <div className="col-xl-3 col-lg-4">
+              <a href={lastBlock.t === 'cta' ? lastBlock.url : '/services#book'} className="theme-btn btn-border my-10">
+                book online <i className="far fa-long-arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
       </section>
-
-      {page.testimonial && (
-        <section className="landing-quote bg-black text-white py-60">
-          <div className="container text-center">
-            <p className="landing-quote-text">“{page.testimonial.quote}”</p>
-            <div className="landing-quote-author">
-              <span className="stars" role="img" aria-label="5 out of 5 stars">
-                ★★★★★
-              </span>{' '}
-              {page.testimonial.author} · Google review
-            </div>
-          </div>
-        </section>
-      )}
-
-      {glance.length > 0 && (
-        <section className="landing-glance bg-lighter-two py-80">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-xl-10">
-                <span className="landing-eyebrow">QUICK OVERVIEW</span>
-                <h2 className="landing-heading mb-20">{serviceName} at a Glance</h2>
-                <div className="table-responsive">
-                  <table className="glance-table">
-                    <thead>
-                      <tr>
-                        <th>Option</th>
-                        <th>How long it lasts</th>
-                        <th>Best for</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {glance.map((row) => (
-                        <tr key={row.title}>
-                          <th scope="row">{row.title}</th>
-                          <td>{row.lasts || '—'}</td>
-                          <td>{row.best || '—'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="mt-15">
-                  Location: {site.address}. A non-refundable deposit reserves your time and is applied to your service
-                  total.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {main.map(renderSection)}
-
-      <ReviewCards reviews={reviews} title="Clients on Their Visits" />
-
-      <section className="landing-related bg-lighter-two py-80">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-10">
-              <span className="landing-eyebrow">KEEP READING</span>
-              <h2 className="landing-heading mb-20">Related Services and Guides</h2>
-              <ul className="related-list">
-                {meta.related.map((link) => (
-                  <li key={link.href + link.label}>
-                    <a href={link.href}>{link.label}</a>
-                    <span>{link.why}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {closing && renderSection(closing, main.length)}
-
-      {lastBlock.t !== 'cta' && (
-        <section className="landing-cta bg-yellow text-white py-60">
-          <div className="container text-center">
-            <a className="theme-btn style-four" href="/services#book">
-              book online <i className="far fa-long-arrow-right"></i>
-            </a>{' '}
-            <a className="theme-btn style-four" href={site.phoneHref}>
-              call {site.phone} <i className="far fa-phone"></i>
-            </a>
-          </div>
-        </section>
-      )}
     </SiteShell>
   );
 }

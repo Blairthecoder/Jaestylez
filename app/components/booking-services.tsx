@@ -3,16 +3,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { loadServices, serviceHref, type BookableService } from '@/app/lib/wix-bookings';
 
-function excerpt(text: string, max = 150): string {
-  const clean = text.replace(/\s+/g, ' ').trim();
-  return clean.length > max ? `${clean.slice(0, max - 1).trimEnd()}…` : clean;
-}
-
-/** Live service menu from Wix Bookings. "Book Now" opens that service's Wix booking calendar. */
+/**
+ * Full service menu from Wix Bookings, laid out with the template's pricing tabs (one tab per category).
+ * Each row links to the service page and to that service's booking calendar.
+ */
 export function BookingServices() {
   const [services, setServices] = useState<BookableService[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -37,103 +35,97 @@ export function BookingServices() {
     return [...seen.entries()].sort((a, b) => a[1] - b[1]).map(([name]) => name);
   }, [services]);
 
-  const groups = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const matches = services.filter(
-      (s) =>
-        (category === 'All' || s.category === category) &&
-        (!q || `${s.name} ${s.tagline} ${s.description}`.toLowerCase().includes(q)),
-    );
-    return categories
-      .map((name) => ({ name, items: matches.filter((s) => s.category === name) }))
-      .filter((g) => g.items.length > 0);
-  }, [services, categories, category, query]);
-
-  const total = groups.reduce((sum, g) => sum + g.items.length, 0);
+  const active = category ?? categories[0] ?? null;
+  const q = query.trim().toLowerCase();
+  const items = useMemo(
+    () =>
+      services.filter((s) =>
+        q ? `${s.name} ${s.tagline} ${s.description} ${s.category}`.toLowerCase().includes(q) : s.category === active,
+      ),
+    [services, active, q],
+  );
 
   return (
-    <section id="book" className="booking-services-area pt-120 rpt-90 pb-100 rpb-70">
+    <section id="book" className="pricing-plan-page bg-lighter-two pt-120 rpt-90 pb-130 rpb-100">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-xl-6 col-lg-8 col-md-10">
-            <div className="section-title text-center mb-40">
-              <h2 className="title">Book Your Service</h2>
-              <p>Pick a service to see open times and reserve your appointment online.</p>
-              <span className="sub-title">Appointments</span>
+          <div className="col-xl-6 col-lg-7 col-md-11">
+            <div className="section-title text-center mb-55">
+              <h2 className="title">Book your service</h2>
+              <p>Pick a category, choose a service and reserve your appointment online.</p>
             </div>
           </div>
         </div>
 
-        <div className="booking-filters mb-40">
-          <div className="booking-chips" role="tablist" aria-label="Service categories">
-            {['All', ...categories].map((name) => (
-              <button
-                key={name}
-                type="button"
-                role="tab"
-                aria-selected={category === name}
-                className={category === name ? 'active' : undefined}
-                onClick={() => setCategory(name)}
-              >
-                {name}
-              </button>
-            ))}
+        <div className="price-tab-wrap p-40 bg-white">
+          <div className="booking-search-row mb-30">
+            <input
+              type="search"
+              className="form-control"
+              placeholder="Search all services"
+              aria-label="Search all services"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
           </div>
-          <input
-            type="search"
-            className="form-control booking-search"
-            placeholder="Search services"
-            aria-label="Search services"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-        </div>
 
-        <div role="status" className="text-center mb-30">
-          {status === 'loading' && 'Loading services…'}
-          {status === 'error' && 'Services could not be loaded right now. Please try again shortly or contact us to book.'}
-          {status === 'ready' && total === 0 && 'No services match that search.'}
-        </div>
-
-        {groups.map((group) => (
-          <div key={group.name} className="booking-group mb-50">
-            <h3 className="booking-group-title mb-25">{group.name}</h3>
-            <div className="row">
-              {group.items.map((service) => (
-                <div key={service.id} className="col-lg-6 mb-30">
-                  <article className="booking-card">
-                    {service.image && <img className="booking-card-image" src={service.image} alt="" loading="lazy" />}
-                    <div className="booking-card-body">
-                      <h4>{service.name}</h4>
-                      <ul className="booking-meta">
-                        {service.duration && (
-                          <li>
-                            <i className="far fa-clock"></i> {service.duration}
-                          </li>
-                        )}
-                        {service.price && (
-                          <li>
-                            <i className="far fa-tag"></i> <b>{service.price}</b>
-                          </li>
-                        )}
-                        {service.deposit && <li>{service.deposit} deposit</li>}
-                      </ul>
-                      {(service.tagline || service.description) && (
-                        <p>{excerpt(service.tagline || service.description)}</p>
-                      )}
-                      <div className="booking-actions">
-                        <a className="theme-btn" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
-                          book now <i className="far fa-long-arrow-right"></i>
-                        </a>
-                        <a href={serviceHref(service)}>details</a>
-                      </div>
-                    </div>
-                  </article>
-                </div>
+          {!q && categories.length > 0 && (
+            <ul className="nav price-tab booking-tabs" role="tablist">
+              {categories.map((name) => (
+                <li key={name} className="nav-item">
+                  <a
+                    className={`nav-link${name === active ? ' active' : ''}`}
+                    href="#"
+                    role="tab"
+                    aria-selected={name === active}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setCategory(name);
+                    }}
+                  >
+                    <span>{name}</span>
+                  </a>
+                </li>
               ))}
+            </ul>
+          )}
+
+          <div className="tab-content price-tab-content">
+            <p className="text-center" role="status">
+              {status === 'loading' && 'Loading services…'}
+              {status === 'error' &&
+                'Services could not be loaded right now. Please try again shortly or contact us to book.'}
+              {status === 'ready' && items.length === 0 && 'No services match that search.'}
+            </p>
+            <div className="tab-pane fade show active">
+              <div className="row">
+                {items.map((service) => (
+                  <div key={service.id} className="col-lg-6">
+                    <div className="price-item">
+                      {service.image && (
+                        <div className="image">
+                          <img src={service.image} alt="" loading="lazy" />
+                        </div>
+                      )}
+                      <div className="content">
+                        <h5>
+                          <a href={serviceHref(service)}>{service.name}</a>
+                        </h5>{' '}
+                        <span>
+                          {[service.duration, service.deposit && `${service.deposit} deposit`].filter(Boolean).join(' · ')}
+                        </span>{' '}
+                        <a className="booking-link" href={service.bookingUrl} target="_blank" rel="noopener noreferrer">
+                          Book now →
+                        </a>
+                      </div>{' '}
+                      <span className="price">{service.price}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );
