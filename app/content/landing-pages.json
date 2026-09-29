@@ -27,7 +27,7 @@
    {
     "t": "cta",
     "label": "Book Two-Strand Twists",
-    "url": "/service-details?slug=2-strand-twist"
+    "url": "/services/2-strand-twist/"
    },
    {
     "t": "cta",
@@ -309,7 +309,7 @@
    {
     "t": "cta",
     "label": "Book Starter Locs",
-    "url": "/service-details?slug=starter-locs-small"
+    "url": "/services/starter-locs-small/"
    }
   ]
  },
@@ -341,7 +341,7 @@
    {
     "t": "cta",
     "label": "Book Instant Locs",
-    "url": "/service-details?slug=instant-locs-partial"
+    "url": "/services/instant-locs-partial/"
    },
    {
     "t": "cta",
@@ -609,7 +609,7 @@
    {
     "t": "cta",
     "label": "Book a Retwist",
-    "url": "/service-details?slug=retwist-only"
+    "url": "/services/retwist-only/"
    },
    {
     "t": "cta",
@@ -865,7 +865,7 @@
    {
     "t": "cta",
     "label": "Book Starter Locs",
-    "url": "/service-details?slug=starter-locs-small"
+    "url": "/services/starter-locs-small/"
    },
    {
     "t": "cta",
@@ -1158,7 +1158,7 @@
    {
     "t": "cta",
     "label": "Book a Silk Press",
-    "url": "/service-details?slug=silk-press"
+    "url": "/services/silk-press/"
    },
    {
     "t": "cta",
@@ -1419,7 +1419,7 @@
    {
     "t": "cta",
     "label": "Book Goddess Locs",
-    "url": "/service-details?slug=goddess-locs-mid-back"
+    "url": "/services/goddess-locs-mid-back/"
    },
    {
     "t": "cta",
@@ -1690,7 +1690,7 @@
    {
     "t": "cta",
     "label": "Book Goddess Locs",
-    "url": "/service-details?slug=goddess-locs-1"
+    "url": "/services/goddess-locs-1/"
    }
   ]
  },
@@ -1722,7 +1722,7 @@
    {
     "t": "cta",
     "label": "Book Micro Locs",
-    "url": "/service-details?slug=micro-locs"
+    "url": "/services/micro-locs/"
    },
    {
     "t": "cta",
@@ -1998,7 +1998,7 @@
    {
     "t": "cta",
     "label": "Book Interlocking",
-    "url": "/service-details?slug=interlock"
+    "url": "/services/interlock/"
    },
    {
     "t": "cta",

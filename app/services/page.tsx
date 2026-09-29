@@ -76,7 +76,7 @@ export default function Page() {
                   Book the In-Salon Consultation ($30). Thirty minutes covers your hair, your goals, and a real service
                   recommendation, so your next appointment is booked with confidence.
                 </p>{' '}
-                <a href="/service-details?slug=in-salon-consultation" className="theme-btn style-four mt-20">
+                <a href="/services/in-salon-consultation/" className="theme-btn style-four mt-20">
                   book consultation <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>

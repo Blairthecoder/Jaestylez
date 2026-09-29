@@ -1134,3 +1134,40 @@ textarea.form-control,
   min-width: 44px;
   min-height: 44px;
 }
+
+/* Service pages */
+.service-h1 {
+  font-size: clamp(28px, 4vw, 44px);
+  margin-bottom: 8px;
+}
+.service-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+  padding: 0;
+  margin: 18px 0;
+  list-style: none;
+}
+.service-facts li {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+}
+.service-facts span {
+  display: block;
+  font-family: 'Rubik', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #757575;
+}
+
+/* Header logo: transparent, with a soft light edge so the dark part of the mark stays visible on the dark header */
+.main-header .logo img,
+.main-header .mobile-logo img {
+  height: 66px;
+  width: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}

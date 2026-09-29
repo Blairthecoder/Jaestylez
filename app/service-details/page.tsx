@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
-import { ServiceDetail } from '@/app/components/live-services';
+import { LegacyServiceRedirect } from '@/app/components/legacy-redirect';
 
 export const metadata: Metadata = {
-  title: "Service Details",
+  title: 'Service Details',
+  robots: { index: false },
 };
 
 export default function Page() {
@@ -24,7 +25,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <ServiceDetail />
+      <LegacyServiceRedirect />
     </SiteShell>
   );
 }

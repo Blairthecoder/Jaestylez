@@ -29,8 +29,10 @@ type Page = {
 const pages = landing as unknown as Record<string, Page>;
 
 // The source pages link "Book ..." buttons to a service page; send them to the in-site booking flow instead.
-const bookHref = (label: string, url: string) =>
-  /^book/i.test(label) && url.startsWith('/service-details?slug=') ? url.replace('/service-details?slug=', '/book?service=') : url;
+const bookHref = (label: string, url: string) => {
+  const match = url.match(/^\/services\/([^/]+)\/$/);
+  return /^book/i.test(label) && match ? `/book?service=${match[1]}` : url;
+};
 
 export function landingMetadata(slug: string): Metadata {
   const page = pages[slug];

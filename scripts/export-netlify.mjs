@@ -33,6 +33,26 @@ const routes = [
   '/booking-confirmed',
 ];
 
+// One static page per bookable service, straight from Wix Bookings.
+async function fetchServiceSlugs() {
+  const { createClient, OAuthStrategy } = await import('@wix/sdk');
+  const { services } = await import('@wix/bookings');
+  const clientId = process.env.NEXT_PUBLIC_WIX_CLIENT_ID || '91133d63-5037-41ae-b7fd-f830b7719346';
+  const client = createClient({ modules: { services }, auth: OAuthStrategy({ clientId }) });
+  let result = await client.services.queryServices().limit(100).find();
+  const all = [...result.items];
+  while (result.hasNext()) {
+    result = await result.next();
+    all.push(...result.items);
+  }
+  return all
+    .filter((s) => s._id && s.name && !s.hidden && s.onlineBooking?.enabled !== false && s.urls?.bookingPage)
+    .map((s) => s.mainSlug?.name ?? s.urls.bookingPage.split('/').pop());
+}
+
+const serviceSlugs = await fetchServiceSlugs();
+routes.push(...serviceSlugs.map((slug) => `/services/${slug}`));
+
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(clientDir, outputDir, { recursive: true });
@@ -122,7 +142,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-const hidden = new Set(['/booking-confirmed']);
+const hidden = new Set(['/booking-confirmed', '/service-details']);
 const urls = routes.filter((r) => !hidden.has(r));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

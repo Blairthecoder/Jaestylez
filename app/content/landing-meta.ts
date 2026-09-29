@@ -71,7 +71,7 @@ export const landingMeta: Record<string, LandingMeta> = {
         href: blog('starter-loc-care-first-90-days'),
         why: 'What to do after you leave the chair.',
       },
-      { label: 'In-Salon Consultation', href: '/service-details?slug=in-salon-consultation', why: 'Not sure which method? Start here.' },
+      { label: 'In-Salon Consultation', href: '/services/in-salon-consultation/', why: 'Not sure which method? Start here.' },
     ],
   },
   'silk-press': {
@@ -135,7 +135,7 @@ export const landingMeta: Record<string, LandingMeta> = {
     topics: ['monday', 'booking', 'about'],
     related: [
       { label: 'Book Online', href: '/services#book', why: 'Pick a service, then filter for Monday dates.' },
-      { label: 'In-Salon Consultation', href: '/service-details?slug=in-salon-consultation', why: 'First visit or changing methods? Book this first.' },
+      { label: 'In-Salon Consultation', href: '/services/in-salon-consultation/', why: 'First visit or changing methods? Book this first.' },
       { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll', why: 'A common Monday appointment.' },
       { label: 'Starter Locs', href: '/starter-locs', why: 'Start your locs at the beginning of the week.' },
     ],
