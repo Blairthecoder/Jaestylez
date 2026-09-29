@@ -13,7 +13,7 @@ export const site = {
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=630+Murphy+Rd+Ste+211+Stafford+TX+77477',
   logo: '/assets/images/logos/jae-stylez-logo.png',
   blurb: 'Healthy-hair-first styling from a licensed loctician serving Greater Houston.',
-  hoursSummary: 'Tue - Thu until 7 pm · Closed Sunday',
+  hoursSummary: 'Mon - Sat · Tue - Thu until 7 pm · Closed Sunday',
   hours: [
     { day: 'Monday', time: '8:00 am – 4:00 pm' },
     { day: 'Tuesday', time: '9:00 am – 7:00 pm' },
