@@ -229,20 +229,24 @@ export function CategoryTiles() {
   const { status, services } = useServices();
   const categories = topCategories(services, 6);
   return (
-    <div className="row justify-content-center">
-      <div className="col-12">
-        <StatusLine status={status} count={categories.length} />
-      </div>
-      {categories.map((category, i) => (
-        <div key={category.name} className="col-xl-2 col-lg-3 col-md-4 col-6 col-small">
-          <div className="ww-offer-item">
-            <i className={TILE_ICONS[i % TILE_ICONS.length]}></i>{' '}
-            <h4>
-              <a href={categoryHref(category.name)}>{category.name}</a>
-            </h4>
-          </div>
+    <>
+      <div className="row">
+        <div className="col-12">
+          <StatusLine status={status} count={categories.length} />
         </div>
-      ))}
-    </div>
+      </div>
+      <div className="row justify-content-center category-tile-rail">
+        {categories.map((category, i) => (
+          <div key={category.name} className="col-xl-2 col-lg-3 col-md-4 col-6 col-small category-tile-slide">
+            <div className="ww-offer-item">
+              <i className={TILE_ICONS[i % TILE_ICONS.length]}></i>{' '}
+              <h4>
+                <a href={categoryHref(category.name)}>{category.name}</a>
+              </h4>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

@@ -49,11 +49,13 @@ export function NamedServices({ names }: { names: string[] }) {
 export function Faq({
   items,
   className = 'mt-35',
+  initialOpen = 0,
 }: {
   items: { q: string; a?: string; list?: string[] }[];
   className?: string;
+  initialOpen?: number | null;
 }) {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(initialOpen);
   return (
     <div className={`faqs ${className}`}>
       {items.map((item, i) => (
