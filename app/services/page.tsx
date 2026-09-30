@@ -24,7 +24,7 @@ export default function Page() {
     <SiteShell header="three" footerClassName="mt-80">
       <PageBanner title="Services" crumbs={[{ label: 'Services' }]} />
 
-      <section className="about-us-four py-130 rpt-100 rpb-90">
+      <section className="about-us-four services-intro py-130 rpt-100 rpb-90">
         <div className="container">
           <div className="row align-items-center justify-content-around">
             <div className="col-lg-6">
@@ -56,7 +56,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="what-we-offer-three bg-black rel z-2 pt-120 rpt-90 pb-130 rpb-100">
+      <section className="what-we-offer-three services-offers bg-black rel z-2 pt-120 rpt-90 pb-130 rpb-100">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8 col-md-10">
@@ -96,7 +96,7 @@ export default function Page() {
 
       <BookingServices />
 
-      <section className="faq-area pt-120 rpt-90 pb-100 rpb-70">
+      <section className="faq-area booking-guidance pt-120 rpt-90 pb-100 rpb-70">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8 col-md-10">
@@ -108,17 +108,25 @@ export default function Page() {
           </div>
           <div className="row">
             <div className="col-lg-6">
-              <Faq className="mt-0 mb-30" items={guidance.groups.map((g) => ({ q: g.title, list: g.items }))} />
+              <Faq
+                className="mt-0 mb-30"
+                initialOpen={null}
+                items={guidance.groups.map((g) => ({ q: g.title, list: g.items }))}
+              />
             </div>
             <div className="col-lg-6">
-              <Faq className="mt-0 mb-30" items={policy.groups.map((g) => ({ q: g.title, list: g.items }))} />
+              <Faq
+                className="mt-0 mb-30"
+                initialOpen={null}
+                items={policy.groups.map((g) => ({ q: g.title, list: g.items }))}
+              />
               <p>{policy.intro}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="working-contact pt-100 rpt-70">
+      <section className="working-contact services-contact pt-100 rpt-70">
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
@@ -155,9 +163,10 @@ export default function Page() {
         reviews={reviewsFor(['booking', 'first-visit', 'maintenance'], 3)}
         title="What our clients say"
         text="Google reviews from people who booked with Jae."
+        className="services-testimonials pt-120 rpt-90 pb-125 rpb-95"
       />
 
-      <section className="faq-area bg-lighter-two pt-120 rpt-90 pb-120 rpb-90">
+      <section className="faq-area booking-faq bg-lighter-two pt-120 rpt-90 pb-120 rpb-90">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8 col-md-10">
@@ -168,13 +177,13 @@ export default function Page() {
           </div>
           <div className="row justify-content-center">
             <div className="col-xl-9">
-              <Faq items={bookingFaqs} />
+              <Faq items={bookingFaqs} initialOpen={null} />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="news-area-two rel z-2 pt-120 rpt-90 pb-100 rpb-70">
+      <section className="news-area-two services-news rel z-2 pt-120 rpt-90 pb-100 rpb-70">
         <div className="container">
           <div className="row justify-content-center mb-10">
             <div className="col-xl-6 col-lg-7">

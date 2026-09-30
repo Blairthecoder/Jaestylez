@@ -97,7 +97,7 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
   );
 
   const upper = (
-    <div className={`header-upper${three ? ' bg-black' : ''}`}>
+    <div className="header-upper bg-black">
       <div className="container clearfix">
         <div className="header-inner py-10 rpy-0 d-lg-flex align-items-center">
           <div className="logo-outer">
