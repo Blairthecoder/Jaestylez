@@ -773,6 +773,22 @@ html {
   padding-top: 150px !important;
   padding-bottom: 130px !important;
 }
+/* Desktop only: the absolutely positioned header (~108px) crowded the headline. Add clearance and breathing room. */
+@media (min-width: 992px) {
+  .jae-hero {
+    padding-top: 230px !important;
+    padding-bottom: 150px !important;
+  }
+  .jae-hero h1 {
+    margin-bottom: 28px;
+    line-height: 1.12;
+  }
+  .jae-hero .hero-content p {
+    max-width: 720px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
+}
 @media (max-width: 767px) {
   .page-banner {
     padding-top: 60px !important;
