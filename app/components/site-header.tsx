@@ -9,7 +9,15 @@ function isActive(item: NavItem, path: string): boolean {
   return (item.children ?? []).some((child) => isActive(child, path));
 }
 
-function MenuItem({ item, path, onNavigate }: { item: NavItem; path: string; onNavigate: () => void }) {
+function MenuItem({
+  item,
+  path,
+  onNavigate,
+}: {
+  item: NavItem;
+  path: string;
+  onNavigate: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const active = isActive(item, path);
 
@@ -26,33 +34,46 @@ function MenuItem({ item, path, onNavigate }: { item: NavItem; path: string; onN
   return (
     <li className={`dropdown${active ? ' current' : ''}${open ? ' open' : ''}`}>
       <a
-        href="#"
+        href={item.label === 'Services' ? '/services' : '#'}
         onClick={(event) => {
+          if (
+            window.matchMedia('(min-width: 992px)').matches &&
+            item.label === 'Services'
+          )
+            return;
           event.preventDefault();
           setOpen((v) => !v);
         }}
+        aria-expanded={open}
       >
         {item.label}
       </a>
       <ul>
         {item.children.map((child) => (
-          <MenuItem key={child.label} item={child} path={path} onNavigate={onNavigate} />
+          <MenuItem
+            key={child.label}
+            item={child}
+            path={path}
+            onNavigate={onNavigate}
+          />
         ))}
       </ul>
-      <div
+      <button
+        type="button"
         className="dropdown-btn"
-        role="button"
         aria-label={`Toggle ${item.label} menu`}
+        aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
         <span className="fas fa-chevron-down"></span>
-      </div>
+      </button>
     </li>
   );
 }
 
 export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
-  const path = usePathname();
+  const pathname = usePathname();
+  const path = String(pathname);
   const [menuOpen, setMenuOpen] = useState(false);
   const [fixed, setFixed] = useState(false);
 
@@ -62,6 +83,20 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuOpen]);
 
   const three = variant === 'three';
   const close = () => setMenuOpen(false);
@@ -73,10 +108,12 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
           <div className="top-left">
             <ul>
               <li>
-                <i className="far fa-phone"></i> <b>Call Us : </b> <a href={site.phoneHref}>{site.phone}</a>
+                <i className="far fa-phone"></i> <b>Call Us : </b>{' '}
+                <a href={site.phoneHref}>{site.phone}</a>
               </li>
               <li>
-                <i className="far fa-clock"></i> <b>Hours : </b> {site.hoursSummary}
+                <i className="far fa-clock"></i> <b>Hours : </b>{' '}
+                {site.hoursSummary}
               </li>
             </ul>
           </div>
@@ -116,23 +153,39 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
                     <img src={site.logo} alt={site.name} title={site.name} />
                   </a>
                 </div>
+                <a className="mobile-header-book" href="/book" onClick={close}>
+                  Book
+                </a>
                 <button
                   type="button"
                   className="navbar-toggle"
                   aria-label="Toggle navigation"
                   aria-expanded={menuOpen}
-                  onClick={() => setMenuOpen((v) => !v)}
+                  aria-controls="primary-navigation"
+                  onClick={
+                    menuOpen
+                      ? () => setMenuOpen(false)
+                      : () => setMenuOpen(true)
+                  }
                 >
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
-                  <span className="icon-bar"></span>
+                  <span className="navbar-toggle-label">
+                    {menuOpen ? 'Close' : 'Menu'}
+                  </span>
                 </button>
               </div>
 
-              <div className={`navbar-collapse collapse clearfix${menuOpen ? ' show' : ''}`}>
+              <div
+                id="primary-navigation"
+                className={`navbar-collapse collapse clearfix${menuOpen ? ' show' : ''}`}
+              >
                 <ul className="navigation clearfix">
                   {nav.map((item) => (
-                    <MenuItem key={item.label} item={item} path={path} onNavigate={close} />
+                    <MenuItem
+                      key={item.label}
+                      item={item}
+                      path={path}
+                      onNavigate={close}
+                    />
                   ))}
                 </ul>
               </div>
@@ -140,7 +193,10 @@ export function SiteHeader({ variant }: { variant: 'one' | 'three' }) {
           </div>
 
           <div className="menu-button d-none d-lg-block">
-            <a href="/services#book" className={`theme-btn${three ? ' style-four' : ''}`}>
+            <a
+              href="/book"
+              className={`theme-btn${three ? ' style-four' : ''}`}
+            >
               appointment <i className="far fa-long-arrow-right"></i>
             </a>
           </div>

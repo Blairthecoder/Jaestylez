@@ -10,9 +10,11 @@ export const site = {
   phoneHref: 'tel:+13463777185',
   email: 'booking@iamjaestylez.com',
   address: '630 Murphy Rd Ste 211, Stafford, TX 77477',
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=630+Murphy+Rd+Ste+211+Stafford+TX+77477',
+  mapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=630+Murphy+Rd+Ste+211+Stafford+TX+77477',
   logo: '/assets/images/logos/jae-stylez-logo.png',
-  blurb: 'Healthy-hair-first styling from a licensed loctician serving Greater Houston.',
+  blurb:
+    'Healthy-hair-first styling from a licensed loctician serving Greater Houston.',
   hoursSummary: 'Mon - Sat · Tue - Thu until 7 pm · Closed Sunday',
   hours: [
     { day: 'Monday', time: '8:00 am – 4:00 pm' },
@@ -24,9 +26,21 @@ export const site = {
     { day: 'Sunday', time: 'Closed' },
   ],
   social: [
-    { icon: 'fab fa-instagram', label: 'Instagram', href: 'https://www.instagram.com/jaestylez/' },
-    { icon: 'fab fa-facebook-f', label: 'Facebook', href: 'https://www.facebook.com/JaeStlyezz' },
-    { icon: 'fab fa-tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@jaestylez' },
+    {
+      icon: 'fab fa-instagram',
+      label: 'Instagram',
+      href: 'https://www.instagram.com/jaestylez/',
+    },
+    {
+      icon: 'fab fa-facebook-f',
+      label: 'Facebook',
+      href: 'https://www.facebook.com/JaeStlyezz',
+    },
+    {
+      icon: 'fab fa-tiktok',
+      label: 'TikTok',
+      href: 'https://www.tiktok.com/@jaestylez',
+    },
   ],
   googleReviewsUrl: 'https://share.google/tyXGOFilenpVDbY6m',
   googleBusinessUrl: 'https://share.google/SqWrCi9CJWcv7iZEE',
@@ -41,7 +55,10 @@ export const styleLinks: NavItem[] = [
   { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
   { label: 'Starter Locs', href: '/starter-locs' },
   { label: 'Silk Press', href: '/silk-press' },
-  { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
+  {
+    label: 'Interlocking Loc Maintenance',
+    href: '/interlocking-loc-maintenance',
+  },
   { label: 'Goddess Locs', href: '/goddess-locs' },
   { label: 'Microloc Extensions', href: '/micro-locs' },
 ];
@@ -52,16 +69,23 @@ export const nav: NavItem[] = [
   { label: 'Hair Styles', href: '/hair-styles' },
   {
     label: 'Services',
-    children: [{ label: 'All Services', href: '/services' }, { label: 'Pricing', href: '/pricing' }, ...styleLinks],
+    children: [
+      { label: 'All Services', href: '/services' },
+      { label: 'Pricing', href: '/pricing' },
+      ...styleLinks,
+    ],
   },
-  { label: 'Book Online', href: '/services#book' },
+  { label: 'Book Online', href: '/book' },
   { label: 'Monday Appointments', href: '/monday-appointments' },
   {
     label: 'Shop',
     children: [
       { label: 'All Products', href: '/shop' },
       { label: 'The Lox Box', href: '/shop?category=The%20Lox%20Box' },
-      { label: 'Marilyn Jae Cosmetics', href: '/shop?category=Marilyn%20Jae%20Cosmetics' },
+      {
+        label: 'Marilyn Jae Cosmetics',
+        href: '/shop?category=Marilyn%20Jae%20Cosmetics',
+      },
     ],
   },
   { label: 'Contact', href: '/contact' },

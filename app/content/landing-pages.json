@@ -2252,7 +2252,7 @@
    {
     "t": "cta",
     "label": "Book a Monday Appointment",
-    "url": "/services#book"
+    "url": "/book"
    },
    {
     "t": "cta",

@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { localBusinessSchema } from '@/app/lib/schema';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rashadthehelper.netlify.app';
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rashadthehelper.netlify.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -25,13 +26,22 @@ const styles = [
   '/assets/css/style.css',
 ];
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="js">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik:wght@400;500&display=swap"
           rel="stylesheet"
@@ -39,10 +49,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {styles.map((href) => (
           <link key={href} rel="stylesheet" href={href} />
         ))}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema(siteUrl)) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessSchema(siteUrl)),
+          }}
+        />
         {children}
       </body>
     </html>

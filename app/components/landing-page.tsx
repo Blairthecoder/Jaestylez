@@ -36,11 +36,19 @@ const bookHref = (label: string, url: string) => {
 
 export function landingMetadata(slug: string): Metadata {
   const page = pages[slug];
-  return { title: { absolute: page.seoTitle }, description: page.seoDescription };
+  return {
+    title: { absolute: page.seoTitle },
+    description: page.seoDescription,
+  };
 }
 
 // A section starts at each eyebrow or heading; everything up to the next one belongs to it.
-type Section = { eyebrow?: string; title?: string; level?: 'h2' | 'h3'; blocks: Block[] };
+type Section = {
+  eyebrow?: string;
+  title?: string;
+  level?: 'h2' | 'h3';
+  blocks: Block[];
+};
 
 function splitSections(blocks: Block[]): Section[] {
   const sections: Section[] = [];
@@ -86,9 +94,16 @@ function renderBlocks(blocks: Block[], key: string) {
     out.push(
       <div className="row justify-content-center" key={`${key}-cards-${i}`}>
         {cards.map((card) => (
-          <div key={card.title} className={cards.length === 2 ? 'col-lg-6 mb-30' : 'col-lg-4 col-md-6 mb-30'}>
+          <div
+            key={card.title}
+            className={
+              cards.length === 2 ? 'col-lg-6 mb-30' : 'col-lg-4 col-md-6 mb-30'
+            }
+          >
             <div className="landing-card">
-              {card.eyebrow && <span className="landing-eyebrow">{card.eyebrow}</span>}
+              {card.eyebrow && (
+                <span className="landing-eyebrow">{card.eyebrow}</span>
+              )}
               <h4>{card.title}</h4>
               {card.sub && <div className="landing-card-sub">{card.sub}</div>}
               <ul>
@@ -144,7 +159,11 @@ function renderBlocks(blocks: Block[], key: string) {
         break;
       case 'cta':
         out.push(
-          <a key={k} className="theme-btn mt-15" href={bookHref(block.label, block.url)}>
+          <a
+            key={k}
+            className="theme-btn mt-15"
+            href={bookHref(block.label, block.url)}
+          >
             {block.label} <i className="far fa-long-arrow-right"></i>
           </a>,
         );
@@ -155,7 +174,8 @@ function renderBlocks(blocks: Block[], key: string) {
   return out;
 }
 
-const LASTS = /^(How long it lasts|How long it holds|Wear time|Timeline to mature)\s*:\s*(.*)$/i;
+const LASTS =
+  /^(How long it lasts|How long it holds|Wear time|Timeline to mature)\s*:\s*(.*)$/i;
 const BEST = /^Best for\s*:\s*(.*)$/i;
 
 // "At a glance" rows come straight from the page's own comparison cards (how long it lasts, who it is for).
@@ -170,30 +190,51 @@ function buildGlance(blocks: Block[]) {
   return rows;
 }
 
-export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?: string }) {
+export function LandingPage({
+  slug,
+  crumb = 'Services',
+}: {
+  slug: string;
+  crumb?: string;
+}) {
   const page = pages[slug];
   const meta = landingMeta[slug];
   const blocks = page.blocks;
-  const eyebrow = blocks[0]?.t === 'eyebrow' ? (blocks[0] as { text: string }).text : '';
+  const eyebrow =
+    blocks[0]?.t === 'eyebrow' ? (blocks[0] as { text: string }).text : '';
   const h1 = (blocks.find((b) => b.t === 'h1') as { text: string }).text;
   const h1Index = blocks.findIndex((b) => b.t === 'h1');
-  const heroEnd = blocks.findIndex((b, i) => i > h1Index && b.t !== 'p' && b.t !== 'cta');
+  const heroEnd = blocks.findIndex(
+    (b, i) => i > h1Index && b.t !== 'p' && b.t !== 'cta',
+  );
   const hero = blocks.slice(h1Index + 1, heroEnd < 0 ? blocks.length : heroEnd);
-  const heroParas = hero.filter((b) => b.t === 'p') as { t: 'p'; text: string }[];
-  const heroCtas = hero.filter((b) => b.t === 'cta') as { t: 'cta'; label: string; url: string }[];
+  const heroParas = hero.filter((b) => b.t === 'p') as {
+    t: 'p';
+    text: string;
+  }[];
+  const heroCtas = hero.filter((b) => b.t === 'cta') as {
+    t: 'cta';
+    label: string;
+    url: string;
+  }[];
   const rest = blocks.slice(heroEnd < 0 ? blocks.length : heroEnd);
   const sections = splitSections(rest);
   const lastBlock = blocks[blocks.length - 1];
   const glance = buildGlance(blocks);
-  const faq = blocks.find((b) => b.t === 'faq') as Extract<Block, { t: 'faq' }> | undefined;
+  const faq = blocks.find((b) => b.t === 'faq') as
+    | Extract<Block, { t: 'faq' }>
+    | undefined;
   const serviceName = h1.replace(/ in Stafford, TX$/, '');
   // The page's own featured review (shown on the original page) leads the review slider, then the best topic matches.
   const featured = page.testimonial
-    ? allReviews.find((r) => page.testimonial!.quote.startsWith(r.text.slice(0, 30)))
+    ? allReviews.find((r) =>
+        page.testimonial!.quote.startsWith(r.text.slice(0, 30)),
+      )
     : undefined;
-  const reviews = [featured, ...reviewsFor(meta.topics, 3, featured ? [featured.id] : [])].filter(
-    (r): r is NonNullable<typeof r> => !!r,
-  );
+  const reviews = [
+    featured,
+    ...reviewsFor(meta.topics, 3, featured ? [featured.id] : []),
+  ].filter((r): r is NonNullable<typeof r> => !!r);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -215,7 +256,13 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
             addressCountry: 'US',
           },
         },
-        areaServed: ['Stafford', 'Sugar Land', 'Missouri City', 'Richmond', 'Houston'].map((name) => ({
+        areaServed: [
+          'Stafford',
+          'Sugar Land',
+          'Missouri City',
+          'Richmond',
+          'Houston',
+        ].map((name) => ({
           '@type': 'City',
           name,
         })),
@@ -237,12 +284,21 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
 
   const closing = sections.length > 1 ? sections[sections.length - 1] : null;
   const main = closing ? sections.slice(0, -1) : sections;
-  const menu = [...styleLinks, { label: 'Monday Appointments', href: '/monday-appointments' }];
+  const menu = [
+    ...styleLinks,
+    { label: 'Monday Appointments', href: '/monday-appointments' },
+  ];
 
   return (
     <SiteShell header="three" footerClassName="mt-80">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <PageBanner title={serviceName} crumbs={[{ label: crumb, href: '/services' }, { label: serviceName }]} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PageBanner
+        title={serviceName}
+        crumbs={[{ label: crumb, href: '/services' }, { label: serviceName }]}
+      />
 
       <section className="service-details-area py-130 rpt-90 rpb-100">
         <div className="container">
@@ -250,22 +306,34 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
             <div className="col-lg-8">
               <div className="service-details-content rmb-75">
                 <div className="content wow fadeInUp delay-0-2s">
-                  {eyebrow && <span className="landing-eyebrow">{eyebrow}</span>}
+                  {eyebrow && (
+                    <span className="landing-eyebrow">{eyebrow}</span>
+                  )}
                   <h2>{h1}</h2>
-                  {heroParas[0] && <p className="landing-lead">{heroParas[0].text}</p>}
+                  {heroParas[0] && (
+                    <p className="landing-lead">{heroParas[0].text}</p>
+                  )}
                   {heroParas.slice(1).map((p) => (
                     <p key={p.text}>{p.text}</p>
                   ))}
                   <div className="landing-ctas">
                     {heroCtas.map((cta, i) => (
-                      <a key={cta.label} className={`theme-btn${i > 0 ? ' style-four' : ''}`} href={bookHref(cta.label, cta.url)}>
+                      <a
+                        key={cta.label}
+                        className={`theme-btn${i > 0 ? ' style-four' : ''}`}
+                        href={bookHref(cta.label, cta.url)}
+                      >
                         {cta.label} <i className="far fa-long-arrow-right"></i>
                       </a>
                     ))}
                   </div>
                 </div>
                 <div className="image my-45 wow fadeInUp delay-0-2s">
-                  <img src={photoMd(meta.photo)} alt={meta.photo.alt} decoding="async" />
+                  <img
+                    src={photoMd(meta.photo)}
+                    alt={meta.photo.alt}
+                    decoding="async"
+                  />
                 </div>
 
                 {glance.length > 0 && (
@@ -284,7 +352,9 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                           {glance.map((row) => (
                             <tr key={row.title}>
                               <th scope="row">{row.title}</th>
-                              <td data-label="How long it lasts">{row.lasts || '—'}</td>
+                              <td data-label="How long it lasts">
+                                {row.lasts || '—'}
+                              </td>
                               <td data-label="Best for">{row.best || '—'}</td>
                             </tr>
                           ))}
@@ -292,16 +362,23 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                       </table>
                     </div>
                     <p className="mt-15">
-                      Location: {site.address}. A non-refundable deposit reserves your time and is applied to your
-                      service total.
+                      Location: {site.address}. A non-refundable deposit
+                      reserves your time and is applied to your service total.
                     </p>
                   </div>
                 )}
 
                 {main.map((section, i) => (
                   <div key={i} className="content mb-45">
-                    {section.eyebrow && <span className="landing-eyebrow">{section.eyebrow}</span>}
-                    {section.title && (section.level === 'h3' ? <h3>{section.title}</h3> : <h2>{section.title}</h2>)}
+                    {section.eyebrow && (
+                      <span className="landing-eyebrow">{section.eyebrow}</span>
+                    )}
+                    {section.title &&
+                      (section.level === 'h3' ? (
+                        <h3>{section.title}</h3>
+                      ) : (
+                        <h2>{section.title}</h2>
+                      ))}
                     {renderBlocks(section.blocks, `s${i}`)}
                   </div>
                 ))}
@@ -309,9 +386,11 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                 {closing && (
                   <div className="content">
                     {closing.title && <h2>{closing.title}</h2>}
-                    {closing.blocks.filter((b) => b.t === 'p').map((b, i) => (
-                      <p key={i}>{(b as { text: string }).text}</p>
-                    ))}
+                    {closing.blocks
+                      .filter((b) => b.t === 'p')
+                      .map((b, i) => (
+                        <p key={i}>{(b as { text: string }).text}</p>
+                      ))}
                   </div>
                 )}
               </div>
@@ -323,8 +402,14 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                   <ul>
                     {menu.map((item) => (
                       <li key={item.href}>
-                        <a className={item.href === `/${slug}` ? 'active' : undefined} href={item.href}>
-                          {item.label} <i className="far fa-long-arrow-right"></i>
+                        <a
+                          className={
+                            item.href === `/${slug}` ? 'active' : undefined
+                          }
+                          href={item.href}
+                        >
+                          {item.label}{' '}
+                          <i className="far fa-long-arrow-right"></i>
                         </a>
                       </li>
                     ))}
@@ -335,10 +420,21 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                   <p className="text-white">
                     {site.address}. {site.hoursSummary}
                   </p>
-                  <a className="theme-btn btn-border w-100 mb-10" href={heroCtas[0] ? bookHref(heroCtas[0].label, heroCtas[0].url) : '/services#book'}>
-                    {heroCtas[0]?.label ?? 'book online'} <i className="far fa-long-arrow-right"></i>
+                  <a
+                    className="theme-btn btn-border w-100 mb-10"
+                    href={
+                      heroCtas[0]
+                        ? bookHref(heroCtas[0].label, heroCtas[0].url)
+                        : '/book'
+                    }
+                  >
+                    {heroCtas[0]?.label ?? 'book online'}{' '}
+                    <i className="far fa-long-arrow-right"></i>
                   </a>
-                  <a className="theme-btn style-four w-100" href={site.phoneHref}>
+                  <a
+                    className="theme-btn style-four w-100"
+                    href={site.phoneHref}
+                  >
                     call {site.phone} <i className="far fa-phone"></i>
                   </a>
                 </div>
@@ -348,7 +444,8 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
                     {meta.related.map((link) => (
                       <li key={link.href + link.label}>
                         <a href={link.href} title={link.why}>
-                          {link.label} <i className="far fa-long-arrow-right"></i>
+                          {link.label}{' '}
+                          <i className="far fa-long-arrow-right"></i>
                         </a>
                       </li>
                     ))}
@@ -379,7 +476,14 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
               </div>
             </div>
             <div className="col-xl-3 col-lg-4">
-              <a href={lastBlock.t === 'cta' ? bookHref(lastBlock.label, lastBlock.url) : '/services#book'} className="theme-btn btn-border my-10">
+              <a
+                href={
+                  lastBlock.t === 'cta'
+                    ? bookHref(lastBlock.label, lastBlock.url)
+                    : '/book'
+                }
+                className="theme-btn btn-border my-10"
+              >
                 book online <i className="far fa-long-arrow-right"></i>
               </a>
             </div>

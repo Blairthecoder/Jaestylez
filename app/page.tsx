@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { AppointmentForm } from '@/app/components/appointment-form';
-import { CategoryCards, FeatureCategories, PricingTabs } from '@/app/components/live-services';
+import {
+  CategoryCards,
+  FeatureCategories,
+  PricingTabs,
+} from '@/app/components/live-services';
 import { ProductShowcase } from '@/app/components/home-client';
 import { LatestPosts } from '@/app/components/blog-client';
 import { Faq } from '@/app/components/landing-client';
@@ -12,29 +16,43 @@ import { about, faqs, hero } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez' },
+  title: {
+    absolute: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez',
+  },
   description:
     'Jae Stylez is a licensed loctician and natural hair stylist in Stafford, TX. Retwists, starter locs, twists, silk press. Serving Sugar Land and Houston.',
 };
 
 const galleryLabel = (tags: string[]) => {
   const t = tags[0];
-  return t === 'locs' ? 'Locs' : t === 'twists' ? 'Twists' : t === 'braids' ? 'Braids' : t === 'curls' ? 'Curls' : 'Hair Styles';
+  return t === 'locs'
+    ? 'Locs'
+    : t === 'twists'
+      ? 'Twists'
+      : t === 'braids'
+        ? 'Braids'
+        : t === 'curls'
+          ? 'Curls'
+          : 'Hair Styles';
 };
 
 export default function Page() {
   return (
     <SiteShell header="one" footerClassName="pb-30">
-      <section className="hero-section jae-hero py-250" style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}>
+      <section
+        className="hero-section jae-hero py-250"
+        style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}
+      >
         <div className="container">
           <div className="row align-items-center justify-content-between">
             <div className="col-xl-8 col-lg-9">
               <div className="hero-content py-10 rpt-0 text-white rmb-70">
                 <h1 className="wow fadeInUp delay-0-2s">{hero.title}</h1>
                 <p className="wow fadeInUp delay-0-4s">
-                  {hero.tagline} Serving Stafford, Sugar Land, Missouri City, Richmond, and Greater Houston.
+                  {hero.tagline} Serving Stafford, Sugar Land, Missouri City,
+                  Richmond, and Greater Houston.
                 </p>{' '}
-                <a href="/services#book" className="theme-btn wow fadeInUp delay-0-6s">
+                <a href="/book" className="theme-btn wow fadeInUp delay-0-6s">
                   book online <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>
@@ -60,7 +78,10 @@ export default function Page() {
                     <div className="col-lg-8">
                       <div className="section-title mb-35">
                         <h2 className="title">What We Do</h2>
-                        <p>Loc services, natural hair styles, protective styles and more. Pick a category to see the menu.</p>
+                        <p>
+                          Loc services, natural hair styles, protective styles
+                          and more. Pick a category to see the menu.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -81,7 +102,10 @@ export default function Page() {
           </div>
           <div className="col-xl-3 col-sm-6 order-xl-2">
             <div className="about-right-image wow fadeInUp delay-0-6s">
-              <img src={photoMd(photos.locsPonytail)} alt={photos.locsPonytail.alt} />
+              <img
+                src={photoMd(photos.locsPonytail)}
+                alt={photos.locsPonytail.alt}
+              />
             </div>
           </div>
           <div className="col-xl-6 align-self-center">
@@ -89,7 +113,9 @@ export default function Page() {
               <div className="row justify-content-center">
                 <div className="col-lg-8">
                   <div className="section-title mb-35">
-                    <h2 className="title">Meet Jasmin Lafond, licensed loctician</h2>
+                    <h2 className="title">
+                      Meet Jasmin Lafond, licensed loctician
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -101,7 +127,11 @@ export default function Page() {
                   <span>Loctician &amp; natural hair stylist</span>
                 </div>
               </div>{' '}
-              <img className="about-bg-shape" src="/assets/images/about/about-bg-shape.png" alt="" />
+              <img
+                className="about-bg-shape"
+                src="/assets/images/about/about-bg-shape.png"
+                alt=""
+              />
             </div>
           </div>
         </div>
@@ -119,7 +149,10 @@ export default function Page() {
               </div>
             </div>
             <div className="col-xl-3 col-lg-4">
-              <a href="/services#book" className="theme-btn btn-border my-10 wow fadeInRight delay-0-2s">
+              <a
+                href="/book"
+                className="theme-btn btn-border my-10 wow fadeInRight delay-0-2s"
+              >
                 book online <i className="far fa-long-arrow-right"></i>
               </a>
             </div>
@@ -133,28 +166,44 @@ export default function Page() {
             <div className="col-xl-5 col-lg-6 col-md-8">
               <div className="section-title text-center mb-55">
                 <h2 className="title">Services we provide</h2>
-                <p>Every service starts with your hair health and ends with a plan you can actually keep up with.</p>
+                <p>
+                  Every service starts with your hair health and ends with a
+                  plan you can actually keep up with.
+                </p>
               </div>
             </div>
           </div>
           <CategoryCards />
         </div>
         <div className="services-shapes">
-          <img className="shape-one" src="/assets/images/shapes/service-one.png" alt="" />{' '}
-          <img className="shape-two" src="/assets/images/shapes/service-two.png" alt="" />
+          <img
+            className="shape-one"
+            src="/assets/images/shapes/service-one.png"
+            alt=""
+          />{' '}
+          <img
+            className="shape-two"
+            src="/assets/images/shapes/service-two.png"
+            alt=""
+          />
         </div>
       </section>
 
       <section
         className="pricing-plan-area bgs-cover pt-120 rpt-90 pb-130 rpb-100"
-        style={{ backgroundImage: 'url(/assets/images/background/pricing-plan-bg.jpg)' }}
+        style={{
+          backgroundImage: 'url(/assets/images/background/pricing-plan-bg.jpg)',
+        }}
       >
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-xl-5 col-lg-6 col-md-8">
               <div className="section-title text-white text-center mb-55">
                 <h2 className="title">Service pricing</h2>
-                <p>Live prices and times from the booking calendar. A non-refundable deposit reserves your time.</p>
+                <p>
+                  Live prices and times from the booking calendar. A
+                  non-refundable deposit reserves your time.
+                </p>
               </div>
             </div>
           </div>
@@ -174,7 +223,8 @@ export default function Page() {
             <div className="col-lg-4">
               <div className="section-header-btn text-lg-right mb-20 wow fadeInRight delay-0-2s">
                 <a href="/hair-styles" className="theme-btn">
-                  explore more gallery <i className="far fa-long-arrow-right"></i>
+                  explore more gallery{' '}
+                  <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>
             </div>
@@ -184,12 +234,23 @@ export default function Page() {
           <div className="row">
             {galleryPhotos.slice(0, 4).map((photo, i) => (
               <div key={photo.file} className="col-xl-3 col-sm-6">
-                <div className={`gallery-item wow fadeInUp delay-0-${(i % 4) * 2 + 2}s`}>
-                  <img src={photoMd(photo)} alt={photo.alt} loading="lazy" decoding="async" />{' '}
+                <div
+                  className={`gallery-item wow fadeInUp delay-0-${(i % 4) * 2 + 2}s`}
+                >
+                  <img
+                    src={photoMd(photo)}
+                    alt={photo.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />{' '}
                   <div className="gallery-content">
                     <h3>{galleryLabel(photo.tags)}</h3>
                     <p>Jae Stylez · Stafford, TX</p>{' '}
-                    <a href="/hair-styles" className="details-btn" aria-label="See more styles">
+                    <a
+                      href="/hair-styles"
+                      className="details-btn"
+                      aria-label="See more styles"
+                    >
                       <i className="far fa-long-arrow-right"></i>
                     </a>
                   </div>
@@ -210,7 +271,10 @@ export default function Page() {
               className="image wow fadeInUp delay-0-2s"
               style={{ backgroundImage: `url(${photoMd(photos.boxBraids)})` }}
             ></div>
-            <AppointmentForm className="wow fadeInUp delay-0-4s" backgroundImage="/assets/images/contact/contact-bg.png" />
+            <AppointmentForm
+              className="wow fadeInUp delay-0-4s"
+              backgroundImage="/assets/images/contact/contact-bg.png"
+            />
             <div
               className="image wow fadeInUp delay-0-6s"
               style={{ backgroundImage: `url(${photoMd(photos.feedIn)})` }}
@@ -218,8 +282,16 @@ export default function Page() {
           </div>
         </div>
         <div className="contact-shapes">
-          <img className="shape-one" src="/assets/images/shapes/contact-one.png" alt="" />{' '}
-          <img className="shape-two" src="/assets/images/shapes/contact-two.png" alt="" />
+          <img
+            className="shape-one"
+            src="/assets/images/shapes/contact-one.png"
+            alt=""
+          />{' '}
+          <img
+            className="shape-two"
+            src="/assets/images/shapes/contact-two.png"
+            alt=""
+          />
         </div>
       </section>
 
@@ -245,16 +317,22 @@ export default function Page() {
             <div className="col-lg-4">
               <div
                 className="cta-part bg-yellow text-center text-white p-40 rpy-55 wow fadeInLeft delay-0-2s"
-                style={{ backgroundImage: 'url(/assets/images/background/video-cta-bg.png)' }}
+                style={{
+                  backgroundImage:
+                    'url(/assets/images/background/video-cta-bg.png)',
+                }}
               >
                 <div className="section-title mb-15">
                   <h2>
                     Come &amp;
                     <br /> get fresh
                   </h2>
-                  <p>Walk-ins are not taken. See live availability and reserve your time online.</p>
+                  <p>
+                    Walk-ins are not taken. See live availability and reserve
+                    your time online.
+                  </p>
                 </div>{' '}
-                <a href="/services#book" className="theme-btn btn-border">
+                <a href="/book" className="theme-btn btn-border">
                   book now <i className="far fa-long-arrow-right"></i>
                 </a>
               </div>
@@ -269,7 +347,10 @@ export default function Page() {
       </section>
 
       <Testimonials
-        reviews={reviewsFor(['about', 'booking', 'locs', 'maintenance', 'first-visit', 'twists'], 7)}
+        reviews={reviewsFor(
+          ['about', 'booking', 'locs', 'maintenance', 'first-visit', 'twists'],
+          7,
+        )}
         title="What our clients say"
         text="Google reviews from clients across Stafford, Sugar Land, Missouri City and Houston."
       />
@@ -281,7 +362,8 @@ export default function Page() {
               <div className="section-title text-center mb-50">
                 <h2 className="title">Straight answers</h2>
                 <p>
-                  Still stuck? Call <a href={site.phoneHref}>{site.phone}</a> or <a href="/contact">send a message</a>.
+                  Still stuck? Call <a href={site.phoneHref}>{site.phone}</a> or{' '}
+                  <a href="/contact">send a message</a>.
                 </p>
               </div>
             </div>
@@ -300,7 +382,9 @@ export default function Page() {
             <div className="col-xl-5 col-lg-6">
               <div className="section-title mb-15">
                 <h2 className="title">Latest Blog &amp; News</h2>
-                <p>Loc care, protective styles and natural hair advice from Jae.</p>
+                <p>
+                  Loc care, protective styles and natural hair advice from Jae.
+                </p>
               </div>
             </div>
             <div className="col-lg-4">

@@ -21,7 +21,10 @@ export default function Page() {
             <div className="col-xl-6 col-lg-8">
               <div className="section-title text-center mb-50">
                 <h2 className="title">Jae styles hair gallery</h2>
-                <p>Locs, twists, braids, curls and silk presses from the chair. Filter by style and tap a photo to see it larger.</p>
+                <p>
+                  Locs, twists, braids, curls and silk presses from the chair.
+                  Filter by style and tap a photo to see it larger.
+                </p>
                 <span className="sub-title">gallery</span>
               </div>
             </div>
@@ -31,7 +34,7 @@ export default function Page() {
           <GalleryGrid />
         </div>
         <div className="text-center mt-40">
-          <a className="theme-btn" href="/services#book">
+          <a className="theme-btn" href="/book">
             book your style <i className="far fa-long-arrow-right"></i>
           </a>
         </div>

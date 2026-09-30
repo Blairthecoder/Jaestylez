@@ -15,20 +15,36 @@ import { ReviewCards } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
 import { site } from '@/app/site-data';
 
-const RELATED: { match: RegExp; links: { label: string; href: string }[]; topics: string[] }[] = [
+const RELATED: {
+  match: RegExp;
+  links: { label: string; href: string }[];
+  topics: string[];
+}[] = [
   {
     match: /palm-roll|interlock/,
     links: [
-      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
-      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
+      {
+        label: 'Loc Retwist and Palm Roll',
+        href: '/loc-retwist-and-palm-roll',
+      },
+      {
+        label: 'Interlocking Loc Maintenance',
+        href: '/interlocking-loc-maintenance',
+      },
     ],
     topics: ['retwist', 'interlocking', 'maintenance'],
   },
   {
     match: /retwist/,
     links: [
-      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
-      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
+      {
+        label: 'Loc Retwist and Palm Roll',
+        href: '/loc-retwist-and-palm-roll',
+      },
+      {
+        label: 'Interlocking Loc Maintenance',
+        href: '/interlocking-loc-maintenance',
+      },
     ],
     topics: ['retwist', 'maintenance'],
   },
@@ -44,7 +60,10 @@ const RELATED: { match: RegExp; links: { label: string; href: string }[]; topics
     match: /silk-press/,
     links: [
       { label: 'Silk Press', href: '/silk-press' },
-      { label: 'Lavender Rose Hydration Mist', href: '/product-details?slug=lavender-rose-water' },
+      {
+        label: 'Lavender Rose Hydration Mist',
+        href: '/product-details?slug=lavender-rose-water',
+      },
     ],
     topics: ['silk', 'styles'],
   },
@@ -68,7 +87,7 @@ const RELATED: { match: RegExp; links: { label: string; href: string }[]; topics
   {
     match: /./,
     links: [
-      { label: 'Book Online', href: '/services#book' },
+      { label: 'Book Online', href: '/book' },
       { label: 'About Jae', href: '/about' },
     ],
     topics: ['about', 'natural', 'first-visit', 'booking'],
@@ -80,17 +99,33 @@ function relatedFor(post: BlogPost) {
   return RELATED.find((r) => r.match.test(key)) ?? RELATED[RELATED.length - 1];
 }
 
-const postHref = (post: BlogPost) => `/blog-details?slug=${encodeURIComponent(post.slug)}`;
+const postHref = (post: BlogPost) =>
+  `/blog-details?slug=${encodeURIComponent(post.slug)}`;
 
-type Blog = { status: 'loading' | 'ready' | 'error'; posts: BlogPost[]; categories: BlogCategory[] };
+type Blog = {
+  status: 'loading' | 'ready' | 'error';
+  posts: BlogPost[];
+  categories: BlogCategory[];
+};
 
 function useBlog(): Blog {
-  const [state, setState] = useState<Blog>({ status: 'loading', posts: [], categories: [] });
+  const [state, setState] = useState<Blog>({
+    status: 'loading',
+    posts: [],
+    categories: [],
+  });
   useEffect(() => {
     let cancelled = false;
     Promise.all([loadPosts(), loadCategories().catch(() => [])])
-      .then(([posts, categories]) => !cancelled && setState({ status: 'ready', posts, categories }))
-      .catch(() => !cancelled && setState({ status: 'error', posts: [], categories: [] }));
+      .then(
+        ([posts, categories]) =>
+          !cancelled && setState({ status: 'ready', posts, categories }),
+      )
+      .catch(
+        () =>
+          !cancelled &&
+          setState({ status: 'error', posts: [], categories: [] }),
+      );
     return () => {
       cancelled = true;
     };
@@ -167,7 +202,9 @@ function Sidebar({
               <li key={category.id}>
                 <a
                   href={onCategory ? '#' : `/blog?category=${category.id}`}
-                  className={activeCategory === category.id ? 'active' : undefined}
+                  className={
+                    activeCategory === category.id ? 'active' : undefined
+                  }
                   onClick={(event) => {
                     if (!onCategory) return;
                     event.preventDefault();
@@ -196,7 +233,8 @@ function Sidebar({
                   <a href={postHref(post)}>{post.title}</a>
                 </h6>
                 <span className="date">
-                  <i className="far fa-calendar-alt"></i> {formatDate(post.date)}
+                  <i className="far fa-calendar-alt"></i>{' '}
+                  {formatDate(post.date)}
                 </span>
               </div>
             </li>
@@ -205,8 +243,10 @@ function Sidebar({
       </div>
       <div className="widget widget-form">
         <h3 className="widget-title">Book a Visit</h3>
-        <p className="text-white">See live availability and reserve your appointment online.</p>
-        <a className="theme-btn btn-border w-100" href="/services#book">
+        <p className="text-white">
+          See live availability and reserve your appointment online.
+        </p>
+        <a className="theme-btn btn-border w-100" href="/book">
           book online <i className="far fa-long-arrow-right"></i>
         </a>
       </div>
@@ -219,7 +259,8 @@ function Status({ blog, count }: { blog: Blog; count: number }) {
   return (
     <p role="status" className="text-center">
       {blog.status === 'loading' && 'Loading posts…'}
-      {blog.status === 'error' && 'Posts could not be loaded right now. Please try again shortly.'}
+      {blog.status === 'error' &&
+        'Posts could not be loaded right now. Please try again shortly.'}
       {blog.status === 'ready' && count === 0 && 'No posts match that search.'}
     </p>
   );
@@ -230,7 +271,11 @@ export function BlogIndex() {
   const [category, setCategory] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
-  useEffect(() => setCategory(new URLSearchParams(window.location.search).get('category')), []);
+  useEffect(
+    () =>
+      setCategory(new URLSearchParams(window.location.search).get('category')),
+    [],
+  );
 
   const posts = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -270,7 +315,12 @@ export function BlogIndex() {
             ))}
           </div>
           <div className="col-lg-4 col-md-7 col-sm-9">
-            <Sidebar blog={blog} onSearch={setQuery} activeCategory={category} onCategory={setCategory} />
+            <Sidebar
+              blog={blog}
+              onSearch={setQuery}
+              activeCategory={category}
+              onCategory={setCategory}
+            />
           </div>
         </div>
       </div>
@@ -331,7 +381,12 @@ function renderNodes(nodes: RichNode[] | undefined): React.ReactNode[] {
       case 'IMAGE': {
         const id = node.imageData?.image?.src?.id;
         return id ? (
-          <img key={i} src={`https://static.wixstatic.com/media/${id}`} alt={node.imageData?.altText ?? ''} loading="lazy" />
+          <img
+            key={i}
+            src={`https://static.wixstatic.com/media/${id}`}
+            alt={node.imageData?.altText ?? ''}
+            loading="lazy"
+          />
         ) : null;
       }
       case 'TABLE':
@@ -348,7 +403,13 @@ function renderNodes(nodes: RichNode[] | undefined): React.ReactNode[] {
         return <td key={i}>{kids()}</td>;
       case 'HTML': {
         const html = node.htmlData?.html;
-        return html ? <div key={i} className="blog-html" dangerouslySetInnerHTML={{ __html: cleanHtml(html) }} /> : null;
+        return html ? (
+          <div
+            key={i}
+            className="blog-html"
+            dangerouslySetInnerHTML={{ __html: cleanHtml(html) }}
+          />
+        ) : null;
       }
       default:
         return kids().length ? <div key={i}>{kids()}</div> : null;
@@ -358,7 +419,11 @@ function renderNodes(nodes: RichNode[] | undefined): React.ReactNode[] {
 
 export function BlogPostView() {
   const blog = useBlog();
-  const [state, setState] = useState<{ status: 'loading' | 'ready' | 'missing' | 'error'; post?: BlogPost; nodes?: RichNode[] }>({
+  const [state, setState] = useState<{
+    status: 'loading' | 'ready' | 'missing' | 'error';
+    post?: BlogPost;
+    nodes?: RichNode[];
+  }>({
     status: 'loading',
   });
 
@@ -389,10 +454,12 @@ export function BlogPostView() {
             {state.status !== 'ready' || !post ? (
               <p role="status">
                 {state.status === 'loading' && 'Loading post…'}
-                {state.status === 'error' && 'This post could not be loaded right now. Please try again shortly.'}
+                {state.status === 'error' &&
+                  'This post could not be loaded right now. Please try again shortly.'}
                 {state.status === 'missing' && (
                   <>
-                    We could not find that post. <a href="/blog">Back to the blog</a>
+                    We could not find that post.{' '}
+                    <a href="/blog">Back to the blog</a>
                   </>
                 )}
               </p>
@@ -415,8 +482,9 @@ export function BlogPostView() {
                       </li>
                     ))}
                   </ul>
-                  <a className="theme-btn mt-15" href="/services#book">
-                    book an appointment <i className="far fa-long-arrow-right"></i>
+                  <a className="theme-btn mt-15" href="/book">
+                    book an appointment{' '}
+                    <i className="far fa-long-arrow-right"></i>
                   </a>
                 </div>
               </div>
@@ -427,7 +495,12 @@ export function BlogPostView() {
           </div>
         </div>
       </div>
-      {post && <ReviewCards reviews={reviewsFor(relatedFor(post).topics, 1)} title="A Client Review" />}
+      {post && (
+        <ReviewCards
+          reviews={reviewsFor(relatedFor(post).topics, 1)}
+          title="A Client Review"
+        />
+      )}
     </section>
   );
 }
@@ -438,7 +511,15 @@ export function LatestPosts() {
   const latest = blog.posts.slice(0, 9);
   if (latest.length === 0) return <Status blog={blog} count={0} />;
   return (
-    <Slider className="news-slider-wrap" slidesToShow={3} responsive={[[1199, 2], [768, 1]]} arrows>
+    <Slider
+      className="news-slider-wrap"
+      slidesToShow={3}
+      responsive={[
+        [1199, 2],
+        [768, 1],
+      ]}
+      arrows
+    >
       {latest.map((post) => (
         <div className="news-item" key={post.id}>
           {post.image && (
@@ -453,7 +534,11 @@ export function LatestPosts() {
             <h5>
               <a href={postHref(post)}>{post.title}</a>
             </h5>
-            <p>{post.excerpt.length > 110 ? `${post.excerpt.slice(0, 107)}…` : post.excerpt}</p>{' '}
+            <p>
+              {post.excerpt.length > 110
+                ? `${post.excerpt.slice(0, 107)}…`
+                : post.excerpt}
+            </p>{' '}
             <a href={postHref(post)} className="read-more">
               Read more <i className="far fa-long-arrow-right"></i>
             </a>

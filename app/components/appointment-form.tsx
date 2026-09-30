@@ -19,12 +19,22 @@ const categoryOptions = [
 ].map((label) => ({ value: label, label }));
 
 /** The template's "make appointment" form. It sends a request by email; booking online reserves a time instantly. */
-export function AppointmentForm({ className, backgroundImage }: { className?: string; backgroundImage?: string }) {
+export function AppointmentForm({
+  className,
+  backgroundImage,
+}: {
+  className?: string;
+  backgroundImage?: string;
+}) {
   return (
     <NetlifyForm
       formName="appointment"
       className={`bg-yellow bgs-cover ${className ?? ''}`.trim()}
-      style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
+      style={
+        backgroundImage
+          ? { backgroundImage: `url(${backgroundImage})` }
+          : undefined
+      }
       successMessage="Thanks! Jae will confirm your request. To reserve a time right away, book online."
     >
       <div className="row justify-content-center mb-35 text-white text-center">
@@ -33,30 +43,52 @@ export function AppointmentForm({ className, backgroundImage }: { className?: st
             <h2 className="title">Request an appointment</h2>
           </div>
           <p>
-            Send a request and Jae will reply, or <a href="/services#book">book online</a> to reserve a time with a
-            deposit.
+            Send a request and Jae will reply, or{' '}
+            <a href="/book">book online</a> to reserve a time with a deposit.
           </p>
         </div>
       </div>
       <div className="row small-gap">
         <div className="col-lg-6">
           <div className="form-group">
-            <input type="text" name="name" className="form-control" placeholder="Your Full Name" required />
+            <input
+              type="text"
+              name="name"
+              className="form-control"
+              placeholder="Your Full Name"
+              required
+            />
           </div>
         </div>
         <div className="col-lg-6">
           <div className="form-group">
-            <input type="email" name="email" className="form-control" placeholder="Email Address" required />
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              placeholder="Email Address"
+              required
+            />
           </div>
         </div>
         <div className="col-lg-6">
           <div className="form-group">
-            <input type="text" name="phone" className="form-control" placeholder="Phone Number" required />
+            <input
+              type="text"
+              name="phone"
+              className="form-control"
+              placeholder="Phone Number"
+              required
+            />
           </div>
         </div>
         <div className="col-lg-6 mb-20">
           <div className="form-group">
-            <NiceSelect name="select-category" id="select-category" options={categoryOptions} />
+            <NiceSelect
+              name="select-category"
+              id="select-category"
+              options={categoryOptions}
+            />
           </div>
         </div>
         <div className="col-lg-12">
@@ -75,7 +107,13 @@ export function AppointmentForm({ className, backgroundImage }: { className?: st
         </div>
         <div className="col-lg-12">
           <div className="form-group">
-            <textarea name="message" className="form-control" rows={4} placeholder="Write Message" required></textarea>
+            <textarea
+              name="message"
+              className="form-control"
+              rows={4}
+              placeholder="Write Message"
+              required
+            ></textarea>
           </div>
         </div>
         <div className="col-lg-12">

@@ -6,6 +6,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 /* Scroll-reveal (replaces WOW.js). Only hides elements once JS is running so
    the page is still readable if scripts fail. */
 .js .wow:not(.animated) {
@@ -843,7 +849,8 @@ html {
 
 /* Do not animate slide widths (they are set from the screen size on load) */
 .slick-slider .slick-slide {
-  transition-property: background-color, box-shadow, transform, opacity, border-color;
+  transition-property:
+    background-color, box-shadow, transform, opacity, border-color;
 }
 
 /* Banner titles: long titles wrap instead of running off narrow screens */
@@ -1040,6 +1047,72 @@ html {
   cursor: not-allowed;
 }
 
+/* Booking progress and summary */
+.booking-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 780px;
+  padding: 0;
+  margin: 0 0 42px;
+  list-style: none;
+}
+.booking-progress li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  color: #8a8a8a;
+}
+.booking-progress li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  width: calc(100% - 62px);
+  height: 1px;
+  background: #ddd;
+}
+.booking-progress li > span {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #d7d7d7;
+  border-radius: 50%;
+  background: #fff;
+}
+.booking-progress li.is-current,
+.booking-progress li.is-complete {
+  color: #252525;
+}
+.booking-progress li.is-current > span,
+.booking-progress li.is-complete > span {
+  color: #fff;
+  border-color: #a86e11;
+  background: #a86e11;
+}
+.booking-flow-section .service-sidebar {
+  position: sticky;
+  top: 104px;
+}
+.booking-mobile-summary {
+  margin-top: 10px;
+  padding: 26px 22px !important;
+  border-radius: 8px;
+}
+
+/* Thumb-friendly mobile booking actions */
+.mobile-booking-bar {
+  display: none;
+}
+
 /* Service rows without photos: short description under the time and deposit */
 .price-item .service-blurb {
   margin: 0 0 8px;
@@ -1181,36 +1254,98 @@ textarea.form-control,
   padding: 0;
   border-radius: 0;
   background: transparent;
-  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
 }
 
 /* Phones: trim the template's nested padding so text gets the full width and sections sit closer together */
 @media (max-width: 575px) {
-  .container { padding-left: 16px; padding-right: 16px; }
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
   .page-banner {
     padding-top: 38px !important;
     padding-bottom: 38px !important;
   }
-  .page-banner .page-title { font-size: 34px; }
-  .page-banner .breadcrumb { margin-top: 5px; margin-bottom: 0; }
-  .py-130, .service-details-area, .pt-130 { padding-top: 44px !important; }
-  .py-130, .service-details-area, .pb-130 { padding-bottom: 44px !important; }
-  .pt-120, .pt-125 { padding-top: 44px !important; }
-  .pb-120, .pb-125 { padding-bottom: 44px !important; }
-  .rpt-90, .rpt-95, .rpt-100 { padding-top: 44px !important; }
-  .rpb-90, .rpb-95, .rpb-100 { padding-bottom: 44px !important; }
-  .mt-80 { margin-top: 40px !important; }
-  .service-details-content .content { padding-left: 14px !important; padding-right: 0 !important; }
-  .service-details-content .content h2 { font-size: 26px; line-height: 1.25; margin-bottom: 16px; }
-  .service-details-content .content h2:before { left: -14px; width: 3px; }
-  .service-details-content .content:not(:last-child) { margin-bottom: 28px; }
-  .service-h1 { font-size: 28px; line-height: 1.2; }
-  .service-facts { gap: 8px 24px; }
-  .service-facts li { font-size: 19px; }
-  .what-we-do-inner { margin-top: -60px; }
-  .what-we-do-content { padding: 32px 14px 16px !important; }
-  .what-we-do-content .row { margin-left: 0; margin-right: 0; }
-  .what-we-do-content [class*='col-'] { padding-left: 0; padding-right: 0; }
+  .page-banner .page-title {
+    font-size: 34px;
+  }
+  .page-banner .breadcrumb {
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+  .py-130,
+  .service-details-area,
+  .pt-130 {
+    padding-top: 44px !important;
+  }
+  .py-130,
+  .service-details-area,
+  .pb-130 {
+    padding-bottom: 44px !important;
+  }
+  .pt-120,
+  .pt-125 {
+    padding-top: 44px !important;
+  }
+  .pb-120,
+  .pb-125 {
+    padding-bottom: 44px !important;
+  }
+  .rpt-90,
+  .rpt-95,
+  .rpt-100 {
+    padding-top: 44px !important;
+  }
+  .rpb-90,
+  .rpb-95,
+  .rpb-100 {
+    padding-bottom: 44px !important;
+  }
+  .mt-80 {
+    margin-top: 40px !important;
+  }
+  .service-details-content .content {
+    padding-left: 14px !important;
+    padding-right: 0 !important;
+  }
+  .service-details-content .content h2 {
+    font-size: 26px;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .service-details-content .content h2:before {
+    left: -14px;
+    width: 3px;
+  }
+  .service-details-content .content:not(:last-child) {
+    margin-bottom: 28px;
+  }
+  .service-h1 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .service-facts {
+    gap: 8px 24px;
+  }
+  .service-facts li {
+    font-size: 19px;
+  }
+  .what-we-do-inner {
+    margin-top: -60px;
+  }
+  .what-we-do-content {
+    padding: 32px 14px 16px !important;
+  }
+  .what-we-do-content .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .what-we-do-content [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
   .what-we-do-content .feature-item {
     display: flex !important;
     align-items: flex-start;
@@ -1226,7 +1361,9 @@ textarea.form-control,
     font-size: 42px !important;
     line-height: 1;
   }
-  .what-we-do-content .feature-item .content { min-width: 0; }
+  .what-we-do-content .feature-item .content {
+    min-width: 0;
+  }
   .what-we-do-content .feature-item h4 {
     margin-bottom: 6px;
     font-size: 19px !important;
@@ -1253,8 +1390,12 @@ textarea.form-control,
   .services-intro .section-title {
     margin-bottom: 18px !important;
   }
-  .services-intro .our-author { margin-top: 14px !important; }
-  .services-offers .section-title { margin-bottom: 30px !important; }
+  .services-intro .our-author {
+    margin-top: 14px !important;
+  }
+  .services-offers .section-title {
+    margin-bottom: 30px !important;
+  }
   .services-offers .category-tile-rail {
     flex-wrap: nowrap !important;
     justify-content: flex-start !important;
@@ -1266,7 +1407,9 @@ textarea.form-control,
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
-  .services-offers .category-tile-rail::-webkit-scrollbar { display: none; }
+  .services-offers .category-tile-rail::-webkit-scrollbar {
+    display: none;
+  }
   .services-offers .category-tile-slide {
     flex: 0 0 70% !important;
     width: 70% !important;
@@ -1275,7 +1418,9 @@ textarea.form-control,
     padding-right: 6px !important;
     scroll-snap-align: start;
   }
-  .services-offers .category-tile-slide:first-of-type { margin-left: -6px; }
+  .services-offers .category-tile-slide:first-of-type {
+    margin-left: -6px;
+  }
   .services-offers .category-tile-slide .ww-offer-item {
     min-height: 128px;
     margin-bottom: 0;
@@ -1292,20 +1437,34 @@ textarea.form-control,
   .services-offers .morder-tools-content {
     margin-bottom: 0 !important;
   }
-  .services-offers .morder-toots-image { display: none; }
-  .services-offers .mt-30 { margin-top: 24px !important; }
+  .services-offers .morder-toots-image {
+    display: none;
+  }
+  .services-offers .mt-30 {
+    margin-top: 24px !important;
+  }
   .booking-guidance .section-title,
   .booking-faq .section-title,
   .services-testimonials .section-title,
   .services-news .section-title {
     margin-bottom: 28px !important;
   }
-  .booking-guidance .faqs { margin-bottom: 18px !important; }
+  .booking-guidance .faqs {
+    margin-bottom: 18px !important;
+  }
   .services-contact .working-hour,
-  .services-contact .contact-form-wrap { margin-top: 18px !important; }
-  .services-contact .working-hour { padding: 30px 22px !important; }
-  .services-contact .contact-form-wrap form { padding: 36px 18px 40px !important; }
-  .services-contact .contact-form-wrap form .mb-35 { margin-bottom: 20px !important; }
+  .services-contact .contact-form-wrap {
+    margin-top: 18px !important;
+  }
+  .services-contact .working-hour {
+    padding: 30px 22px !important;
+  }
+  .services-contact .contact-form-wrap form {
+    padding: 36px 18px 40px !important;
+  }
+  .services-contact .contact-form-wrap form .mb-35 {
+    margin-bottom: 20px !important;
+  }
   .services-testimonials .testimonial-item .image {
     width: 72px;
     margin-bottom: 16px;
@@ -1314,7 +1473,9 @@ textarea.form-control,
     font-size: 16px;
     line-height: 1.65;
   }
-  .services-testimonials .mt-30 { margin-top: 12px !important; }
+  .services-testimonials .mt-30 {
+    margin-top: 12px !important;
+  }
 
   /* Six featured categories: use a tidy full-width list instead of cramped
      two-column tiles that clip multi-line labels. */
@@ -1344,7 +1505,9 @@ textarea.form-control,
     text-align: left;
     border-radius: 5px;
   }
-  .price-tab:not(.booking-tabs) .nav-link i { display: none !important; }
+  .price-tab:not(.booking-tabs) .nav-link i {
+    display: none !important;
+  }
   .price-tab:not(.booking-tabs) .nav-link span {
     position: static !important;
     display: block;
@@ -1386,7 +1549,9 @@ textarea.form-control,
 
   /* Service pricing reads as compact cards on phones: name and details first,
      price underneath, with no desktop gutters squeezing the copy. */
-  .price-tab-content { padding: 0 !important; }
+  .price-tab-content {
+    padding: 0 !important;
+  }
   .price-item {
     display: block !important;
     min-height: 0;
@@ -1426,8 +1591,302 @@ textarea.form-control,
     font-size: 24px !important;
     line-height: 1.2;
   }
-  .section-title h2, .section-title-two h2 { font-size: 30px; line-height: 1.2; }
-  .theme-btn { padding: 14px 22px; }
-  .footer-widget { margin-bottom: 28px; }
-  .main-footer .footer-top { padding-top: 56px; padding-bottom: 20px; }
+  .section-title h2,
+  .section-title-two h2 {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+  .theme-btn {
+    padding: 14px 22px;
+  }
+  .footer-widget {
+    margin-bottom: 28px;
+  }
+  .main-footer .footer-top {
+    padding-top: 56px;
+    padding-bottom: 20px;
+  }
+}
+
+/* Mobile navigation and booking UX */
+@media (max-width: 991px) {
+  body:has(.mobile-booking-bar) .page-wrapper {
+    padding-bottom: calc(74px + env(safe-area-inset-bottom));
+  }
+
+  .main-header,
+  .main-header.menu-absolute {
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    background: #0d0d0d;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+  }
+  .main-header .header-top,
+  .main-header .header-top-wrap {
+    display: none;
+  }
+  .main-header.fixed-header .header-upper {
+    position: relative;
+    top: auto;
+    left: auto;
+    animation: none;
+    box-shadow: none;
+  }
+  .main-header .header-upper .container {
+    max-width: none;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+  .main-header .header-inner {
+    padding: 0 !important;
+  }
+  .main-header .logo-outer {
+    display: none;
+  }
+  .main-menu .navbar-header {
+    min-height: 74px;
+    gap: 10px;
+  }
+  .main-menu .mobile-logo {
+    min-width: 0;
+    margin: 8px auto 8px 0 !important;
+  }
+  .main-header .mobile-logo img {
+    display: block;
+    width: auto;
+    height: 56px;
+  }
+  .mobile-header-book {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 68px;
+    min-height: 44px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #17120a !important;
+    background: #d6a354;
+  }
+  .main-header .main-menu .navbar-header .navbar-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+  }
+  .main-header .main-menu .navbar-header .navbar-toggle .navbar-toggle-label {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .main-header .main-menu .navbar-collapse {
+    position: fixed !important;
+    top: 74px;
+    right: 0;
+    bottom: 0;
+    left: 0 !important;
+    width: 100% !important;
+    max-height: calc(100dvh - 74px);
+    overflow-y: auto !important;
+    background: #0d0d0d;
+    overscroll-behavior: contain;
+  }
+  .main-header .main-menu .navbar-collapse > ul {
+    min-height: 100%;
+    padding: 8px 14px 110px;
+    background: #0d0d0d;
+  }
+  .main-header .main-menu .navbar-collapse li {
+    padding: 0;
+    border-top-color: rgba(255, 255, 255, 0.13);
+  }
+  .main-header .main-menu .navbar-collapse > ul > li > a {
+    display: flex;
+    align-items: center;
+    min-height: 54px;
+    padding: 13px 8px;
+    font-size: 16px;
+  }
+  .main-header .main-menu .navbar-collapse li.current > a {
+    color: #e9b866;
+  }
+  .main-header .main-menu .navbar-collapse li.dropdown .dropdown-btn {
+    right: 0;
+    width: 54px;
+    height: 54px;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.13);
+  }
+  .main-header
+    .main-menu
+    .navbar-collapse
+    li.dropdown.open
+    > .dropdown-btn
+    span {
+    transform: rotate(180deg);
+  }
+  .main-header .main-menu .navbar-collapse li ul {
+    margin: 0 0 8px;
+    padding: 5px 0;
+    border-radius: 5px;
+    background: #fff;
+  }
+  .main-header .main-menu .navbar-collapse li ul li {
+    padding: 0 12px;
+  }
+  .main-header .main-menu .navbar-collapse li ul li a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 10px 8px;
+    line-height: 1.35;
+  }
+
+  .jae-hero {
+    padding-top: 64px !important;
+    padding-bottom: 76px !important;
+  }
+
+  .mobile-booking-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1100;
+    display: grid;
+    grid-template-columns: minmax(88px, 0.72fr) minmax(0, 2fr);
+    gap: 8px;
+    padding: 9px 12px calc(9px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid #e6e0d7;
+    box-shadow: 0 -6px 22px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px);
+  }
+  .mobile-booking-bar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 52px;
+    border-radius: 6px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .mobile-booking-call {
+    color: #252525;
+    border: 1px solid #cfc7bb;
+    background: #fff;
+  }
+  .mobile-booking-primary {
+    color: #17120a !important;
+    background: #d6a354;
+  }
+  .qt-cart-bar {
+    bottom: calc(82px + env(safe-area-inset-bottom));
+    max-width: calc(100vw - 40px);
+  }
+
+  .booking-flow-section {
+    padding-top: 34px !important;
+  }
+  .booking-progress {
+    margin-bottom: 34px;
+  }
+  .booking-progress li {
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .booking-progress li:not(:last-child)::after {
+    top: 16px;
+    right: -30%;
+    width: 60%;
+  }
+  .booking-flow-section .service-details-content {
+    margin-bottom: 0;
+  }
+  .booking-flow-section .service-details-content .content {
+    padding: 0 !important;
+  }
+  .booking-flow-section .service-details-content .content h2::before {
+    display: none;
+  }
+  .booking-flow-section .service-details-content .content h2 {
+    margin-bottom: 18px;
+    font-size: 25px;
+  }
+  .booking-select {
+    height: 54px;
+    padding-right: 38px;
+  }
+  .qt-cal {
+    padding: 16px;
+    border-radius: 8px;
+  }
+  .qt-cal-grid {
+    gap: 5px;
+  }
+  .qt-cal-day {
+    min-width: 0;
+    min-height: 44px;
+    aspect-ratio: auto;
+  }
+  .qt-times {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .qt-time {
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+  }
+  .booking-mobile-summary .theme-btn {
+    min-height: 52px;
+  }
+  .booking-mobile-summary .qt-summary-note {
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 374px) {
+  .mobile-header-book {
+    min-width: 60px;
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+  .main-header .mobile-logo img {
+    height: 50px;
+  }
+  .qt-cal {
+    padding: 12px 8px;
+  }
+  .qt-cal-grid {
+    gap: 3px;
+  }
+  .booking-progress li {
+    font-size: 11px;
+  }
 }

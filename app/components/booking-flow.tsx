@@ -16,14 +16,21 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const pad = (n: number) => String(n).padStart(2, '0');
 
 /** Today's date in the salon's time zone as YYYY-MM-DD. */
-const salonToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: SALON_TIME_ZONE }).format(new Date());
+const salonToday = () =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: SALON_TIME_ZONE }).format(
+    new Date(),
+  );
 
 const monthKey = (y: number, m: number) => `${y}-${pad(m + 1)}`;
 const daysIn = (y: number, m: number) => new Date(y, m + 1, 0).getDate();
 
 function longDate(date: string) {
   const [y, m, d] = date.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
 }
 
 /**
@@ -48,10 +55,16 @@ export function BookingFlow() {
   const [checkoutError, setCheckoutError] = useState(false);
   const [autoAdvance, setAutoAdvance] = useState(true);
 
-  useEffect(() => setSlug(new URLSearchParams(window.location.search).get('service')), []);
+  useEffect(
+    () => setSlug(new URLSearchParams(window.location.search).get('service')),
+    [],
+  );
 
   const service = services.find((s) => s.slug === slug);
-  const categories = useMemo(() => [...new Set(services.map((s) => s.category))], [services]);
+  const categories = useMemo(
+    () => [...new Set(services.map((s) => s.category))],
+    [services],
+  );
 
   useEffect(() => {
     if (service) setCategory(service.category);
@@ -101,8 +114,11 @@ export function BookingFlow() {
     if (!loaded || !autoAdvance) return;
     if (slots.length > 0) return setAutoAdvance(false);
     const [ty, tm] = today.split('-').map(Number);
-    if ((cursor.y - ty) * 12 + (cursor.m - (tm - 1)) >= 3) return setAutoAdvance(false);
-    setCursor((c) => (c.m === 11 ? { y: c.y + 1, m: 0 } : { y: c.y, m: c.m + 1 }));
+    if ((cursor.y - ty) * 12 + (cursor.m - (tm - 1)) >= 3)
+      return setAutoAdvance(false);
+    setCursor((c) =>
+      c.m === 11 ? { y: c.y + 1, m: 0 } : { y: c.y, m: c.m + 1 },
+    );
   }, [loaded, slots.length, autoAdvance, cursor, today]);
 
   const move = useCallback((delta: number) => {
@@ -118,7 +134,10 @@ export function BookingFlow() {
   const [ty, tm] = today.split('-').map(Number);
   const atCurrentMonth = cursor.y === ty && cursor.m === tm - 1;
   const firstWeekday = new Date(cursor.y, cursor.m, 1).getDay();
-  const dayList = Array.from({ length: daysIn(cursor.y, cursor.m) }, (_, i) => `${key}-${pad(i + 1)}`);
+  const dayList = Array.from(
+    { length: daysIn(cursor.y, cursor.m) },
+    (_, i) => `${key}-${pad(i + 1)}`,
+  );
   const times = date ? (byDate.get(date) ?? []) : [];
 
   function chooseService(nextSlug: string) {
@@ -128,7 +147,11 @@ export function BookingFlow() {
     setAutoAdvance(true);
     const [y, m] = salonToday().split('-').map(Number);
     setCursor({ y, m: m - 1 });
-    window.history.replaceState(null, '', `/book/?service=${encodeURIComponent(nextSlug)}`);
+    window.history.replaceState(
+      null,
+      '',
+      `/book/?service=${encodeURIComponent(nextSlug)}`,
+    );
   }
 
   async function checkout() {
@@ -143,16 +166,101 @@ export function BookingFlow() {
     }
   }
 
+  const activeStep = !service ? 1 : !date ? 2 : !slot ? 3 : 4;
+
+  const appointmentSummary = (
+    <>
+      <h3 className="widget-title">Your Appointment</h3>
+      {service ? (
+        <ul className="qt-summary">
+          <li>
+            <span>Service</span> {service.name}
+          </li>
+          {service.duration && (
+            <li>
+              <span>Length</span> {service.duration}
+            </li>
+          )}
+          <li>
+            <span>Price</span> {service.price}
+          </li>
+          {service.deposit && (
+            <li>
+              <span>Deposit</span> {service.deposit}
+            </li>
+          )}
+          <li>
+            <span>When</span>{' '}
+            {slot
+              ? `${longDate(slot.start.slice(0, 10))}, ${formatTime(slot.start)}`
+              : 'Choose a day and time'}
+          </li>
+          <li>
+            <span>Stylist</span> {STYLIST.name}
+          </li>
+          <li>
+            <span>Where</span> {slot?.locationAddress ?? site.address}
+          </li>
+        </ul>
+      ) : (
+        <p className="text-white">Choose a service to begin.</p>
+      )}
+      <button
+        type="button"
+        className="theme-btn btn-border w-100"
+        disabled={!slot || going}
+        onClick={checkout}
+      >
+        {going ? 'Opening checkout…' : 'Continue to checkout'}
+      </button>
+      {checkoutError && (
+        <p className="qt-summary-error" role="alert">
+          Checkout could not open. Please try again or call {site.phone}.
+        </p>
+      )}
+      <p className="qt-summary-note">
+        Next you enter your details and pay the deposit on Wix&apos;s secure
+        checkout. Your time is held after checkout is complete.
+      </p>
+    </>
+  );
+
   return (
-    <section className="service-details-area py-130 rpt-90 rpb-100">
+    <section className="service-details-area booking-flow-section py-130 rpt-90 rpb-100">
       <div className="container">
+        <ol className="booking-progress" aria-label="Booking progress">
+          {['Service', 'Day', 'Time', 'Checkout'].map((label, index) => {
+            const step = index + 1;
+            return (
+              <li
+                key={label}
+                className={
+                  step < activeStep
+                    ? 'is-complete'
+                    : step === activeStep
+                      ? 'is-current'
+                      : ''
+                }
+                aria-current={step === activeStep ? 'step' : undefined}
+              >
+                <span>{step < activeStep ? '✓' : step}</span>
+                {label}
+              </li>
+            );
+          })}
+        </ol>
         <div className="row">
           <div className="col-lg-8">
             <div className="service-details-content rmb-75">
               <div className="content mb-30">
                 <h2>1. Choose your service</h2>
                 {status === 'loading' && <p role="status">Loading services…</p>}
-                {status === 'error' && <p role="alert">Services could not be loaded right now. Please try again or call {site.phone}.</p>}
+                {status === 'error' && (
+                  <p role="alert">
+                    Services could not be loaded right now. Please try again or
+                    call {site.phone}.
+                  </p>
+                )}
                 {status === 'ready' && (
                   <div className="row">
                     <div className="col-md-5 mb-15">
@@ -181,7 +289,10 @@ export function BookingFlow() {
                         id="book-service"
                         className="form-control booking-select"
                         value={service?.slug ?? ''}
-                        onChange={(event) => event.target.value && chooseService(event.target.value)}
+                        onChange={(event) =>
+                          event.target.value &&
+                          chooseService(event.target.value)
+                        }
                       >
                         <option value="">Select a service</option>
                         {services
@@ -196,7 +307,9 @@ export function BookingFlow() {
                   </div>
                 )}
                 {status === 'ready' && slug && !service && (
-                  <p role="alert">We could not find that service. Please choose one above.</p>
+                  <p role="alert">
+                    We could not find that service. Please choose one above.
+                  </p>
                 )}
               </div>
 
@@ -206,13 +319,25 @@ export function BookingFlow() {
                     <h2>2. Pick a day</h2>
                     <div className="qt-cal" aria-live="polite">
                       <div className="qt-cal-head">
-                        <button type="button" onClick={() => move(-1)} disabled={atCurrentMonth} aria-label="Previous month">
+                        <button
+                          type="button"
+                          onClick={() => move(-1)}
+                          disabled={atCurrentMonth}
+                          aria-label="Previous month"
+                        >
                           ‹
                         </button>
                         <strong>
-                          {new Date(cursor.y, cursor.m, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                          {new Date(cursor.y, cursor.m, 1).toLocaleDateString(
+                            'en-US',
+                            { month: 'long', year: 'numeric' },
+                          )}
                         </strong>
-                        <button type="button" onClick={() => move(1)} aria-label="Next month">
+                        <button
+                          type="button"
+                          onClick={() => move(1)}
+                          aria-label="Next month"
+                        >
                           ›
                         </button>
                       </div>
@@ -246,9 +371,17 @@ export function BookingFlow() {
                       </div>
                       <p className="qt-cal-note" role="status">
                         {loading && 'Checking availability…'}
-                        {error && 'Availability could not be loaded. Please try again or call us.'}
-                        {!loading && !error && loaded && slots.length === 0 && 'No openings this month. Try the next month or call us.'}
-                        {!loading && !error && slots.length > 0 && 'Days in gold have openings.'}
+                        {error &&
+                          'Availability could not be loaded. Please try again or call us.'}
+                        {!loading &&
+                          !error &&
+                          loaded &&
+                          slots.length === 0 &&
+                          'No openings this month. Try the next month or call us.'}
+                        {!loading &&
+                          !error &&
+                          slots.length > 0 &&
+                          'Days in gold have openings.'}
                       </p>
                     </div>
                   </div>
@@ -259,7 +392,8 @@ export function BookingFlow() {
                     {date && (
                       <>
                         <p>
-                          <strong>{longDate(date)}</strong> · times are Central Time
+                          <strong>{longDate(date)}</strong> · times are Central
+                          Time
                         </p>
                         <div className="qt-times">
                           {times.map((t) => (
@@ -276,70 +410,30 @@ export function BookingFlow() {
                       </>
                     )}
                   </div>
+
+                  <div className="booking-mobile-summary widget widget-form d-lg-none">
+                    {appointmentSummary}
+                  </div>
                 </>
               )}
             </div>
           </div>
 
-          <div className="col-lg-4 col-md-7 col-sm-9">
+          <div className="col-lg-4 d-none d-lg-block">
             <div className="service-sidebar">
-              <div className="widget widget-form">
-                <h3 className="widget-title">Your Appointment</h3>
-                {service ? (
-                  <ul className="qt-summary">
-                    <li>
-                      <span>Service</span> {service.name}
-                    </li>
-                    {service.duration && (
-                      <li>
-                        <span>Length</span> {service.duration}
-                      </li>
-                    )}
-                    <li>
-                      <span>Price</span> {service.price}
-                    </li>
-                    {service.deposit && (
-                      <li>
-                        <span>Deposit</span> {service.deposit}
-                      </li>
-                    )}
-                    <li>
-                      <span>When</span>{' '}
-                      {slot ? `${longDate(slot.start.slice(0, 10))}, ${formatTime(slot.start)}` : 'Choose a day and time'}
-                    </li>
-                    <li>
-                      <span>Stylist</span> {STYLIST.name}
-                    </li>
-                    <li>
-                      <span>Where</span> {slot?.locationAddress ?? site.address}
-                    </li>
-                  </ul>
-                ) : (
-                  <p className="text-white">Choose a service to begin.</p>
-                )}
-                <button type="button" className="theme-btn btn-border w-100" disabled={!slot || going} onClick={checkout}>
-                  {going ? 'Opening checkout…' : 'continue to checkout'} <i className="far fa-long-arrow-right"></i>
-                </button>
-                {checkoutError && (
-                  <p className="qt-summary-error" role="alert">
-                    Checkout could not open. Please try again or call {site.phone}.
-                  </p>
-                )}
-                <p className="qt-summary-note">
-                  Next you enter your details and pay the deposit on Wix&apos;s secure checkout. Your time is not
-                  reserved until that is complete, and you return to this site afterwards.
-                </p>
-              </div>
+              <div className="widget widget-form">{appointmentSummary}</div>
               <div className="widget widget-menu">
                 <ul>
                   <li>
                     <a href={site.phoneHref}>
-                      Prefer to call? {site.phone} <i className="far fa-phone"></i>
+                      Prefer to call? {site.phone}{' '}
+                      <i className="far fa-phone"></i>
                     </a>
                   </li>
                   <li>
                     <a href="/services#book">
-                      Browse all services <i className="far fa-long-arrow-right"></i>
+                      Browse all services{' '}
+                      <i className="far fa-long-arrow-right"></i>
                     </a>
                   </li>
                 </ul>

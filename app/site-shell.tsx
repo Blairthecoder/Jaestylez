@@ -2,6 +2,7 @@ import { SiteHeader } from '@/app/components/site-header';
 import { SiteFooter } from '@/app/components/site-footer';
 import { PageEffects } from '@/app/components/page-effects';
 import { CartBar } from '@/app/components/cart-bar';
+import { MobileBookingBar } from '@/app/components/mobile-booking-bar';
 
 export function SiteShell({
   header,
@@ -21,6 +22,7 @@ export function SiteShell({
       </div>
       <PageEffects />
       <CartBar />
+      <MobileBookingBar />
     </>
   );
 }
