@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { localBusinessSchema } from '@/app/lib/schema';
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rashadthehelper.netlify.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://iamjaestylez.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
