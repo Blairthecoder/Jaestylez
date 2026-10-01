@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "22.13.0"
-  NEXT_PUBLIC_SITE_URL = "https://rashadthehelper.netlify.app"
+  NEXT_PUBLIC_SITE_URL = "https://iamjaestylez.com"
 
 [[headers]]
   for = "/_next/static/*"
