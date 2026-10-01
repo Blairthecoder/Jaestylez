@@ -6,7 +6,7 @@ const projectRoot = process.cwd();
 const clientDir = path.join(projectRoot, 'dist', 'client');
 const serverEntry = path.join(projectRoot, 'dist', 'server', 'index.js');
 const outputDir = path.join(projectRoot, 'dist-netlify');
-const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://rashadthehelper.netlify.app';
+const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://iamjaestylez.com';
 
 const routes = [
   '/',

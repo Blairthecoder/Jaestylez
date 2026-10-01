@@ -27,7 +27,7 @@ jobs:
 
       - name: Build site
         env:
-          NEXT_PUBLIC_SITE_URL: https://rashadthehelper.netlify.app
+          NEXT_PUBLIC_SITE_URL: https://iamjaestylez.com
         run: pnpm run build:netlify
 
       # Deploying needs a Netlify personal access token stored as the
