@@ -12,6 +12,12 @@ import {
 } from '@/app/lib/wix-availability';
 import { site } from '@/app/site-data';
 
+/**
+ * Wix's checkout is built on iamjaestylez.com, which now points at this site, so it 404s. Flip to true once the
+ * domain is unassigned from the Wix site (or Wix is on its own subdomain) to restore online checkout.
+ */
+const ONLINE_CHECKOUT = false;
+
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -130,6 +136,13 @@ export function BookingFlow() {
     setCursor({ y, m: m - 1 });
     window.history.replaceState(null, '', `/book/?service=${encodeURIComponent(nextSlug)}`);
   }
+
+  const requestHref = (() => {
+    if (!slot || !service) return site.phoneHref;
+    const when = `${longDate(slot.start.slice(0, 10))}, ${formatTime(slot.start)}`;
+    const body = `Hi Jae, I'd like to book ${service.name} on ${when}. My name is: `;
+    return `mailto:${site.email}?subject=${encodeURIComponent(`Booking request: ${service.name}`)}&body=${encodeURIComponent(body)}`;
+  })();
 
   async function checkout() {
     if (!slot) return;
@@ -317,18 +330,37 @@ export function BookingFlow() {
                 ) : (
                   <p className="text-white">Choose a service to begin.</p>
                 )}
-                <button type="button" className="theme-btn btn-border w-100" disabled={!slot || going} onClick={checkout}>
-                  {going ? 'Opening checkout…' : 'continue to checkout'} <i className="far fa-long-arrow-right"></i>
-                </button>
-                {checkoutError && (
-                  <p className="qt-summary-error" role="alert">
-                    Checkout could not open. Please try again or call {site.phone}.
-                  </p>
+                {ONLINE_CHECKOUT ? (
+                  <>
+                    <button type="button" className="theme-btn btn-border w-100" disabled={!slot || going} onClick={checkout}>
+                      {going ? 'Opening checkout…' : 'continue to checkout'} <i className="far fa-long-arrow-right"></i>
+                    </button>
+                    {checkoutError && (
+                      <p className="qt-summary-error" role="alert">
+                        Checkout could not open. Please try again or call {site.phone}.
+                      </p>
+                    )}
+                    <p className="qt-summary-note">
+                      Next you enter your details and pay the deposit on Wix&apos;s secure checkout. Your time is not
+                      reserved until that is complete, and you return to this site afterwards.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      className="theme-btn btn-border w-100"
+                      href={requestHref}
+                      aria-disabled={!slot}
+                      style={slot ? undefined : { pointerEvents: 'none', opacity: 0.5 }}
+                    >
+                      request this time <i className="far fa-long-arrow-right"></i>
+                    </a>
+                    <p className="qt-summary-note">
+                      Online checkout is temporarily unavailable. Send the request and Jae will confirm your time and
+                      deposit, or call {site.phone}.
+                    </p>
+                  </>
                 )}
-                <p className="qt-summary-note">
-                  Next you enter your details and pay the deposit on Wix&apos;s secure checkout. Your time is not
-                  reserved until that is complete, and you return to this site afterwards.
-                </p>
               </div>
               <div className="widget widget-menu">
                 <ul>
