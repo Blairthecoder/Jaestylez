@@ -30,6 +30,7 @@ export default async function Page() {
   const blogSeed = { posts: blog.posts.map((p) => p.post), categories: blog.categories };
   return (
     <SiteShell header="one" footerClassName="pb-30">
+      <link rel="preload" as="image" href={photoUrl(photos.collage)} fetchPriority="high" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', ...faqSchema(faqs) }) }}
@@ -85,12 +86,12 @@ export default async function Page() {
         <div className="row">
           <div className="col-xl-3 col-sm-6">
             <div className="about-left-image wow fadeInUp delay-0-2s">
-              <img src={photoMd(photos.twists)} alt={photos.twists.alt} />
+              <img src={photoMd(photos.twists)} alt={photos.twists.alt} loading="lazy" decoding="async" />
             </div>
           </div>
           <div className="col-xl-3 col-sm-6 order-xl-2">
             <div className="about-right-image wow fadeInUp delay-0-6s">
-              <img src={photoMd(photos.locsPonytail)} alt={photos.locsPonytail.alt} />
+              <img src={photoMd(photos.locsPonytail)} alt={photos.locsPonytail.alt} loading="lazy" decoding="async" />
             </div>
           </div>
           <div className="col-xl-6 align-self-center">
@@ -104,7 +105,7 @@ export default async function Page() {
               </div>
               <p>{about.intro[0]}</p>
               <div className="our-author mt-20">
-                <img src={photoMd(photos.jae)} alt={photos.jae.alt} />{' '}
+                <img src={photoMd(photos.jae)} alt={photos.jae.alt} loading="lazy" decoding="async" />{' '}
                 <div className="content">
                   <h4>{site.owner}</h4>
                   <span>Loctician &amp; natural hair stylist</span>
@@ -270,7 +271,7 @@ export default async function Page() {
             </div>
             <div className="col-lg-8">
               <div className="video-part rmt-30 wow fadeInRight delay-0-2s">
-                <img src={photoUrl(photos.collage)} alt={photos.collage.alt} />
+                <img src={photoUrl(photos.collage)} alt={photos.collage.alt} loading="lazy" decoding="async" />
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useServicesSeed } from '@/app/components/services-seed';
 import { loadServices, serviceHref, type BookableService } from '@/app/lib/wix-bookings';
 
 /**
@@ -8,8 +9,9 @@ import { loadServices, serviceHref, type BookableService } from '@/app/lib/wix-b
  * Each row links to the service page and to that service's booking calendar.
  */
 export function BookingServices() {
-  const [services, setServices] = useState<BookableService[]>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const seed = useServicesSeed();
+  const [services, setServices] = useState<BookableService[]>(seed ?? []);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(seed?.length ? 'ready' : 'loading');
   const [category, setCategory] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
@@ -23,7 +25,7 @@ export function BookingServices() {
         if (wanted && items.some((s) => s.category === wanted)) setCategory(wanted);
         setStatus('ready');
       })
-      .catch(() => !cancelled && setStatus('error'));
+      .catch(() => !cancelled && !seed?.length && setStatus('error'));
     return () => {
       cancelled = true;
     };

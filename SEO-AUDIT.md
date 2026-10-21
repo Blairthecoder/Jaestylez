@@ -18,7 +18,7 @@ Source-level audit of the Next.js/Wix build. Live crawl, GSC and GA4 data were n
 ### Do next from this data
 
 1. Edit product titles/descriptions in Wix to match searches: "Crown Control Alcohol-Free Styling Gel", "Growth Tonic Hair Growth Scalp Oil", "Lox Box Loc Care Bundle".
-2. Rewrite the retwist post to target "how often to retwist locs" in the title and first paragraph, add a short answer block at the top.
+2. (Retwist landing page now has a one-line answer and FAQ titled "How often should you retwist locs?", using Jae's 4-6 / 6-10 week guidance. Still rewrite the Wix blog post.) Rewrite the retwist post to target "how often to retwist locs" in the title and first paragraph, add a short answer block at the top.
 3. In Search Console: add the `www` property and request validation after deploy and watch Pages > Not found for old URLs.
 4. Build local pages around Stafford and Sugar Land only after the Google Business Profile is optimized; GBP is where "near me" clicks will come from.
 
@@ -32,9 +32,9 @@ Source-level audit of the Next.js/Wix build. Live crawl, GSC and GA4 data were n
 | 4 | No canonical tags on most pages; no Open Graph/Twitter tags | Medium | Fixed on every page via `pageMeta()` |
 | 5 | Weak titles: "Hair Styles", "Pricing", "Blog", "Contact" | Medium (CTR) | Rewritten |
 | 6 | Home FAQ had no FAQPage schema; breadcrumb schema used relative URLs; landing pages had none | Medium (rich results, AI search) | Fixed |
-| 7 | `/pricing` and service price tables load via JS from Wix | Medium: prices not crawlable | Open |
-| 8 | Product pages (`/product-details?slug=`) are one JS-rendered URL | Medium: no product rankings | Open |
-| 9 | Hero/most images are `<img>` without width/height; five CSS files + Font Awesome + Bootstrap 4 render-blocking | Medium (CWV/LCP) | Open |
+| 7 | `/pricing` and service price tables load via JS from Wix | Medium: prices not crawlable | Fixed: services fetched at build time and seeded into every page; widgets still refresh live |
+| 8 | Product pages (`/product-details?slug=`) are one JS-rendered URL | Medium: no product rankings | Fixed: `/shop/<slug>/` with Product schema and search-friendly titles for known products |
+| 9 | Hero/most images are `<img>` without width/height; five CSS files + Font Awesome + Bootstrap 4 render-blocking | Medium (CWV/LCP) | Partly fixed: home hero preloaded, below-fold images lazy. CSS/icon-font trimming still open |
 
 ## Needs Jae / Blair (off-site, biggest lever for "near me" bookings)
 
