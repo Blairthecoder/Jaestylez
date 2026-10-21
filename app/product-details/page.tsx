@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
-import { ProductDetail } from '@/app/components/product-detail';
+import { LegacyProductRedirect } from '@/app/components/legacy-redirect';
 
 export const metadata: Metadata = {
   title: 'Product Details',
+  robots: { index: false },
 };
 
-// One static page serves every product: the product is picked from ?slug=... in the browser.
+// Old product links (?slug=...) forward to the static page for that product at /shop/<slug>/.
 export default function Page() {
   return (
     <SiteShell header="three" footerClassName="">
@@ -31,7 +32,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <ProductDetail />
+      <LegacyProductRedirect />
     </SiteShell>
   );
 }

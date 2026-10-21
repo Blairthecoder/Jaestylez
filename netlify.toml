@@ -26,3 +26,65 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+
+# The old Wix site was indexed under www and these paths (Search Console, last 3 months). Send them to the new pages.
+[[redirects]]
+  from = "https://www.iamjaestylez.com/*"
+  to = "https://iamjaestylez.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/book-online"
+  to = "/services/"
+  status = 301
+
+[[redirects]]
+  from = "/post/:slug"
+  to = "/blog/:slug/"
+  status = 301
+
+[[redirects]]
+  from = "/service-page/:slug"
+  to = "/services/:slug/"
+  status = 301
+
+[[redirects]]
+  from = "/product-page/:slug"
+  to = "/shop/:slug/"
+  status = 301
+
+[[redirects]]
+  from = "/stylez"
+  to = "/hair-styles/"
+  status = 301
+
+[[redirects]]
+  from = "/the-lox-box"
+  to = "/shop/?category=The%20Lox%20Box"
+  status = 301
+
+[[redirects]]
+  from = "/marilyn-jae-cosmetics"
+  to = "/shop/?category=Marilyn%20Jae%20Cosmetics"
+  status = 301
+
+[[redirects]]
+  from = "/about-jae"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/about-3"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/about-5"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/let-s-connect"
+  to = "/contact/"
+  status = 301

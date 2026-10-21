@@ -23,29 +23,31 @@ function plainText(html: string | null | undefined): string {
 
 type Status = 'loading' | 'ready' | 'missing' | 'error';
 
-export function ProductDetail() {
-  const [status, setStatus] = useState<Status>('loading');
-  const [product, setProduct] = useState<WixProduct | null>(null);
+/** `initial` is the product fetched at build time, so the first render (and the HTML) already has it. */
+export function ProductDetail({ initial }: { initial?: WixProduct }) {
+  const [status, setStatus] = useState<Status>(initial ? 'ready' : 'loading');
+  const [product, setProduct] = useState<WixProduct | null>(initial ?? null);
   const [related, setRelated] = useState<WixProduct[]>([]);
 
   useEffect(() => {
-    const slug = new URLSearchParams(window.location.search).get('slug');
+    const slug = initial?.slug ?? new URLSearchParams(window.location.search).get('slug');
     let cancelled = false;
     fetchProducts()
       .then((items) => {
         if (cancelled) return;
         const found = items.find((p) => p.slug === slug) ?? (slug ? undefined : items[0]);
-        if (!found) return setStatus('missing');
-        setProduct(found);
+        if (!found) return initial ? undefined : setStatus('missing');
         setRelated(items.filter((p) => p._id !== found._id).slice(0, 4));
+        if (initial) return;
+        setProduct(found);
         document.title = `${found.name} | Jae Stylez`;
         setStatus('ready');
       })
-      .catch(() => !cancelled && setStatus('error'));
+      .catch(() => !cancelled && !initial && setStatus('error'));
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initial]);
 
   if (status !== 'ready' || !product) {
     return (
@@ -168,13 +170,13 @@ function Details({ product }: { product: WixProduct }) {
           </div>
           <div className="col-lg-7">
             <div className="product-details-content pt-20">
-              <h3 className="title">
+              <h1 className="title h3">
                 {product.name}{' '}
                 <span className="price">
                   {onSale && <del style={{ opacity: 0.55, marginRight: 8 }}>{product.price?.formatted?.price}</del>}
                   {product.price?.formatted?.discountedPrice ?? product.price?.formatted?.price}
                 </span>
-              </h3>
+              </h1>
               {product.ribbon && (
                 <div className="subtitle-ratting">
                   <span>{product.ribbon}</span>

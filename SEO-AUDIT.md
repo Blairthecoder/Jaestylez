@@ -2,6 +2,26 @@
 
 Source-level audit of the Next.js/Wix build. Live crawl, GSC and GA4 data were not available in this session, so traffic numbers are not included.
 
+## Search Console findings (last 3 months vs previous 3)
+
+- 67 clicks / 2,046 impressions (up from 6 / 56). US only, 80% of clicks on mobile. Avg position ~11.
+- Demand captured so far is mostly branded and product queries: "growth tonic", "lox box", "lox bundles", "crown gel", "alcohol free gel" (about 300 impressions, 0 clicks, positions 8 to 48). Product snippets already show (243 impressions).
+- Non-brand local queries have almost no volume yet ("loctician near me" 9 impressions at position 44; "starter locs near me", "microloc installation near me", "silk press near me" each under 10). The site is not ranking for local intent at all.
+- Biggest content win: "how often to retwist locs" cluster, 380+ impressions on one post and about 40 more across 25 query variants, 0 clicks, position 11 to 33.
+- **Migration problem:** Google still indexes the old Wix URLs under `www`: `/book-online` (258 impressions), `/post/*`, `/product-page/*`, `/service-page/*`, `/stylez`, `/the-lox-box`, `/about-3`, `/about-jae`. No redirects existed, so these were 404ing or splitting signals with the new apex URLs.
+
+### Done from this data
+
+- 301 redirects in `netlify.toml`: `www` to apex, `/book-online`, `/post/*`, `/service-page/*`, `/product-page/*`, `/stylez`, `/the-lox-box`, `/marilyn-jae-cosmetics`, `/about-*`, `/let-s-connect`.
+- Static product pages at `/shop/<slug>/` with Product schema (price, availability, brand), replacing the JS-only `/product-details?slug=`.
+
+### Do next from this data
+
+1. Edit product titles/descriptions in Wix to match searches: "Crown Control Alcohol-Free Styling Gel", "Growth Tonic Hair Growth Scalp Oil", "Lox Box Loc Care Bundle".
+2. Rewrite the retwist post to target "how often to retwist locs" in the title and first paragraph, add a short answer block at the top.
+3. In Search Console: add the `www` property and request validation after deploy and watch Pages > Not found for old URLs.
+4. Build local pages around Stafford and Sugar Land only after the Google Business Profile is optimized; GBP is where "near me" clicks will come from.
+
 ## Why traffic is low
 
 | # | Issue | Impact | Status |

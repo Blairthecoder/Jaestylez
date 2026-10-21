@@ -70,6 +70,16 @@ async function fetchBlogSlugs() {
 
 const blogSlugs = await fetchBlogSlugs();
 routes.push(...blogSlugs.map((slug) => `/blog/${slug}`));
+async function fetchProductSlugs() {
+  const { createClient, OAuthStrategy } = await import('@wix/sdk');
+  const { products } = await import('@wix/stores');
+  const clientId = process.env.NEXT_PUBLIC_WIX_CLIENT_ID || '91133d63-5037-41ae-b7fd-f830b7719346';
+  const client = createClient({ modules: { products }, auth: OAuthStrategy({ clientId }) });
+  const result = await client.products.queryProducts().limit(100).find();
+  return result.items.filter((p) => p.visible !== false && p.slug).map((p) => p.slug);
+}
+
+routes.push(...(await fetchProductSlugs()).map((slug) => `/shop/${slug}`));
 routes.push(...['sugar-land', 'missouri-city', 'richmond', 'southwest-houston'].map((slug) => `/areas/${slug}`));
 
 await rm(outputDir, { recursive: true, force: true });

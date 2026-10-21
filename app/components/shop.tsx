@@ -38,7 +38,7 @@ function useShop() {
   return value;
 }
 
-export const productHref = (product: WixProduct) => `/product-details?slug=${encodeURIComponent(product.slug ?? '')}`;
+export const productHref = (product: WixProduct) => `/shop/${encodeURIComponent(product.slug ?? '')}/`;
 
 function Price({ product }: { product: WixProduct }) {
   const onSale = (product.price?.discountedPrice ?? 0) < (product.price?.price ?? 0);
