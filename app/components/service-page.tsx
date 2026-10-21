@@ -6,6 +6,7 @@ import { serviceCopy } from '@/app/content/service-copy';
 import { reviewsFor } from '@/app/content/reviews';
 import { categoryHref, serviceHref, type BookableService } from '@/app/lib/service-model';
 import { site } from '@/app/site-data';
+import { breadcrumbSchema, faqSchema } from '@/app/lib/seo';
 
 const topicsFor = (s: BookableService): string[] => {
   const n = `${s.name} ${s.category}`.toLowerCase();
@@ -52,22 +53,12 @@ export function ServicePage({ service, all }: { service: BookableService; all: B
           ? { offers: { '@type': 'Offer', price: service.amount, priceCurrency: 'USD', availability: 'https://schema.org/InStock' } }
           : {}),
       },
-      {
-        '@type': 'FAQPage',
-        mainEntity: copy.faqs.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a },
-        })),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: '/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: '/services/' },
-          { '@type': 'ListItem', position: 3, name: service.name },
-        ],
-      },
+      faqSchema(copy.faqs),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Services', path: '/services' },
+        { name: service.name },
+      ]),
     ],
   };
 

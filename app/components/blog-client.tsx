@@ -2,91 +2,23 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Slider } from '@/app/components/slider';
-import {
-  formatDate,
-  loadCategories,
-  loadPostBySlug,
-  loadPosts,
-  type BlogCategory,
-  type BlogPost,
-  type RichNode,
-} from '@/app/lib/wix-blog';
-import { ReviewCards } from '@/app/components/reviews-ui';
-import { reviewsFor } from '@/app/content/reviews';
-import { site } from '@/app/site-data';
+import { loadCategories, loadPosts } from '@/app/lib/wix-blog';
+import { formatDate, type BlogCategory, type BlogPost } from '@/app/lib/blog-shared';
+import { Meta } from '@/app/components/blog-render';
 
-const RELATED: { match: RegExp; links: { label: string; href: string }[]; topics: string[] }[] = [
-  {
-    match: /palm-roll|interlock/,
-    links: [
-      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
-      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
-    ],
-    topics: ['retwist', 'interlocking', 'maintenance'],
-  },
-  {
-    match: /retwist/,
-    links: [
-      { label: 'Loc Retwist and Palm Roll', href: '/loc-retwist-and-palm-roll' },
-      { label: 'Interlocking Loc Maintenance', href: '/interlocking-loc-maintenance' },
-    ],
-    topics: ['retwist', 'maintenance'],
-  },
-  {
-    match: /starter-loc/,
-    links: [
-      { label: 'Starter Locs', href: '/starter-locs' },
-      { label: 'Instant Locs', href: '/instant-locs' },
-    ],
-    topics: ['starter', 'locs', 'first-visit'],
-  },
-  {
-    match: /silk-press/,
-    links: [
-      { label: 'Silk Press', href: '/silk-press' },
-      { label: 'Lavender Rose Hydration Mist', href: '/product-details?slug=lavender-rose-water' },
-    ],
-    topics: ['silk', 'styles'],
-  },
-  {
-    match: /protective|natural-hairstyles/,
-    links: [
-      { label: 'Two-Strand Twists', href: '/two-strand-twists' },
-      { label: 'Goddess Locs', href: '/goddess-locs' },
-      { label: 'Hair Styles Gallery', href: '/hair-styles' },
-    ],
-    topics: ['twists', 'goddess', 'styles'],
-  },
-  {
-    match: /humidity/,
-    links: [
-      { label: 'Silk Press', href: '/silk-press' },
-      { label: 'The Lox Box', href: '/shop?category=The%20Lox%20Box' },
-    ],
-    topics: ['silk', 'shop', 'healthy'],
-  },
-  {
-    match: /./,
-    links: [
-      { label: 'Book Online', href: '/services#book' },
-      { label: 'About Jae', href: '/about' },
-    ],
-    topics: ['about', 'natural', 'first-visit', 'booking'],
-  },
-];
-
-function relatedFor(post: BlogPost) {
-  const key = `${post.slug} ${post.title}`.toLowerCase();
-  return RELATED.find((r) => r.match.test(key)) ?? RELATED[RELATED.length - 1];
-}
-
-const postHref = (post: BlogPost) => `/blog-details?slug=${encodeURIComponent(post.slug)}`;
+export const postHref = (post: BlogPost) => `/blog/${encodeURIComponent(post.slug)}/`;
 
 type Blog = { status: 'loading' | 'ready' | 'error'; posts: BlogPost[]; categories: BlogCategory[] };
 
-function useBlog(): Blog {
-  const [state, setState] = useState<Blog>({ status: 'loading', posts: [], categories: [] });
+export type BlogSeed = { posts: BlogPost[]; categories: BlogCategory[] };
+
+/** Posts and categories. With `seed` (fetched at build time) the first render already has them, so the HTML carries the post links. */
+function useBlog(seed?: BlogSeed): Blog {
+  const [state, setState] = useState<Blog>(
+    seed ? { status: 'ready', ...seed } : { status: 'loading', posts: [], categories: [] },
+  );
   useEffect(() => {
+    if (seed) return;
     let cancelled = false;
     Promise.all([loadPosts(), loadCategories().catch(() => [])])
       .then(([posts, categories]) => !cancelled && setState({ status: 'ready', posts, categories }))
@@ -94,31 +26,11 @@ function useBlog(): Blog {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [seed]);
   return state;
 }
 
-function Meta({ post }: { post: BlogPost }) {
-  return (
-    <ul className="blog-meta">
-      <li>
-        <i className="far fa-user-circle"></i> {site.owner}
-      </li>
-      {post.date && (
-        <li>
-          <i className="far fa-calendar-alt"></i> {formatDate(post.date)}
-        </li>
-      )}
-      {post.minutes > 0 && (
-        <li>
-          <i className="far fa-clock"></i> {post.minutes} min read
-        </li>
-      )}
-    </ul>
-  );
-}
-
-function Sidebar({
+export function Sidebar({
   blog,
   onSearch,
   activeCategory,
@@ -225,8 +137,8 @@ function Status({ blog, count }: { blog: Blog; count: number }) {
   );
 }
 
-export function BlogIndex() {
-  const blog = useBlog();
+export function BlogIndex({ seed }: { seed?: BlogSeed }) {
+  const blog = useBlog(seed);
   const [category, setCategory] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
@@ -278,163 +190,9 @@ export function BlogIndex() {
   );
 }
 
-// Post bodies come from the Wix editor; some are a single custom HTML block. Drop anything executable and
-// the block's own <style> so the site's typography applies instead.
-function cleanHtml(html: string): string {
-  return html
-    .replace(/<(script|style|iframe|object|embed)[\s\S]*?<\/\1>/gi, '')
-    .replace(/\son\w+="[^"]*"/gi, '')
-    .replace(/\son\w+='[^']*'/gi, '')
-    .replace(/javascript:/gi, '');
-}
-
-function renderText(node: RichNode, key: number): React.ReactNode {
-  let out: React.ReactNode = node.textData?.text ?? '';
-  for (const d of node.textData?.decorations ?? []) {
-    if (d.type === 'BOLD') out = <strong>{out}</strong>;
-    else if (d.type === 'ITALIC') out = <em>{out}</em>;
-    else if (d.type === 'UNDERLINE') out = <u>{out}</u>;
-    else if (d.type === 'LINK' && d.linkData?.link?.url) {
-      out = (
-        <a href={d.linkData.link.url} target="_blank" rel="noopener noreferrer">
-          {out}
-        </a>
-      );
-    }
-  }
-  return <span key={key}>{out}</span>;
-}
-
-function renderNodes(nodes: RichNode[] | undefined): React.ReactNode[] {
-  return (nodes ?? []).map((node, i) => {
-    const kids = () => renderNodes(node.nodes);
-    switch (node.type) {
-      case 'TEXT':
-        return renderText(node, i);
-      case 'PARAGRAPH':
-        return node.nodes?.length ? <p key={i}>{kids()}</p> : null;
-      case 'HEADING': {
-        const level = Math.min(6, Math.max(2, node.headingData?.level ?? 2));
-        const Tag = `h${level}` as 'h2';
-        return <Tag key={i}>{kids()}</Tag>;
-      }
-      case 'BULLETED_LIST':
-        return <ul key={i}>{kids()}</ul>;
-      case 'ORDERED_LIST':
-        return <ol key={i}>{kids()}</ol>;
-      case 'LIST_ITEM':
-        return <li key={i}>{kids()}</li>;
-      case 'BLOCKQUOTE':
-        return <blockquote key={i}>{kids()}</blockquote>;
-      case 'DIVIDER':
-        return <hr key={i} />;
-      case 'IMAGE': {
-        const id = node.imageData?.image?.src?.id;
-        return id ? (
-          <img key={i} src={`https://static.wixstatic.com/media/${id}`} alt={node.imageData?.altText ?? ''} loading="lazy" />
-        ) : null;
-      }
-      case 'TABLE':
-        return (
-          <div key={i} className="table-responsive">
-            <table className="table">
-              <tbody>{kids()}</tbody>
-            </table>
-          </div>
-        );
-      case 'TABLE_ROW':
-        return <tr key={i}>{kids()}</tr>;
-      case 'TABLE_CELL':
-        return <td key={i}>{kids()}</td>;
-      case 'HTML': {
-        const html = node.htmlData?.html;
-        return html ? <div key={i} className="blog-html" dangerouslySetInnerHTML={{ __html: cleanHtml(html) }} /> : null;
-      }
-      default:
-        return kids().length ? <div key={i}>{kids()}</div> : null;
-    }
-  });
-}
-
-export function BlogPostView() {
-  const blog = useBlog();
-  const [state, setState] = useState<{ status: 'loading' | 'ready' | 'missing' | 'error'; post?: BlogPost; nodes?: RichNode[] }>({
-    status: 'loading',
-  });
-
-  useEffect(() => {
-    const slug = new URLSearchParams(window.location.search).get('slug');
-    if (!slug) return setState({ status: 'missing' });
-    let cancelled = false;
-    loadPostBySlug(slug)
-      .then((result) => {
-        if (cancelled) return;
-        if (!result) return setState({ status: 'missing' });
-        document.title = `${result.post.title} | Jae Stylez`;
-        setState({ status: 'ready', post: result.post, nodes: result.nodes });
-      })
-      .catch(() => !cancelled && setState({ status: 'error' }));
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const { post, nodes } = state;
-
-  return (
-    <section className="blog-details-area py-130 rpy-100">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8">
-            {state.status !== 'ready' || !post ? (
-              <p role="status">
-                {state.status === 'loading' && 'Loading post…'}
-                {state.status === 'error' && 'This post could not be loaded right now. Please try again shortly.'}
-                {state.status === 'missing' && (
-                  <>
-                    We could not find that post. <a href="/blog">Back to the blog</a>
-                  </>
-                )}
-              </p>
-            ) : (
-              <div className="blog-details-content">
-                {post.image && (
-                  <div className="image mb-30">
-                    <img src={post.image} alt={post.title} />
-                  </div>
-                )}
-                <Meta post={post} />
-                <h2>{post.title}</h2>
-                <div className="blog-body">{renderNodes(nodes)}</div>
-                <div className="mt-40">
-                  <h5 className="mb-10">Related services</h5>
-                  <ul className="list-style-one landing-list">
-                    {relatedFor(post).links.map((link) => (
-                      <li key={link.href}>
-                        <a href={link.href}>{link.label}</a>
-                      </li>
-                    ))}
-                  </ul>
-                  <a className="theme-btn mt-15" href="/services#book">
-                    book an appointment <i className="far fa-long-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="col-lg-4 col-md-7 col-sm-9">
-            <Sidebar blog={blog} />
-          </div>
-        </div>
-      </div>
-      {post && <ReviewCards reviews={reviewsFor(relatedFor(post).topics, 1)} title="A Client Review" />}
-    </section>
-  );
-}
-
 /** Latest posts in the template's news slider (its arrow buttons sit in the section header). */
-export function LatestPosts() {
-  const blog = useBlog();
+export function LatestPosts({ seed }: { seed?: BlogSeed }) {
+  const blog = useBlog(seed);
   const latest = blog.posts.slice(0, 9);
   if (latest.length === 0) return <Status blog={blog} count={0} />;
   return (
@@ -465,8 +223,8 @@ export function LatestPosts() {
 }
 
 /** Three newest posts in the template's second news layout (used on the Services page). */
-export function LatestPostsGrid() {
-  const blog = useBlog();
+export function LatestPostsGrid({ seed }: { seed?: BlogSeed }) {
+  const blog = useBlog(seed);
   const latest = blog.posts.slice(0, 3);
   return (
     <div className="row justify-content-center">

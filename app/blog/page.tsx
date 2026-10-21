@@ -1,14 +1,25 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
 import { BlogIndex } from '@/app/components/blog-client';
+import { getBlog } from '@/app/lib/wix-blog-server';
+import { breadcrumbSchema, pageMeta } from '@/app/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Blog',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Loc Care & Natural Hair Blog | Jae Stylez, Stafford TX',
+  description:
+    'Loc care, retwist and palm roll guides, silk press tips and protective style advice for Houston weather, from licensed loctician Jae Stylez.',
+  path: '/blog',
+});
 
-export default function Page() {
+export default async function Page() {
+  const blog = await getBlog();
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Blog' }])],
+  };
   return (
     <SiteShell header="three" footerClassName="">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section
         className="page-banner text-white py-190 rpy-130"
         style={{ backgroundImage: 'url(/images/jae/banner.jpg)' }}
@@ -27,7 +38,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <BlogIndex />
+      <BlogIndex seed={{ posts: blog.posts.map((p) => p.post), categories: blog.categories }} />
     </SiteShell>
   );
 }

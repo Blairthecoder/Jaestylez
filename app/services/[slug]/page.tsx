@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ServicePage } from '@/app/components/service-page';
 import { serviceCopy } from '@/app/content/service-copy';
+import { pageMeta } from '@/app/lib/seo';
 import { getService, getServices } from '@/app/lib/wix-server';
 
 type Params = { slug: string };
@@ -16,11 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> | P
   const service = await getService(slug);
   if (!service) return {};
   const copy = serviceCopy(service);
-  return {
-    title: `${service.name} in Stafford, TX`,
+  return pageMeta({
+    title: `${service.name} in Stafford, TX | Jae Stylez`,
     description: copy.description,
-    alternates: { canonical: `/services/${service.slug}/` },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 export default async function Page({ params }: { params: Promise<Params> | Params }) {

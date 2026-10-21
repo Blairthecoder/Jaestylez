@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { ShopCatalog, ShopProvider, ShopSidebar } from '@/app/components/shop';
 import { PageBanner } from '@/app/components/sections';
 import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Natural Hair Products Made in Houston | Jae Stylez' },
+export const metadata: Metadata = pageMeta({
+  title: 'Loc & Natural Hair Products Made in Houston | The Lox Box',
   description:
-    'Shop The Lox Box by Jae Stylez for Houston-made hair oils, hydration mists, styling products and healthy-hair essentials for locs and natural textures.',
-};
+    'Shop The Lox Box: scalp oil, hair whip, hydration mist and styling gel for locs and natural hair, made in Houston by Jae Stylez.',
+  path: '/shop',
+});
 
 export default function Page() {
   return (

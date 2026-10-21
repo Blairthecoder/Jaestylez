@@ -1,4 +1,5 @@
 import { footerServices, site } from '@/app/site-data';
+import { areas } from '@/app/content/areas';
 import { NetlifyForm } from '@/app/components/forms';
 
 export function SiteFooter({ className = '' }: { className?: string }) {
@@ -44,6 +45,14 @@ export function SiteFooter({ className = '' }: { className?: string }) {
                 {footerServices.map((item) => (
                   <li key={item.label}>
                     <a href={item.href}>{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <h5 className="footer-title mt-30">areas we serve</h5>
+              <ul>
+                {areas.map((a) => (
+                  <li key={a.slug}>
+                    <a href={`/areas/${a.slug}/`}>{a.city}</a>
                   </li>
                 ))}
               </ul>

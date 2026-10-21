@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { PageBanner } from '@/app/components/sections';
 import { Testimonials } from '@/app/components/reviews-ui';
@@ -7,11 +8,13 @@ import { photoMd, photoUrl, photos } from '@/app/content/photos';
 import { about } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Meet Jasmin Lafond | Licensed Loctician in Stafford, TX' },
+export const metadata: Metadata = pageMeta({
+  title: 'Meet Jasmin Lafond | Licensed Loctician in Stafford, TX',
   description:
     'Meet Jasmin Lafond (Jae), licensed natural hair stylist and loctician in Stafford, TX. Ten years in the industry, serving Sugar Land, Missouri City, and Greater Houston.',
-};
+  path: '/about',
+  image: '/images/jae/jae-owner-portrait.jpg',
+});
 
 const specialties = [
   {

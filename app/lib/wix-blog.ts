@@ -1,38 +1,10 @@
 'use client';
 
-import type { posts } from '@wix/blog';
-import { wix, wixImageUrl } from '@/app/lib/wix';
+import { wix } from '@/app/lib/wix';
+import { toPost, type BlogCategory, type BlogPost, type RichNode } from '@/app/lib/blog-shared';
 
-export type BlogPost = {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  minutes: number;
-  image: string | null;
-  thumb: string | null;
-  categoryIds: string[];
-};
-
-export type BlogCategory = { id: string; label: string };
-
-function toPost(p: posts.Post): BlogPost {
-  return {
-    id: p._id ?? '',
-    slug: p.slug ?? '',
-    title: p.title ?? '',
-    excerpt: (p.excerpt ?? '').trim(),
-    date: p.firstPublishedDate ? new Date(p.firstPublishedDate).toISOString() : '',
-    minutes: p.minutesToRead ?? 0,
-    image: wixImageUrl(p.media?.wixMedia?.image, 800, 560),
-    thumb: wixImageUrl(p.media?.wixMedia?.image, 120, 120),
-    categoryIds: p.categoryIds ?? [],
-  };
-}
-
-export const formatDate = (iso: string) =>
-  iso ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+export { formatDate } from '@/app/lib/blog-shared';
+export type { BlogCategory, BlogPost, RichNode } from '@/app/lib/blog-shared';
 
 let cachedPosts: Promise<BlogPost[]> | null = null;
 
@@ -55,19 +27,6 @@ export async function loadCategories(): Promise<BlogCategory[]> {
   const result = await wix().blogCategories.queryCategories().find();
   return result.items.map((c) => ({ id: c._id ?? '', label: c.label ?? '' }));
 }
-
-export type RichNode = {
-  type: string;
-  id?: string;
-  nodes?: RichNode[];
-  textData?: {
-    text?: string;
-    decorations?: { type: string; linkData?: { link?: { url?: string } } }[];
-  };
-  headingData?: { level?: number };
-  imageData?: { image?: { src?: { id?: string } }; altText?: string };
-  htmlData?: { html?: string };
-};
 
 export async function loadPostBySlug(slug: string): Promise<{ post: BlogPost; nodes: RichNode[] } | null> {
   const { post } = await wix().blogPosts.getPostBySlug(slug, { fieldsets: ['RICH_CONTENT'] });

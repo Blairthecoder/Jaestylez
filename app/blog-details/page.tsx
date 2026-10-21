@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@/app/site-shell';
-import { BlogPostView } from '@/app/components/blog-client';
+import { LegacyBlogRedirect } from '@/app/components/legacy-redirect';
 
 export const metadata: Metadata = {
   title: 'Blog',
+  robots: { index: false },
 };
 
 export default function Page() {
@@ -30,7 +31,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <BlogPostView />
+      <LegacyBlogRedirect />
     </SiteShell>
   );
 }

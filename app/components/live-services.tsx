@@ -9,6 +9,7 @@ import {
   type BookableService,
   type ServiceCategory,
 } from '@/app/lib/wix-bookings';
+import { useServicesSeed } from '@/app/components/services-seed';
 
 const FEATURE_ICONS = ['flaticon-scissors', 'flaticon-straight-razor', 'flaticon-beauty-treatment', 'flaticon-hot-stones'];
 const SERVICE_ICONS = [
@@ -31,12 +32,16 @@ const TAB_ICONS = [
 type State = { status: 'loading' | 'ready' | 'error'; services: BookableService[] };
 
 export function useServices(): State {
-  const [state, setState] = useState<State>({ status: 'loading', services: [] });
+  const seed = useServicesSeed();
+  const [state, setState] = useState<State>(
+    seed?.length ? { status: 'ready', services: seed } : { status: 'loading', services: [] },
+  );
   useEffect(() => {
     let cancelled = false;
     loadServices()
       .then((services) => !cancelled && setState({ status: 'ready', services }))
-      .catch(() => !cancelled && setState({ status: 'error', services: [] }));
+      // Keep the build-time list if the live refresh fails.
+      .catch(() => !cancelled && setState((prev) => (prev.services.length ? prev : { status: 'error', services: [] })));
     return () => {
       cancelled = true;
     };

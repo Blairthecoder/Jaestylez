@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { BookingServices } from '@/app/components/booking-services';
 import { AppointmentForm } from '@/app/components/appointment-form';
@@ -12,14 +13,17 @@ import { bookingFaqs, guidance, notice, policy } from '@/app/content/booking';
 import { about } from '@/app/content/home';
 import { photoMd, photos } from '@/app/content/photos';
 import { site } from '@/app/site-data';
+import { getBlog } from '@/app/lib/wix-blog-server';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Book a Natural Hair Stylist in Stafford, TX | Jae Stylez' },
+export const metadata: Metadata = pageMeta({
+  title: 'Book a Loctician in Stafford, TX | Jae Stylez',
   description:
     'Book locs, retwists, twists, silk press, and protective styles at Jae Stylez in Stafford, TX. Live availability, deposit info, and prep instructions.',
-};
+  path: '/services',
+});
 
-export default function Page() {
+export default async function Page() {
+  const blog = await getBlog();
   return (
     <SiteShell header="three" footerClassName="mt-80">
       <PageBanner title="Services" crumbs={[{ label: 'Services' }]} />
@@ -194,7 +198,7 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <LatestPostsGrid />
+          <LatestPostsGrid seed={{ posts: blog.posts.map((p) => p.post), categories: blog.categories }} />
         </div>
       </section>
     </SiteShell>

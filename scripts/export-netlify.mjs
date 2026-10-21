@@ -53,6 +53,35 @@ async function fetchServiceSlugs() {
 const serviceSlugs = await fetchServiceSlugs();
 routes.push(...serviceSlugs.map((slug) => `/services/${slug}`));
 
+// One static page per blog post, straight from Wix Blog, and one per service area.
+async function fetchBlogSlugs() {
+  const { createClient, OAuthStrategy } = await import('@wix/sdk');
+  const { posts } = await import('@wix/blog');
+  const clientId = process.env.NEXT_PUBLIC_WIX_CLIENT_ID || '91133d63-5037-41ae-b7fd-f830b7719346';
+  const client = createClient({ modules: { posts }, auth: OAuthStrategy({ clientId }) });
+  let result = await client.posts.queryPosts().limit(100).find();
+  const all = [...result.items];
+  while (result.hasNext()) {
+    result = await result.next();
+    all.push(...result.items);
+  }
+  return all.map((p) => p.slug).filter(Boolean);
+}
+
+const blogSlugs = await fetchBlogSlugs();
+routes.push(...blogSlugs.map((slug) => `/blog/${slug}`));
+async function fetchProductSlugs() {
+  const { createClient, OAuthStrategy } = await import('@wix/sdk');
+  const { products } = await import('@wix/stores');
+  const clientId = process.env.NEXT_PUBLIC_WIX_CLIENT_ID || '91133d63-5037-41ae-b7fd-f830b7719346';
+  const client = createClient({ modules: { products }, auth: OAuthStrategy({ clientId }) });
+  const result = await client.products.queryProducts().limit(100).find();
+  return result.items.filter((p) => p.visible !== false && p.slug).map((p) => p.slug);
+}
+
+routes.push(...(await fetchProductSlugs()).map((slug) => `/shop/${slug}`));
+routes.push(...['sugar-land', 'missouri-city', 'richmond', 'southwest-houston'].map((slug) => `/areas/${slug}`));
+
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(clientDir, outputDir, { recursive: true });
@@ -142,7 +171,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-const hidden = new Set(['/booking-confirmed', '/service-details']);
+const hidden = new Set(['/booking-confirmed', '/service-details', '/blog-details', '/product-details']);
 const urls = routes.filter((r) => !hidden.has(r));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
