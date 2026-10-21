@@ -7,6 +7,7 @@ import { landingMeta } from '@/app/content/landing-meta';
 import { photoMd } from '@/app/content/photos';
 import { allReviews, reviewsFor } from '@/app/content/reviews';
 import { site, styleLinks } from '@/app/site-data';
+import { breadcrumbSchema, faqSchema, pageMeta } from '@/app/lib/seo';
 import landing from '@/app/content/landing-pages.json';
 
 type Block =
@@ -36,7 +37,7 @@ const bookHref = (label: string, url: string) => {
 
 export function landingMetadata(slug: string): Metadata {
   const page = pages[slug];
-  return { title: { absolute: page.seoTitle }, description: page.seoDescription };
+  return pageMeta({ title: page.seoTitle, description: page.seoDescription, path: `/${slug}` });
 }
 
 // A section starts at each eyebrow or heading; everything up to the next one belongs to it.
@@ -220,18 +221,12 @@ export function LandingPage({ slug, crumb = 'Services' }: { slug: string; crumb?
           name,
         })),
       },
-      ...(faq
-        ? [
-            {
-              '@type': 'FAQPage',
-              mainEntity: faq.items.map((item) => ({
-                '@type': 'Question',
-                name: item.q,
-                acceptedAnswer: { '@type': 'Answer', text: item.a },
-              })),
-            },
-          ]
-        : []),
+      ...(faq ? [faqSchema(faq.items)] : []),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: crumb, path: '/services' },
+        { name: serviceName },
+      ]),
     ],
   };
 

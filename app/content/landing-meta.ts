@@ -11,7 +11,7 @@ export type LandingMeta = {
   related: RelatedLink[];
 };
 
-const blog = (slug: string) => `/blog-details?slug=${slug}`;
+const blog = (slug: string) => `/blog/${slug}/`;
 
 export const landingMeta: Record<string, LandingMeta> = {
   'two-strand-twists': {

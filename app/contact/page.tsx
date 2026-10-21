@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { NetlifyForm } from '@/app/components/forms';
 import { PageBanner } from '@/app/components/sections';
@@ -7,11 +8,12 @@ import { reviewsFor } from '@/app/content/reviews';
 import { contact, serviceArea } from '@/app/content/home';
 import { site } from '@/app/site-data';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Contact Jae Stylez | Houston Natural Hair Stylist' },
+export const metadata: Metadata = pageMeta({
+  title: 'Contact Jae Stylez | 630 Murphy Rd, Stafford, TX 77477',
   description:
-    'Contact Jae Stylez with questions about natural hair services, locs, braids, consultations, appointments or hair products in Stafford and Greater Houston.',
-};
+    'Call (346) 377-7185 or message Jae Stylez about locs, braids, consultations and appointments. 630 Murphy Rd Ste 211, Stafford, TX. Mon to Sat by appointment.',
+  path: '/contact',
+});
 
 export default function Page() {
   return (

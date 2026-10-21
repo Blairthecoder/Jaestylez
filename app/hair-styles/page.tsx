@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { GalleryGrid } from '@/app/components/gallery-grid';
 import { PageBanner } from '@/app/components/sections';
 import { Testimonials } from '@/app/components/reviews-ui';
 import { reviewsFor } from '@/app/content/reviews';
 
-export const metadata: Metadata = {
-  title: 'Hair Styles',
+export const metadata: Metadata = pageMeta({
+  title: 'Locs, Twists & Braids Photo Gallery | Jae Stylez, Stafford TX',
   description:
-    'Photos of locs, twists, braids, curls and silk presses by Jae Stylez, a loctician and natural hair stylist in Stafford, TX.',
-};
+    'See real loc retwists, starter locs, twists, braids, curls and silk presses by Jae Stylez, a licensed loctician in Stafford, TX. Book the style you want.',
+  path: '/hair-styles',
+});
 
 export default function Page() {
   return (

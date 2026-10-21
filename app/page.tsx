@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { faqSchema, pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { AppointmentForm } from '@/app/components/appointment-form';
 import { CategoryCards, FeatureCategories, PricingTabs } from '@/app/components/live-services';
@@ -10,21 +11,29 @@ import { reviewsFor } from '@/app/content/reviews';
 import { galleryPhotos, photoMd, photoUrl, photos } from '@/app/content/photos';
 import { about, faqs, hero } from '@/app/content/home';
 import { site } from '@/app/site-data';
+import { getBlog } from '@/app/lib/wix-blog-server';
 
-export const metadata: Metadata = {
-  title: { absolute: 'Loctician in Stafford, TX | Natural Hair Salon | Jae Stylez' },
+export const metadata: Metadata = pageMeta({
+  title: 'Loctician in Stafford, TX | Locs, Twists & Silk Press | Jae Stylez',
   description:
-    'Jae Stylez is a licensed loctician and natural hair stylist in Stafford, TX. Retwists, starter locs, twists, silk press. Serving Sugar Land and Houston.',
-};
+    'Licensed loctician in Stafford, TX. Retwists, starter locs, instant locs, twists and silk press. Book online. Serving Sugar Land, Missouri City and Houston.',
+  path: '/',
+});
 
 const galleryLabel = (tags: string[]) => {
   const t = tags[0];
   return t === 'locs' ? 'Locs' : t === 'twists' ? 'Twists' : t === 'braids' ? 'Braids' : t === 'curls' ? 'Curls' : 'Hair Styles';
 };
 
-export default function Page() {
+export default async function Page() {
+  const blog = await getBlog();
+  const blogSeed = { posts: blog.posts.map((p) => p.post), categories: blog.categories };
   return (
     <SiteShell header="one" footerClassName="pb-30">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', ...faqSchema(faqs) }) }}
+      />
       <section className="hero-section jae-hero py-250" style={{ backgroundImage: `url(${photoUrl(photos.collage)})` }}>
         <div className="container">
           <div className="row align-items-center justify-content-between">
@@ -314,7 +323,7 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <LatestPosts />
+          <LatestPosts seed={blogSeed} />
         </div>
       </section>
     </SiteShell>

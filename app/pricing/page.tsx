@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/app/lib/seo';
 import { SiteShell } from '@/app/site-shell';
 import { PricingColumns, PricingTabs } from '@/app/components/live-services';
 import { PageBanner } from '@/app/components/sections';
 
-export const metadata: Metadata = {
-  title: 'Pricing',
-  description: 'Live prices, times and deposits for locs, twists, braids, silk press and more at Jae Stylez in Stafford, TX.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Loc Retwist, Starter Loc & Silk Press Prices | Jae Stylez',
+  description:
+    'Current prices, times and deposits for loc retwists, starter locs, twists, braids and silk press at Jae Stylez in Stafford, TX. Book online.',
+  path: '/pricing',
+});
 
 export default function Page() {
   return (
